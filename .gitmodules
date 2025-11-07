@@ -1,0 +1,9 @@
+[submodule "Libraries/lvgl"]
+	path = Libraries/lvgl
+	url = https://github.com/lvgl/lvgl.git
+[submodule "Libraries/freetype"]
+	path = Libraries/freetype
+	url = https://github.com/freetype/freetype.git
+[submodule "Libraries/EasyLogger"]
+	path = Libraries/EasyLogger
+	url = https://github.com/armink/EasyLogger.git
