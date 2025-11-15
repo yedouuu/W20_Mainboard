@@ -43,21 +43,10 @@
 /* LED */
 #define LED_NUM                          4
 
-#define LED2_PIN                         GPIO_PINS_13
-#define LED2_GPIO                        GPIOD
-#define LED2_GPIO_CRM_CLK                CRM_GPIOD_PERIPH_CLOCK
-
-#define LED3_PIN                         GPIO_PINS_14
-#define LED3_GPIO                        GPIOD
-#define LED3_GPIO_CRM_CLK                CRM_GPIOD_PERIPH_CLOCK
-
-#define LED4_PIN                         GPIO_PINS_15
-#define LED4_GPIO                        GPIOD
-#define LED4_GPIO_CRM_CLK                CRM_GPIOD_PERIPH_CLOCK
-
-#define LED5_PIN                         GPIO_PINS_3
-#define LED5_GPIO                        GPIOE
-#define LED5_GPIO_CRM_CLK                CRM_GPIOE_PERIPH_CLOCK
+#define LED2_PIN                         PD13
+#define LED3_PIN                         PD14
+#define LED4_PIN                         PD15
+#define DEBUG_PIN                        PE3
 /* Sensors */
 // #define CONFIG_SENSOR_ENABLE        1
 

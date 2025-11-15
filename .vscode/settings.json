@@ -27,7 +27,8 @@
     "unit_test.h": "c",
     "timer.h": "c",
     "format": "c",
-    "thread": "c"
+    "thread": "c",
+    "pwm.h": "c"
   },
   "dotnet.defaultSolution": "Vendor/Simulator/lv_port_pc_visual_studio/LVGL.sln"
 }

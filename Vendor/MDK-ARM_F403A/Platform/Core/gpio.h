@@ -109,8 +109,8 @@ void GPIOx_Init(
 
 /**
  * @brief  获取当前引脚对应的GPIOx编号
- * PA1 -> 1
- * PB3 -> 2
+ * PA1 -> GPIOA (1)
+ * PB3 -> GPIOB (2)
  * 
  * @param  Pin: 引脚编号
  * @retval 无
@@ -119,8 +119,8 @@ gpio_port_source_type GPIO_GetPortNum(uint8_t Pin);
 
 /**
   * @brief  获取当前引脚对应的 PinSource
-  * PA1 --> 1
-  * PB3 --> 3
+  * PA1 --> PIN1
+  * PB3 --> PIN3
   * 
   * @param  GPIO_Pin_x: GPIO对应位
   * @retval 无

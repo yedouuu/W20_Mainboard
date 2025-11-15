@@ -85,6 +85,9 @@ typedef tmr_type                    TIM_TypeDef;
 #define SYSTICK_TICK_FREQ                   1000 // Hz
 #define SYSTICK_PRIORITY                    0
 
+/* GPIO */
+#define GPIO_DRIVE_DEFAULT                  GPIO_DRIVE_STRENGTH_STRONGER
+
 /* External Interrupt */
 #define EXTI_PREPRIORITY_DEFAULT            14
 #define EXTI_SUBPRIORITY_DEFAULT            0
@@ -93,6 +96,8 @@ typedef tmr_type                    TIM_TypeDef;
 #define TIMER_PREEMPTIONPRIORITY_DEFAULT    3
 #define TIMER_SUBPRIORITY_DEFAULT           0
 
-
+/* PWM */
+#define PWM_RESOLUTION_DEFAULT              1000
+#define PWM_FREQUENCY_DEFAULT               10000
 
 #endif

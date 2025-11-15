@@ -404,16 +404,16 @@ void Timer_SetCompare(TIM_TypeDef* TIMx, uint8_t TimerChannel, uint32_t Compare)
   switch(TimerChannel)
   {
   case 1:
-      tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_1, Compare);
+      tmr_channel_value_set(TIMx, TIM_SELECT_CHANNEL_1, Compare);
       break;
   case 2:
-      tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_2, Compare);
+      tmr_channel_value_set(TIMx, TIM_SELECT_CHANNEL_2, Compare);
       break;
   case 3:
-      tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_3, Compare);
+      tmr_channel_value_set(TIMx, TIM_SELECT_CHANNEL_3, Compare);
       break;
   case 4:
-      tmr_channel_value_set(TIMx, TMR_SELECT_CHANNEL_4, Compare);
+      tmr_channel_value_set(TIMx, TIM_SELECT_CHANNEL_4, Compare);
       break;
   default:
       break;
@@ -432,16 +432,16 @@ uint16_t Timer_GetCompare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
   switch(TimerChannel)
   {
   case 1:
-      retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_1);
+      retval = tmr_channel_value_get(TIMx, TIM_SELECT_CHANNEL_1);
       break;
   case 2:
-      retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_2);
+      retval = tmr_channel_value_get(TIMx, TIM_SELECT_CHANNEL_2);
       break;
   case 3:
-      retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_3);
+      retval = tmr_channel_value_get(TIMx, TIM_SELECT_CHANNEL_3);
       break;
   case 4:
-      retval = tmr_channel_value_get(TIMx, TMR_SELECT_CHANNEL_4);
+      retval = tmr_channel_value_get(TIMx, TIM_SELECT_CHANNEL_4);
       break;
   default:
       break;
