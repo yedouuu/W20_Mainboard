@@ -7,3 +7,9 @@
 [submodule "Libraries/EasyLogger"]
 	path = Libraries/EasyLogger
 	url = https://github.com/armink/EasyLogger.git
+[submodule "Libraries/FreeRTOS"]
+	path = Libraries/FreeRTOS
+	url = https://github.com/FreeRTOS/FreeRTOS.git
+[submodule "Libraries/Unity"]
+	path = Libraries/Unity
+	url = https://github.com/ThrowTheSwitch/Unity.git

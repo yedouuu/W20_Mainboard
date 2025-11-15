@@ -1,0 +1,63 @@
+# Keil MDK-ARM project gitignore
+
+# Build outputs
+*.axf
+*.bin
+*.elf
+*.hex
+*.htm
+*.lnp
+*.lst
+*.map
+*.o
+*.d
+*.crf
+*.htm
+*.dep
+*.uvguix.*
+*.uvoptx
+*.bak
+*.ddk
+*.edk
+*.lst
+*.lnp
+*.mpf
+*.mpj
+*.obj
+*.omf
+*.plg
+*.rpt
+*.tmp
+*.__i
+*._ia
+*.crf
+*.d
+*.axf
+*.tra
+*.dep  
+*.rsp
+*.fed
+*.l1p
+*.l2p
+*.iex
+*.ier
+*.zip
+
+# Keil specific
+*.scvd
+*.sct
+
+# Debugger
+*.ini
+
+# Build directories
+Objects/
+Listings/
+RTE/
+
+# User settings
+*.uvguix*
+*.uvoptx
+
+# Backup files
+*.orig

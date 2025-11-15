@@ -1,0 +1,33 @@
+{
+  "cmake.sourceDirectory": "D:/200_WL/280_Project/WL_W20_Mainboard/04_Software/W20_Mainboard/Vendor/Simulator/lv_port_pc_vscode",
+  "files.associations": {
+    "systick.h": "c",
+    "gpio.h": "c",
+    "adc.h": "c",
+    "at32f403a_407_board.h": "c",
+    "mcu_type.h": "c",
+    "bsp_led.h": "c",
+    "at32f403a_407_clock.h": "c",
+    "mcu_core.h": "c",
+    "common.h": "c",
+    "uart.h": "c",
+    "at32f403a_407.h": "c",
+    "bsp_key.h": "c",
+    "exti.h": "c",
+    "bsp_config.h": "c",
+    "at32f403a_407_conf.h": "c",
+    "app.h": "c",
+    "elog.h": "c",
+    "elog_cfg.h": "c",
+    "stdint.h": "c",
+    "hal.h": "c",
+    "unity_config.h": "c",
+    "unity.h": "c",
+    "unity_internals.h": "c",
+    "unit_test.h": "c",
+    "timer.h": "c",
+    "format": "c",
+    "thread": "c"
+  },
+  "dotnet.defaultSolution": "Vendor/Simulator/lv_port_pc_visual_studio/LVGL.sln"
+}
