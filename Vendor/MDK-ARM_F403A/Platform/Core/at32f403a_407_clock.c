@@ -37,8 +37,8 @@ void __SetClockTo240M_HEXT(void);
 void __SetClockTo240M_HICK(void);
 
 void system_clock_config(void) {
-  // __SetClockTo240M_HICK();
-  __SetClockTo240M_HEXT();
+  __SetClockTo240M_HICK();
+  // __SetClockTo240M_HEXT();
 }
 
 /**

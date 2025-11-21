@@ -1,4 +1,25 @@
-
+/*
+ * MIT License
+ * Copyright (c) 2025 Yedouuu | UNION
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 #include "pwm.h"
 #include "timer.h"
 #include "gpio.h"
@@ -19,6 +40,7 @@ static void TIMx_OCxInit(tmr_type* TIMx, uint32_t arr, uint16_t psc, uint8_t Tim
 
   tmr_base_init(TIMx, arr, psc);
   tmr_cnt_dir_set(TIMx, TMR_COUNT_UP);
+  tmr_div_value_set(TIMx, TMR_CLOCK_DIV1);
 
   tmr_output_default_para_init(&tmr_output_struct);
   tmr_output_struct.oc_mode = TMR_OUTPUT_CONTROL_PWM_MODE_B;
@@ -82,6 +104,11 @@ uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
 
   // pinMode(Pin, OUTPUT_AF_PP);
   GPIOx_Init(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x, OUTPUT_AF_PP, GPIO_DRIVE_DEFAULT);
+  if (PIN_MAP[Pin].PinMux != MUX_XX)
+  {
+    crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
+    gpio_pin_remap_config(PIN_MAP[Pin].PinMux, TRUE);
+  }
 
   arr = Resolution;
   psc = Timer_GetClockMax(TIMx) / Resolution / Frequency;

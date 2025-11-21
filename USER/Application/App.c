@@ -1,6 +1,5 @@
 
 #include "App.h"
-#include "Logger.h"
 
 
 void App_Init(void)

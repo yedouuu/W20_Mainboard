@@ -96,20 +96,20 @@ static void _eloggerSetLevel(LogLevel_t level)
 
 static void _eloggerLog(LogLevel_t level, const char *format, ...)
 {
-  va_list args;
-  va_start(args, format);
+  // va_list args;
+  // va_start(args, format);
 
-  switch (level)
-  {
-    case LOG_LEVEL_ERROR:   elog_output(LOG_LEVEL_ERROR,   LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
-    case LOG_LEVEL_WARN:    elog_output(LOG_LEVEL_WARN,    LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
-    case LOG_LEVEL_INFO:    elog_output(LOG_LEVEL_INFO,    LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
-    case LOG_LEVEL_DEBUG:   elog_output(LOG_LEVEL_DEBUG,   LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
-    case LOG_LEVEL_VERBOSE: elog_output(LOG_LEVEL_VERBOSE, LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
-    default: break;
-  }
+  // switch (level)
+  // {
+  //   case LOG_LEVEL_ERROR:   elog_output(LOG_LEVEL_ERROR,   LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
+  //   case LOG_LEVEL_WARN:    elog_output(LOG_LEVEL_WARN,    LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
+  //   case LOG_LEVEL_INFO:    elog_output(LOG_LEVEL_INFO,    LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
+  //   case LOG_LEVEL_DEBUG:   elog_output(LOG_LEVEL_DEBUG,   LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
+  //   case LOG_LEVEL_VERBOSE: elog_output(LOG_LEVEL_VERBOSE, LOGGER_TAG, __FILE__, __FUNCTION__, __LINE__, format, args); break;
+  //   default: break;
+  // }
 
-  va_end(args);
+  // va_end(args);
 }
 
 

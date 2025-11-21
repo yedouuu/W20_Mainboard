@@ -28,7 +28,14 @@
     "timer.h": "c",
     "format": "c",
     "thread": "c",
-    "pwm.h": "c"
+    "pwm.h": "c",
+    "cstdint": "c",
+    "random": "c",
+    "logger.h": "c",
+    "bsp_ir.h": "c",
+    "hal_ir.h": "c",
+    "devicemanager.h": "c",
+    "stddef.h": "c"
   },
   "dotnet.defaultSolution": "Vendor/Simulator/lv_port_pc_visual_studio/LVGL.sln"
 }

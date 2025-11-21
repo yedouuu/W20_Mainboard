@@ -25,6 +25,7 @@ The system also drives a stepper motor for bill feeding, controls a TFT LCD disp
     - `Common/`: Common definitions and shared components.
     - `Pages/`: LVGL screen definitions and UI logic.
 - `Framework/`: Framework-level code.
+    - `DeviceManager/`: Device registration and management framework.
     - `PageManager/`: Manages LVGL page transitions and lifecycle.
 - `Vendor/`: Contains MCU-specific libraries, drivers, and the Keil MDK project files.
     - `MDK-ARM_F403A/`: Keil MDK project and AT32F403A vendor libraries.
@@ -48,10 +49,24 @@ When working on UI elements in `USER/Pages/`, it's often faster to test them in 
 
 ## 3. Code Conventions & Patterns
 
-### Hardware Abstraction
-- All direct hardware register manipulation should be within the `USER/HAL/` directory.
-- The `HAL.h` file provides a clean interface for the application layer to access hardware features like LEDs, UART, etc.
-- **Example**: To enable a peripheral clock, use the `crm_periph_clock_enable()` function from the vendor library, but wrap it in a higher-level HAL function if it's part of a larger initialization sequence. See `USER/HAL/HAL.c`.
+### Hardware Abstraction & Device Management
+- **Architecture**: The system follows a layered architecture separating lifecycle management from business logic.
+  - **BSP Layer** (`Vendor/.../BSP/`): Handles low-level hardware details (GPIO, Registers).
+  - **HAL Layer** (`USER/HAL/`): Provides type-safe, domain-specific interfaces (e.g., `HAL_IR_GetRawData`) for application logic.
+  - **Adapter Layer** (`USER/HAL/Adapter/`): Maps HAL functions to the generic `Device_Ops` virtual table for the Device Manager.
+  - **Device Manager** (`Framework/DeviceManager/`): Manages device registration and lifecycle via linker-section magic.
+
+- **Registration**: Use the `DEVICE_EXPORT` macro in Adapter files to register devices. This enables `Device_System_Init()` to automatically initialize all devices without modifying `main.c`.
+
+- **Usage Strategy**:
+  - **System Level**: Use `DeviceManager` interfaces (`DM_DeviceInit`, `DM_DeviceFind`) for system initialization, power management, and generic tools (like CLI).
+  - **Business Logic**: Prefer specific **HAL Interfaces** (e.g., `HAL_IR_Enable`, `HAL_Motor_Run`) over generic DM interfaces (`DM_Read`, `DM_Ioctl`) to ensure type safety, performance, and code readability.
+
+- **Implementation Guide**:
+  1. Implement hardware logic in **BSP**.
+  2. Define specific interfaces in **HAL**.
+  3. Create a `Device_t` instance in **Adapter**, map HAL functions to `Device_Ops`, map BSP functions to specific interfaces which in `HAL_XXX_Device_Ops`, and register with `DEVICE_EXPORT`.
+  4. **Note**: Even if the application uses HAL functions directly, populate the `Device_Ops` structure fully to support generic debugging tools.
 
 <!-- ### RTOS Usage (FreeRTOS)
 - Tasks are defined in `USER/Application/App.c`.
@@ -61,10 +76,11 @@ When working on UI elements in `USER/Pages/`, it's often faster to test them in 
 ### UI Development (LVGL)
 - UI screens are organized into files under `USER/Pages/`.
 - Using MVP (Model-View-Presenter) pattern is encouraged for better separation of concerns.
-- Each new screen should have this three files `MainModel.c(Model)`, `MainView.c(View)`, `Main.c(Presenter)`.
+- Each new screen should have this three files such as `MainModel.c(Model)`, `MainView.c(View)`, `Main.c(Presenter)`.
 - Create a new C file for major UI component.
 - Use LVGL's event-driven model for user interactions.
 - Fonts and other resources are in `USER/Resources/`.
+
 
 ### Naming and Style
 - The codebase primarily uses **This_Case** for functions and variables.
@@ -74,6 +90,7 @@ When working on UI elements in `USER/Pages/`, it's often faster to test them in 
 - Indentation is 2 spaces. No tabs(IMPORTANT).
 - Multi-line variable declarations should be aligned for better readability.
 - Function comments should use Doxygen style for automatic documentation generation.
+- Consistent error handling using `Status_t` enum defined in `Common/Status.h`.
 
 
 ## 4. Key Integration Points

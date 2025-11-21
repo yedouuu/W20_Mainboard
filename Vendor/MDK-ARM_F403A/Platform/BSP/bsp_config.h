@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2025 Yedou | UNION
+ * Copyright (c) 2025 Yedouuu | UNION
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,12 +41,22 @@
 #define EXTI_CRM_CLK_USER_BUTTON         CRM_IOMUX_PERIPH_CLOCK
 
 /* LED */
-#define LED_NUM                          4
+#define LED_NUM                          2
 
-#define LED2_PIN                         PD13
-#define LED3_PIN                         PD14
-#define LED4_PIN                         PD15
+#define LED_GREEN_PIN                    PE4
 #define DEBUG_PIN                        PE3
+
+/* IR */
+#define IR_HOP_RX_PIN                    PA5
+#define IR_STA_RX_PIN                    PA6
+#define IR_HOP_STA_CTRL_PIN              PD6
+
+#define IRL_PIN                          PC6
+#define IRR_PIN                          PC7
+#define IRL_RX_PIN                       PA7
+#define IRR_RX_PIN                       PB0
+#define IR_CHANNEL_CTRL_PIN              PD12
+
 /* Sensors */
 // #define CONFIG_SENSOR_ENABLE        1
 

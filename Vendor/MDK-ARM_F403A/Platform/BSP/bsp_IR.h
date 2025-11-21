@@ -20,12 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __BSP_LED_H__
-#define __BSP_LED_H__
+#ifndef __BSP_IR_H__
+#define __BSP_IR_H__
+
 
 /* Includes ----------------------------------------------------------*/
 #include "mcu_type.h"
 #include "bsp_config.h"
+
 
 /* Private defines -----------------------------------------------------------*/
 
@@ -33,19 +35,44 @@
 /* Exported types ------------------------------------------------------------*/
 typedef enum
 {
-  LED_GREEN = 0,
-  LED_MAX                                
-} led_type;
+  IR_HOPPER        = 0,
+  IR_STACKER       = 1,
+  IRR              = 2,
+  IRL              = 3,
+  IR_MAX
+} IR_type_e;
+
+typedef enum
+{
+  BSP_IR_DUTY_CYCLE_0   = 0,     /* 0% */
+  BSP_IR_DUTY_CYCLE_25  = 1,     /* 25% */
+  BSP_IR_DUTY_CYCLE_50  = 2,     /* 50% */
+  BSP_IR_DUTY_CYCLE_75  = 3,     /* 75% */
+  BSP_IR_DUTY_CYCLE_100 = 4,     /* 100% */
+  BSP_IR_DUTY_CYCLE_MAX = 0xFF,
+} IR_Duty_Cycle_e;
+
+typedef enum
+{
+  IR_HOLD       = 0,
+  IR_FREE       = 1,
+  IR_DEBOUNCE   = 2,
+} IR_status_e;
 
 
-/* Exported variables prototypes ---------------------------------------------*/
+typedef struct _IR_Resource_t IR_Resource_t;
 
+extern const IR_Resource_t ir_hopper_res;
+extern const IR_Resource_t ir_stacker_res;
+extern const IR_Resource_t ir_right_res;
+extern const IR_Resource_t ir_left_res;
 
 /* Exported functions prototypes ---------------------------------------------*/
-void BSP_LED_Init(void);
-void BSP_LED_On(uint8_t led);
-void BSP_LED_Off(uint8_t led);
-void BSP_LED_Toggle(uint8_t led);
-
+void BSP_IR_Init(const void* ir);
+void BSP_IR_Enable(const void* ir);
+void BSP_IR_Disable(const void* ir);
+void BSP_IR_SetPWM(const void* ir, uint16_t duty);
+void BSP_IR_GetRawData(const void* ir, uint16_t* raw);
 
 #endif
+

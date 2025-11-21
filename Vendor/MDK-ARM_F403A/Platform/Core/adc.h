@@ -20,45 +20,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "bsp_led.h"
-#include "gpio.h"
+#ifndef __ADC_H__
+#define __ADC_H__
 
 
-uint16_t led_gpio_pin[LED_NUM] = { LED_GREEN_PIN, DEBUG_PIN };
+/* Includes ------------------------------------------------------------------*/
+#include "mcu_type.h"
 
-void BSP_LED_Init(void)
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+/* Private defines -----------------------------------------------------------*/
+
+
+/* Exported types ------------------------------------------------------------*/
+typedef enum
 {
-  for (uint8_t i = 0; i < LED_NUM; i++)
-  {
-    PinInfo_TypeDef pinInfo = PIN_MAP[led_gpio_pin[i]];
-    GPIOx_Init(pinInfo.GPIOx, pinInfo.GPIO_Pin_x, OUTPUT, GPIO_DRIVE_DEFAULT);
-  }
-}
+  ADC_DMA_RES_OK                                = 0,
+  ADC_DMA_RES_NOT_ADC_CHANNEL                   = -1,
+  ADC_DMA_RES_DUPLICATE_REGISTRATION            = -2,
+  ADC_DMA_RES_MAX_NUM_OF_REGISTRATIONS_EXCEEDED = -3,
+} ADC_DMA_Res_Type;
 
-void BSP_LED_On(uint8_t led)
-{
-  if (led < LED_NUM)
-  {
-    PinInfo_TypeDef pinInfo = PIN_MAP[led_gpio_pin[led]];
-    gpio_bits_reset(pinInfo.GPIOx, pinInfo.GPIO_Pin_x);
-  }
-}
 
-void BSP_LED_Off(uint8_t led)
-{
-  if (led < LED_NUM)
-  {
-    PinInfo_TypeDef pinInfo = PIN_MAP[led_gpio_pin[led]];
-    gpio_bits_set(pinInfo.GPIOx, pinInfo.GPIO_Pin_x);
-  }
-}
+/* Exported functions prototypes ---------------------------------------------*/
+void             ADCx_Init(adc_type* ADCx);
+void             ADCx_Start(adc_type *ADCx);
+uint16_t         ADCx_GetValue(adc_type* ADCx, uint16_t ADC_Channel);
+void             ADC_DMA_Init(void);
+ADC_DMA_Res_Type ADC_DMA_Register(uint8_t ADC_Channel);
+uint16_t         ADC_DMA_GetValue(uint8_t ADC_Channel);
+uint8_t          ADC_DMA_GetRegisterCount(void);
 
-void BSP_LED_Toggle(uint8_t led)
-{
-  if (led < LED_NUM)
-  {
-    PinInfo_TypeDef pinInfo = PIN_MAP[led_gpio_pin[led]];
-    uint8_t status = gpio_input_data_bit_read(pinInfo.GPIOx, pinInfo.GPIO_Pin_x);
-    gpio_bits_write(pinInfo.GPIOx, pinInfo.GPIO_Pin_x, (status == RESET) ? SET : RESET);
-  }
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif /* __ADC_H__ */

@@ -26,53 +26,26 @@
 
 #include "Common/common.h"
 #include "App.h"
+#include "bsp_led.h"
 #include "HAL.h"
 #include "mcu_core.h"
-#include "bsp_led.h"
-#include "bsp_key.h"
 #include "Logger.h"
-#include "pwm.h"
+#include "DeviceManager.h"
 
-#define DELAY                            1000
+#define DELAY                            500
 
 void tim8_irq_callback(void)
 {
-  log_d("TIM8 interrupt triggered.");
+  // log_d("TIM8 interrupt triggered.");
 }
 
 void tim6_irq_callback(void)
 {
   // log_d("TIM6 interrupt triggered.");
-  BSP_LED_Toggle(LED5);
+  BSP_LED_Toggle(DEBUG_PIN);
 }
 
-void pwm_tmr4_pd12_15_init(void)
-{
-    crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
-    gpio_pin_remap_config(TMR4_MUX, TRUE);
-
-    crm_periph_clock_enable(CRM_GPIOD_PERIPH_CLOCK, TRUE);
-    crm_periph_clock_enable(CRM_TMR4_PERIPH_CLOCK, TRUE);
-
-    gpio_init_type gpio_init_struct;
-    gpio_default_para_init(&gpio_init_struct);
-    gpio_init_struct.gpio_pins = GPIO_PINS_12 | GPIO_PINS_13 | GPIO_PINS_14 | GPIO_PINS_15;
-    gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
-    gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
-    gpio_init(GPIOD, &gpio_init_struct);
-
-    tmr_base_init(TMR4, 2400 - 1, 1000 - 1);
-    tmr_output_config_type oc;
-    tmr_output_default_para_init(&oc);
-    oc.oc_mode = TMR_OUTPUT_CONTROL_PWM_MODE_A;
-    oc.oc_polarity = TMR_OUTPUT_ACTIVE_HIGH;
-
-    tmr_output_channel_config(TMR4, TMR_SELECT_CHANNEL_1, &oc);
-    tmr_channel_value_set(TMR4, TMR_SELECT_CHANNEL_1, 100);
-
-    tmr_counter_enable(TMR4, TRUE);
-}
-
+__IO uint16_t dma_trans_complete_flag = 0;
 
 /**
   * @brief  main function.
@@ -82,73 +55,89 @@ void pwm_tmr4_pd12_15_init(void)
 int main(void)
 {
   Core_Init();
-  // BSP_LED_Init();
-  // BSP_KEY_Init();
+	BSP_LED_Init();
+  loggerInit(LOG_LEVEL_DEBUG);
+  DM_DeviceInitALL();
   App_Init();
-
+  
   log_i("System initialized.");
+  
 
-  Timer_SetInterrupt(TIM8, 1000000, tim8_irq_callback); // 1ms
-  Timer_SetInterrupt(TIM6, 10000, tim6_irq_callback); // 1ms
+  Timer_SetInterrupt(TIM8, 1000000, tim8_irq_callback); // 1000ms
+  Timer_SetInterrupt(TIM6, 10000, tim6_irq_callback); // 100ms
 
   Timer_SetEnable(TIM8, TRUE);
   Timer_SetEnable(TIM6, TRUE);
 
-
-  // pwm_tmr4_pd12_15_init();
-
-  // gpio_pin_remap_config(TMR4_MUX, TRUE);
-  // crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
-
-  // log_i("PWM Init Channel %d", PWM_Init(PD13, 1000, 2400));
-  // log_i("PWM Init Channel %d", PWM_Init(PD14, 1000, 2400));
-  // log_i("PWM Init Channel %d", PWM_Init(PD15, 1000, 2400));
-  // PWM_Init(PD14, 1000, 2400);
-  // PWM_Init(PD15, 1000, 2400);
-
-  // PWM_Init(PB6, 1000, 2400);
-  // PWM_Init(PB7, 1000, 2400);
+  log_i("PWM Init Channel %d", PWM_Init(PD13, 1000, 240000));
+  log_i("PWM Init Channel %d", PWM_Init(PD14, 1000, 240000));
+  log_i("PWM Init Channel %d", PWM_Init(PD15, 1000, 240000));
   
   PWM_Write(PD13, 500);
   PWM_Write(PD14, 500);
   PWM_Write(PD15, 500);
-	
-	// PWM_Init(PB6, 500, 2400);
-  // PWM_Init(PB7, 500, 2400);
+
+  ADC_DMA_Init();
+  ADCx_Start(ADC1);
+
+  Device_t *ir_hop = DM_DeviceFind("IR_HOPPER");
+  Device_t *ir_sta = DM_DeviceFind("IR_STACKER");
+
+  if ( ir_hop == NULL || ir_sta == NULL) {
+    log_e("IR devices not found!");
+    while(1) {
+      BSP_LED_Toggle(LED_GREEN);
+      HAL_DelayMs(100);
+    }
+  }
+
+
+  HAL_IR_Enable(ir_hop);
+  HAL_IR_Enable(ir_sta);
+
+  // BSP_IR_Enable(IR_HOPPER);
+  // BSP_IR_Enable(IR_STACKER);
 
   while(1)
   {
-    uint32_t duty = 0;
+    if ( dma_trans_complete_flag > 0 ) {
+      /* 12位ADC转换为3.3V电压 */
+      uint8_t buf1[2];
+      uint8_t buf2[2];
+      HAL_IR_GetRawData(ir_hop, buf1, sizeof(buf1));
+      uint16_t raw_hop = *(uint16_t *)buf1;
+      HAL_IR_GetRawData(ir_sta, buf2, sizeof(buf2));
+      uint16_t raw_sta = *(uint16_t *)buf2;
 
-    for(duty = 0; duty <= 1000; duty += 50)
-    {
-      PWM_Write(PB13, duty);
-      HAL_DelayMs(20);
+      float voltage_hop = (float)raw_hop * 3.3f / 4095.0f;
+      float voltage_sta = (float)raw_sta * 3.3f / 4095.0f;
+      log_d("IR Hopper Voltage: %fV", voltage_hop);
+      log_d("IR Stacker Voltage: %fV", voltage_sta);
+
+      dma_trans_complete_flag--;
     }
 
-    for(duty = 1000; duty > 0; duty -= 50)
-    {
-      PWM_Write(PB13, duty);
-      HAL_DelayMs(20);
-    }
-    // BSP_LED_Toggle(LED2);
-    // log_d("Toggle LED %d", LED2);
-    // HAL_DelayMs(g_speed * DELAY);
+    /* TEST #2 PWM */
+    // uint32_t duty = 0;
+    // for(duty = 0; duty <= 1000; duty += 50)
+    // {
+    //   PWM_Write(PD13, duty);
+    //   PWM_Write(PD14, duty);
+    //   PWM_Write(PD15, duty);
+    //   HAL_DelayMs(20);
+    // }
 
-    // BSP_LED_Toggle(LED3);
-    // log_d("Toggle LED %d", LED3);
-    // HAL_DelayMs(g_speed * DELAY);
+    // for(duty = 1000; duty > 0; duty -= 50)
+    // {
+    //   PWM_Write(PD13, duty);
+    //   PWM_Write(PD14, duty);
+    //   PWM_Write(PD15, duty);
+    //   HAL_DelayMs(20);
+    // }
 
-    // BSP_LED_Toggle(LED4);
-    // log_d("Toggle LED %d", LED4);
-    // HAL_DelayMs(g_speed * DELAY);
+    BSP_LED_Toggle(LED_GREEN);
+    HAL_DelayMs(DELAY);
+
   }
 }
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */

@@ -1,7 +1,7 @@
 #ifndef __HAL_TIME_H__
 #define __HAL_TIME_H__
 
-#include <stdint.h>
+#include "Common/common.h"
 
 #if defined(__cplusplus)
 extern "C" {

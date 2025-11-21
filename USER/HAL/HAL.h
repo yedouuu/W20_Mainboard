@@ -5,6 +5,7 @@
 #include "Common/common.h"
 #include "mcu_core.h"
 #include "HAL_time.h"
+#include "HAL_IR.h"
 
 typedef bool (*CommitFunc_t)(void* info, void* userData);
 

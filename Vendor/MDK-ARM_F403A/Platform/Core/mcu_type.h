@@ -11,6 +11,7 @@
 
 #define F_CPU                       SystemCoreClock
 #define CYCLES_PER_MICROSECOND      (F_CPU / 1000000U)
+#define MUX_XX                      ((uint8_t)0xFF)
 
 typedef gpio_type                   GPIO_TypeDef;
 typedef spi_type                    SPI_TypeDef;

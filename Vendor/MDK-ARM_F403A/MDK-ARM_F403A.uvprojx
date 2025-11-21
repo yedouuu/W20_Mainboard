@@ -10,9 +10,9 @@
       <TargetName>W20_Mainboard</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>5060528::V5.06 update 5 (build 528)::ARMCC</pArmCC>
-      <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pArmCC>6070000::V6.7::.\ARMCLANG</pArmCC>
+      <pCCUsed>6070000::V6.7::.\ARMCLANG</pCCUsed>
+      <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>-AT32F403AVGT7</Device>
@@ -311,7 +311,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -320,13 +320,13 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>2</wLevel>
+            <wLevel>3</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
             <useXO>0</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
+            <v6Lang>3</v6Lang>
+            <v6LangP>3</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>AT32F403AVGT7,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\Platform\Firmware\CMSIS;.\Platform\Firmware\Device\Include;.\Platform\Firmware\Device\StdPeriph_Driver\inc;.\Platform;.\Platform\Core;.\Platform\BSP;..\..\USER\HAL;..\..\USER\Middleware\EasyLogger\inc;..\..\USER\Middleware\Unity;..\..\USER\Middleware\RTT;..\..\USER\Middleware;..\..\USER\Utils;..\..\USER\Tests;..\..\USER\Application;..\..\USER</IncludePath>
+              <IncludePath>.\Platform\Firmware\CMSIS;.\Platform\Firmware\Device\Include;.\Platform\Firmware\Device\StdPeriph_Driver\inc;.\Platform;.\Platform\Core;.\Platform\BSP;..\..\USER\HAL;..\..\USER\Middleware\EasyLogger\inc;..\..\USER\Middleware\Unity;..\..\USER\Middleware\RTT;..\..\USER\Middleware;..\..\USER\Utils;..\..\USER\Tests;..\..\USER\Application;..\..\USER;..\..\Framework;..\..\Framework\DeviceManager</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -358,7 +358,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>1</umfTarg>
+            <umfTarg>0</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -367,10 +367,10 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\Objects\MDK-ARM_F403A.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc></Misc>
+            <Misc>--keep=*(.device_table)</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -510,6 +510,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\USER\HAL\HAL_Time.c</FilePath>
             </File>
+            <File>
+              <FileName>HAL_IR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\HAL\HAL_IR.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USER/HAL/Adapter</GroupName>
+          <Files>
+            <File>
+              <FileName>HAL_IR_Adapter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\HAL\Adapter\HAL_IR_Adapter.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -524,6 +539,11 @@
               <FileName>bsp_key.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Platform\BSP\bsp_key.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_IR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Platform\BSP\bsp_IR.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -579,6 +599,11 @@
               <FileName>pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Platform\Core\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Platform\Core\adc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -724,6 +749,16 @@
               <FileName>at32f403a_407_xmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Platform\Firmware\Device\StdPeriph_Driver\src\at32f403a_407_xmc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Framework/DeviceManager</GroupName>
+          <Files>
+            <File>
+              <FileName>DeviceManager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Framework\DeviceManager\DeviceManager.c</FilePath>
             </File>
           </Files>
         </Group>
