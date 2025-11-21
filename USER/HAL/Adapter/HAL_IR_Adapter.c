@@ -4,21 +4,45 @@
 #include "HAL_IR.h"
 #include "bsp_IR.h"
 
+
+static Status_t _HAL_IR_Read_Adapter(Device_t* dev, uint8_t* buf, uint32_t len)
+{
+  if (len < sizeof(uint16_t))
+  {
+    log_e("buffer too small needs at least %d bytes", sizeof(uint16_t));
+    return kStatus_InvalidArgument;
+  }
+
+  uint16_t raw_val = 0;
+  Status_t ret = HAL_IR_GetRawData(dev, &raw_val);
+  
+  if (ret == kStatus_Success)
+  {
+    memcpy(buf, &raw_val, 2); 
+  }
+  
+  return ret;
+}
+
+
 static HAL_IR_Ops_t ir_ops = {
     .base = {
         .init    = HAL_IR_Init,
         .deinit  = HAL_IR_DeInit,
         .open    = HAL_IR_Enable,
         .close   = HAL_IR_Disable,
-        .read    = HAL_IR_GetRawData,
+        .read    = _HAL_IR_Read_Adapter,
         .write   = NULL,
         .ioctl   = NULL,
     },
+    .magic       = DEVICE_MAGIC_IR,
     .BSP_Init    = BSP_IR_Init,
     .Enable      = BSP_IR_Enable,
     .Disable     = BSP_IR_Disable,
+    .SetPWM      = BSP_IR_SetPWM,
     .GetRawData  = BSP_IR_GetRawData,
 };
+
 
 static HAL_IR_Priv_t ir_hopper_priv = {
     .type       = HAL_IR_HOPPER,
@@ -65,7 +89,7 @@ Device_t ir_stacker = {
     .res   = (void *)&ir_stacker_res,
 };
 
-Device_t ir_stacker = {
+Device_t ir_right = {
     .name  = "IRR",
     .class = DEV_CLASS_SENSOR,
     .ops   = (void *)&ir_ops,

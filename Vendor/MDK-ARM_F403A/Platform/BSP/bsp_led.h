@@ -34,6 +34,7 @@
 typedef enum
 {
   LED_GREEN = 0,
+  LED_DEBUG = 1,
   LED_MAX                                
 } led_type;
 

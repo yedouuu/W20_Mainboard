@@ -60,6 +60,7 @@ typedef enum
 typedef struct _HAL_IR_Ops_t
 {
   Device_Ops_t   base;
+  const uint32_t magic;
   void         (*BSP_Init)(const void* resource);
   void         (*Enable)(const void* resource);
   void         (*Disable)(const void* resource);
@@ -82,7 +83,8 @@ Status_t HAL_IR_Init(Device_t* ir_dev);
 Status_t HAL_IR_DeInit(Device_t* ir_dev);
 Status_t HAL_IR_Enable(Device_t* ir_dev);
 Status_t HAL_IR_Disable(Device_t* ir_dev);
-Status_t HAL_IR_GetRawData(Device_t* ir_dev, uint8_t* buf, uint32_t* len);
+Status_t HAL_IR_GetStatus(Device_t* ir_dev, HAL_IR_Status_e* status);
+Status_t HAL_IR_GetRawData(Device_t* ir_dev, uint16_t* raw_data);
 Status_t HAL_IR_SetPWM(Device_t* ir_dev, HAL_IR_PWM_Duty_e duty);
 
 

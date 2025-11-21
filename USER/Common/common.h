@@ -4,11 +4,12 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-// #include <stddef.h>
 #include <string.h>
 
 #include "binary.h"
 #include "commonMacro.h"
 #include "errno.h"
+
+#include "Logger.h"
 
 #endif

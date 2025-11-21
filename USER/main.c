@@ -42,7 +42,20 @@ void tim8_irq_callback(void)
 void tim6_irq_callback(void)
 {
   // log_d("TIM6 interrupt triggered.");
-  BSP_LED_Toggle(DEBUG_PIN);
+  
+  static uint32_t count = 0;
+  count++;
+
+  // 模拟50%PWM调制
+  if (count % 2 == 0) {
+    DM_DeviceOpen("IR_HOPPER");
+    DM_DeviceOpen("IR_STACKER");
+    BSP_LED_Toggle(LED_DEBUG);
+  }
+  else {
+    DM_DeviceClose("IR_HOPPER");
+    DM_DeviceClose("IR_STACKER");
+  }
 }
 
 __IO uint16_t dma_trans_complete_flag = 0;
@@ -64,7 +77,7 @@ int main(void)
   
 
   Timer_SetInterrupt(TIM8, 1000000, tim8_irq_callback); // 1000ms
-  Timer_SetInterrupt(TIM6, 10000, tim6_irq_callback); // 100ms
+  Timer_SetInterrupt(TIM6, 1000, tim6_irq_callback); // 1ms
 
   Timer_SetEnable(TIM8, TRUE);
   Timer_SetEnable(TIM6, TRUE);
@@ -91,7 +104,6 @@ int main(void)
     }
   }
 
-
   HAL_IR_Enable(ir_hop);
   HAL_IR_Enable(ir_sta);
 
@@ -102,12 +114,10 @@ int main(void)
   {
     if ( dma_trans_complete_flag > 0 ) {
       /* 12位ADC转换为3.3V电压 */
-      uint8_t buf1[2];
-      uint8_t buf2[2];
-      HAL_IR_GetRawData(ir_hop, buf1, sizeof(buf1));
-      uint16_t raw_hop = *(uint16_t *)buf1;
-      HAL_IR_GetRawData(ir_sta, buf2, sizeof(buf2));
-      uint16_t raw_sta = *(uint16_t *)buf2;
+      uint16_t raw_hop = 0;
+      uint16_t raw_sta = 0;
+      HAL_IR_GetRawData(ir_hop, &raw_hop);
+      HAL_IR_GetRawData(ir_sta, &raw_sta);
 
       float voltage_hop = (float)raw_hop * 3.3f / 4095.0f;
       float voltage_sta = (float)raw_sta * 3.3f / 4095.0f;

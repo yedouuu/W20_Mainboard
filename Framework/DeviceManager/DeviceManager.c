@@ -153,7 +153,7 @@ DM_RET_TYPE DM_DeviceClose(const char *name)
 }
 
 
-DM_RET_TYPE DM_DeviceRead(const char *name, uint8_t* buf, uint32_t* len)
+DM_RET_TYPE DM_DeviceRead(const char *name, uint8_t* buf, uint32_t len)
 {
   Device_t *dev = DM_DeviceFind(name);
   if (dev == NULL || dev->ops == NULL)

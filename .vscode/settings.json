@@ -35,7 +35,8 @@
     "bsp_ir.h": "c",
     "hal_ir.h": "c",
     "devicemanager.h": "c",
-    "stddef.h": "c"
+    "stddef.h": "c",
+    "errno.h": "c"
   },
   "dotnet.defaultSolution": "Vendor/Simulator/lv_port_pc_visual_studio/LVGL.sln"
 }
