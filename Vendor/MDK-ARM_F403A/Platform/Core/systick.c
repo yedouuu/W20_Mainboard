@@ -23,24 +23,24 @@ void SysTick_Handler(void)
   SystemTickCount++;
 }
 
-uint32_t millis(void)
+inline uint32_t millis(void)
 {
   return SYSTICK_MILLIS;
 }
 
-uint32_t micros(void)
+inline uint32_t micros(void)
 {
   return (SYSTICK_MILLIS * 1000 + (SYSTICK_LOAD_VALUE - SysTick->VAL) / CYCLES_PER_MICROSECOND);
 }
 
-void delay_ms(uint32_t ms)
+inline void delay_ms(uint32_t ms)
 {
   uint32_t start = SystemTickCount;
   uint32_t waitTicks = ms / SYSTICK_TICK_INTERVAL;
   while ((SystemTickCount - start) < waitTicks);
 }
 
-void delay_us(uint32_t us)
+inline void delay_us(uint32_t us)
 {
   uint32_t start_val = SysTick->VAL;
   uint32_t cycles = us * CYCLES_PER_MICROSECOND;

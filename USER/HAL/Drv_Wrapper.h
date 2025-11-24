@@ -4,25 +4,19 @@
 
 #include "Common/common.h"
 #include "mcu_core.h"
-#include "HAL_time.h"
-#include "HAL_IR.h"
+#include "Drv_Delay_Wrapper.h"
+#include "Drv_IR_Wrapper.h"
 
 typedef bool (*CommitFunc_t)(void* info, void* userData);
 
-void HAL_Init(void);
-void HAL_Update(void);
+void DRV_Init(void);
+void DRV_Update(void);
 
 /* LED */
-void HAL_LED_Init(void);
-void HAL_LED_On(void);
-void HAL_LED_Off(void);
-void HAL_LED_Toggle(void);
+
 
 /* Time */
-uint32_t HAL_GetMillis(void);
-uint32_t HAL_GetMicros(void);
-void HAL_DelayMs(uint32_t ms);
-void HAL_DelayUs(uint32_t us);
+
 
 /* Backlight */
 // void Backlight_Init();

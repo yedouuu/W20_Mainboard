@@ -110,7 +110,7 @@ Device_t *DM_DeviceFind(const char *name)
       return dev;
     }
   }
-  return kStatus_DeviceMissing;
+  return NULL;
 }
 
 
@@ -193,6 +193,25 @@ DM_RET_TYPE DM_DeviceWrite(const char *name, const uint8_t* buf, uint32_t len)
   if (ops->write)
   {
     return ops->write(dev, buf, len);
+  }
+
+  return kStatus_InvalidArgument;
+}
+
+
+DM_RET_TYPE DM_DeviceIOCTL(const char *name, uint32_t cmd, void* arg)
+{
+  Device_t *dev = DM_DeviceFind(name);
+  if (dev == NULL || dev->ops == NULL)
+  {
+    return kStatus_NotFound;
+  }
+
+  Device_Ops_t *ops = (Device_Ops_t *)dev->ops;
+
+  if (ops->ioctl)
+  {
+    return ops->ioctl(dev, cmd, arg);
   }
 
   return kStatus_InvalidArgument;

@@ -28,7 +28,7 @@
  
 #include <elog.h>
 #include <stdio.h>
-#include "HAL.h"
+#include "Drv_Delay_Wrapper.h"
 #include "SEGGER_RTT.h"
 
 /**
@@ -94,7 +94,7 @@ const char *elog_port_get_time(void) {
     
     /* add your code here */
     static char cur_system_time[16] = "";
-    snprintf(cur_system_time, 16, "%lu", HAL_GetMillis());
+    snprintf(cur_system_time, 16, "%u", DRV_GetMillis());
     return cur_system_time;
 }
 

@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __HAL_IR_H__
-#define __HAL_IR_H__
+#ifndef __DRV_IR_WRAPPER_H__
+#define __DRV_IR_WRAPPER_H__
 
 
 /* Includes -----------------------------------------------------------------*/
@@ -30,34 +30,34 @@
 
 typedef enum
 {
-  HAL_IR_HOPPER        = 0,
-  HAL_IR_STACKER       = 1,
-  HAL_IRR              = 2,
-  HAL_IRL              = 3,
-  HAL_IR_MAX
-} HAL_IR_Type_e;
+  DRV_IR_HOPPER        = 0,
+  DRV_IR_STACKER       = 1,
+  DRV_IRR              = 2,
+  DRV_IRL              = 3,
+  DRV_IR_MAX
+} DRV_IR_Type_e;
 
 
 typedef enum
 {
-  HAL_IR_HOLD       = 0,
-  HAL_IR_FREE       = 1,
-  HAL_IR_DEBOUNCE   = 2,
-} HAL_IR_Status_e;
+  DRV_IR_HOLD       = 0,
+  DRV_IR_FREE       = 1,
+  DRV_IR_DEBOUNCE   = 2,
+} DRV_IR_Status_e;
 
 
 typedef enum
 {
-  HAL_IR_PWM_DUTY_0   = 0,     /* 0% */
-  HAL_IR_PWM_DUTY_25  = 1,     /* 25% */
-  HAL_IR_PWM_DUTY_50  = 2,     /* 50% */
-  HAL_IR_PWM_DUTY_75  = 3,     /* 75% */
-  HAL_IR_PWM_DUTY_100 = 4,     /* 100% */
-  HAL_IR_PWM_DUTY_MAX = 0xFF,
-} HAL_IR_PWM_Duty_e;
+  DRV_IR_PWM_DUTY_0   = 0,     /* 0% */
+  DRV_IR_PWM_DUTY_25  = 1,     /* 25% */
+  DRV_IR_PWM_DUTY_50  = 2,     /* 50% */
+  DRV_IR_PWM_DUTY_75  = 3,     /* 75% */
+  DRV_IR_PWM_DUTY_100 = 4,     /* 100% */
+  DRV_IR_PWM_DUTY_MAX = 0xFF,
+} DRV_IR_PWM_Duty_e;
 
 
-typedef struct _HAL_IR_Ops_t
+typedef struct __DRV_IR_Ops_t
 {
   Device_Ops_t   base;
   const uint32_t magic;
@@ -66,26 +66,26 @@ typedef struct _HAL_IR_Ops_t
   void         (*Disable)(const void* resource);
   void         (*SetPWM)(const void* resource, uint16_t duty);
   void         (*GetRawData)(const void* resource, uint16_t* raw);
-} HAL_IR_Ops_t;
+} DRV_IR_Ops_t;
 
 
-typedef struct _HAL_IR_Priv_t
+typedef struct __DRV_IR_Priv_t
 {
-  const HAL_IR_Type_e   type;
+  const DRV_IR_Type_e   type;
         uint16_t        pwm_duty;
-        HAL_IR_Status_e status;
+        DRV_IR_Status_e status;
         uint16_t        last_data;
-} HAL_IR_Priv_t;
+} DRV_IR_Priv_t;
 
 
 /* Exported functions prototypes ---------------------------------------------*/
-Status_t HAL_IR_Init(Device_t* ir_dev);
-Status_t HAL_IR_DeInit(Device_t* ir_dev);
-Status_t HAL_IR_Enable(Device_t* ir_dev);
-Status_t HAL_IR_Disable(Device_t* ir_dev);
-Status_t HAL_IR_GetStatus(Device_t* ir_dev, HAL_IR_Status_e* status);
-Status_t HAL_IR_GetRawData(Device_t* ir_dev, uint16_t* raw_data);
-Status_t HAL_IR_SetPWM(Device_t* ir_dev, HAL_IR_PWM_Duty_e duty);
+Status_t DRV_IR_Init(Device_t* ir_dev);
+Status_t DRV_IR_DeInit(Device_t* ir_dev);
+Status_t DRV_IR_Enable(Device_t* ir_dev);
+Status_t DRV_IR_Disable(Device_t* ir_dev);
+Status_t DRV_IR_GetStatus(Device_t* ir_dev, DRV_IR_Status_e* status);
+Status_t DRV_IR_GetRawData(Device_t* ir_dev, uint16_t* raw_data);
+Status_t DRV_IR_SetPWM(Device_t* ir_dev, DRV_IR_PWM_Duty_e duty);
 
 
-#endif /* __HAL_IR_H__ */
+#endif /* __DRV_IR_WRAPPER_H__ */

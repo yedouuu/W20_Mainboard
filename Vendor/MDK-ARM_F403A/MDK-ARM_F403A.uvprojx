@@ -501,19 +501,19 @@
           <GroupName>USER/HAL</GroupName>
           <Files>
             <File>
-              <FileName>HAL.c</FileName>
+              <FileName>Drv_Delay_Wrapper.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\USER\HAL\HAL.c</FilePath>
+              <FilePath>..\..\USER\HAL\Drv_Delay_Wrapper.c</FilePath>
             </File>
             <File>
-              <FileName>HAL_Time.c</FileName>
+              <FileName>Drv_IR_Wrapper.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\USER\HAL\HAL_Time.c</FilePath>
+              <FilePath>..\..\USER\HAL\Drv_IR_Wrapper.c</FilePath>
             </File>
             <File>
-              <FileName>HAL_IR.c</FileName>
+              <FileName>Drv_Wrapper.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\USER\HAL\HAL_IR.c</FilePath>
+              <FilePath>..\..\USER\HAL\Drv_Wrapper.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -521,9 +521,9 @@
           <GroupName>USER/HAL/Adapter</GroupName>
           <Files>
             <File>
-              <FileName>HAL_IR_Adapter.c</FileName>
+              <FileName>Drv_IR_Adapter.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\USER\HAL\Adapter\HAL_IR_Adapter.c</FilePath>
+              <FilePath>..\..\USER\HAL\Adapter\Drv_IR_Adapter.c</FilePath>
             </File>
           </Files>
         </Group>

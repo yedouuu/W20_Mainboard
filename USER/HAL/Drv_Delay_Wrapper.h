@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-uint32_t HAL_GetMillis(void);
-uint32_t HAL_GetMicros(void);
-void HAL_DelayMs(uint32_t ms);
-void HAL_DelayUs(uint32_t us);
+uint32_t DRV_GetMillis(void);
+uint32_t DRV_GetMicros(void);
+void DRV_DelayMs(uint32_t ms);
+void DRV_DelayUs(uint32_t us);
 
 #if defined(__cplusplus)
 }

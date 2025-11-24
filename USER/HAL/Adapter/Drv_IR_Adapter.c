@@ -1,11 +1,11 @@
 
 #include "Common/common.h"
 #include "DeviceManager.h"
-#include "HAL_IR.h"
+#include "Drv_IR_Wrapper.h"
 #include "bsp_IR.h"
 
 
-static Status_t _HAL_IR_Read_Adapter(Device_t* dev, uint8_t* buf, uint32_t len)
+static Status_t __DRV_IR_Read_Adapter(Device_t* dev, uint8_t* buf, uint32_t len)
 {
   if (len < sizeof(uint16_t))
   {
@@ -14,7 +14,7 @@ static Status_t _HAL_IR_Read_Adapter(Device_t* dev, uint8_t* buf, uint32_t len)
   }
 
   uint16_t raw_val = 0;
-  Status_t ret = HAL_IR_GetRawData(dev, &raw_val);
+  Status_t ret = DRV_IR_GetRawData(dev, &raw_val);
   
   if (ret == kStatus_Success)
   {
@@ -24,14 +24,13 @@ static Status_t _HAL_IR_Read_Adapter(Device_t* dev, uint8_t* buf, uint32_t len)
   return ret;
 }
 
-
-static HAL_IR_Ops_t ir_ops = {
+static DRV_IR_Ops_t ir_ops = {
     .base = {
-        .init    = HAL_IR_Init,
-        .deinit  = HAL_IR_DeInit,
-        .open    = HAL_IR_Enable,
-        .close   = HAL_IR_Disable,
-        .read    = _HAL_IR_Read_Adapter,
+        .init    = DRV_IR_Init,
+        .deinit  = DRV_IR_DeInit,
+        .open    = DRV_IR_Enable,
+        .close   = DRV_IR_Disable,
+        .read    = __DRV_IR_Read_Adapter,
         .write   = NULL,
         .ioctl   = NULL,
     },
@@ -44,31 +43,31 @@ static HAL_IR_Ops_t ir_ops = {
 };
 
 
-static HAL_IR_Priv_t ir_hopper_priv = {
-    .type       = HAL_IR_HOPPER,
+static DRV_IR_Priv_t ir_hopper_priv = {
+    .type       = DRV_IR_HOPPER,
     .pwm_duty   = 0,
-    .status     = HAL_IR_FREE,
+    .status     = DRV_IR_FREE,
     .last_data  = 0,
 };
 
-static HAL_IR_Priv_t ir_stacker_priv = {
-    .type       = HAL_IR_STACKER,
+static DRV_IR_Priv_t ir_stacker_priv = {
+    .type       = DRV_IR_STACKER,
     .pwm_duty   = 0,
-    .status     = HAL_IR_FREE,
+    .status     = DRV_IR_FREE,
     .last_data  = 0,
 };
 
-static HAL_IR_Priv_t ir_right_priv = {
-    .type       = HAL_IRR,
+static DRV_IR_Priv_t ir_right_priv = {
+    .type       = DRV_IRR,
     .pwm_duty   = 0,
-    .status     = HAL_IR_FREE,
+    .status     = DRV_IR_FREE,
     .last_data  = 0,
 };
 
-static HAL_IR_Priv_t ir_left_priv = {
-    .type       = HAL_IRL,
+static DRV_IR_Priv_t ir_left_priv = {
+    .type       = DRV_IRL,
     .pwm_duty   = 0,
-    .status     = HAL_IR_FREE,
+    .status     = DRV_IR_FREE,
     .last_data  = 0,
 };
 

@@ -27,7 +27,7 @@
 #include "Common/common.h"
 #include "App.h"
 #include "bsp_led.h"
-#include "HAL.h"
+#include "Drv_Wrapper.h"
 #include "mcu_core.h"
 #include "Logger.h"
 #include "DeviceManager.h"
@@ -100,12 +100,12 @@ int main(void)
     log_e("IR devices not found!");
     while(1) {
       BSP_LED_Toggle(LED_GREEN);
-      HAL_DelayMs(100);
+      DRV_DelayMs(100);
     }
   }
 
-  HAL_IR_Enable(ir_hop);
-  HAL_IR_Enable(ir_sta);
+  DRV_IR_Enable(ir_hop);
+  DRV_IR_Enable(ir_sta);
 
   // BSP_IR_Enable(IR_HOPPER);
   // BSP_IR_Enable(IR_STACKER);
@@ -116,8 +116,8 @@ int main(void)
       /* 12位ADC转换为3.3V电压 */
       uint16_t raw_hop = 0;
       uint16_t raw_sta = 0;
-      HAL_IR_GetRawData(ir_hop, &raw_hop);
-      HAL_IR_GetRawData(ir_sta, &raw_sta);
+      DRV_IR_GetRawData(ir_hop, &raw_hop);
+      DRV_IR_GetRawData(ir_sta, &raw_sta);
 
       float voltage_hop = (float)raw_hop * 3.3f / 4095.0f;
       float voltage_sta = (float)raw_sta * 3.3f / 4095.0f;
@@ -146,7 +146,7 @@ int main(void)
     // }
 
     BSP_LED_Toggle(LED_GREEN);
-    HAL_DelayMs(DELAY);
+    DRV_DelayMs(DELAY);
 
   }
 }

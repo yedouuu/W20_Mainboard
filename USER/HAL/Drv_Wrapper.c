@@ -1,7 +1,7 @@
 
-#include "HAL.h"
+#include "Drv_Wrapper.h"
 
-void HAL_Init(void)
+void DRV_Init(void)
 {
     // Initialize HAL components here
 }
@@ -10,7 +10,7 @@ void HAL_Init(void)
  * @brief Circular update function for HAL
  * For example, updating sensors, etc.
  */
-void HAL_Update(void)
+void DRV_Update(void)
 {
     // Update HAL components here
 }
