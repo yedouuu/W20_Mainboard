@@ -4,8 +4,10 @@
 void Core_Init(void)
 {
   // 初始化MCU核心相关设置
-  // NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
-  // GPIO_JTAG_Disable();
+  /* 禁用 JTAG，保留 SWD 调试接口 */
+  crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
+  gpio_pin_remap_config(SWJTAG_MUX_010, TRUE);
+
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
   system_clock_config();
   SysTick_Init();

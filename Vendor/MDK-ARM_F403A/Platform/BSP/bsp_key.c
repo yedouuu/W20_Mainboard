@@ -7,6 +7,8 @@
 
 #include "bsp_key.h"
 
+#include "Logger.h"
+
 uint8_t g_speed = 1;
 
 /**
@@ -29,12 +31,13 @@ void button_isr(void)
       g_speed = 4;
     else
       g_speed = 1;
+    log_i("Speed changed to %d", g_speed);
     printf("USER BUTTON PRESS!\r\n");
   }
 }
 
 void BSP_KEY_Init(void)
 {
-  // attachInterrupt(PA0, button_isr, RISING);
+  attachInterrupt(PA0, button_isr, RISING);
 }
 

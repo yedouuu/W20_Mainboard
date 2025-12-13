@@ -24,7 +24,7 @@
 #include "gpio.h"
 
 
-uint16_t led_gpio_pin[LED_NUM] = { LED_GREEN_PIN, DEBUG_PIN };
+uint16_t led_gpio_pin[LED_NUM] = { LED1_PIN, DEBUG_PIN };
 
 void BSP_LED_Init(void)
 {
@@ -59,6 +59,6 @@ void BSP_LED_Toggle(uint8_t led)
   {
     PinInfo_TypeDef pinInfo = PIN_MAP[led_gpio_pin[led]];
     uint8_t status = gpio_input_data_bit_read(pinInfo.GPIOx, pinInfo.GPIO_Pin_x);
-    gpio_bits_write(pinInfo.GPIOx, pinInfo.GPIO_Pin_x, (status == RESET) ? SET : RESET);
+    gpio_bits_write(pinInfo.GPIOx, pinInfo.GPIO_Pin_x, (status == FALSE) ? TRUE : FALSE);
   }
 }

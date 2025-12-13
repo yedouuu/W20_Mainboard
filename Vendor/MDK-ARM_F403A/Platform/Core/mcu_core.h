@@ -20,15 +20,6 @@ extern "C" {
 
 void Core_Init(void);
 
-/**
- * @brief 快速设置引脚模式
- * 
- * @param pin 
- * @param mode 
- * @return uint8_t 
- */
-uint8_t pinMode(Pin_TypeDef pin, PinMode_TypeDef mode);
-
 #ifdef __cplusplus
 }
 #endif

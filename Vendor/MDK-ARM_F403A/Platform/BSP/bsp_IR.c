@@ -52,22 +52,22 @@ const IR_Resource_t ir_stacker_res = {
     .pwm_frequency    = 0,
 };
 
-const IR_Resource_t ir_right_res = {
+const IR_Resource_t ir_left_res = {
     .en_pin           = IR_CHANNEL_CTRL_PIN,
     .read_pin         = IRR_RX_PIN,
     .pwm_pin          = IRR_PIN,
-    .pwm_duty_default = 500,
-    .pwm_resolution   = 1000,
-    .pwm_frequency    = 38000,
+    .pwm_duty_default = 750,
+    .pwm_resolution   = PWM_RESOLUTION_DEFAULT,
+    .pwm_frequency    = PWM_FREQUENCY_DEFAULT,
 };
 
-const IR_Resource_t ir_left_res = {
+const IR_Resource_t ir_right_res = {
     .en_pin           = IR_CHANNEL_CTRL_PIN,
     .read_pin         = IRL_RX_PIN,
     .pwm_pin          = IRL_PIN,
-    .pwm_duty_default = 500,
-    .pwm_resolution   = 1000,
-    .pwm_frequency    = 38000,
+    .pwm_duty_default = 750,
+    .pwm_resolution   = PWM_RESOLUTION_DEFAULT,
+    .pwm_frequency    = PWM_FREQUENCY_DEFAULT,
 };
 
 
@@ -75,9 +75,13 @@ void BSP_IR_Init(const void* ir)
 {
   /* 初始化红外接收引脚 */
   IR_Resource_t* ir_res = (IR_Resource_t*)ir;
-  pinMode(ir_res->read_pin, INPUT_ANALOG_DMA);
-  pinMode(ir_res->en_pin, OUTPUT);
-  PWM_Init(ir_res->pwm_pin, ir_res->pwm_resolution, ir_res->pwm_frequency);
+  pinMode((Pin_TypeDef)ir_res->read_pin, INPUT_ANALOG_DMA);
+  pinMode((Pin_TypeDef)ir_res->en_pin, OUTPUT);
+  
+  uint8_t ch = PWM_Init(ir_res->pwm_pin, ir_res->pwm_resolution, ir_res->pwm_frequency);
+  if ( IS_PIN(ir_res->pwm_pin) && ch == 0 ) {
+    log_w("The Pin %d is not configured as PWM channel!", ir_res->pwm_pin);
+  }
 }
 
 void BSP_IR_Enable(const void* ir)
@@ -85,6 +89,7 @@ void BSP_IR_Enable(const void* ir)
   IR_Resource_t* ir_res = (IR_Resource_t*)ir;
   PinInfo_TypeDef pinInfo = PIN_MAP[ir_res->en_pin];
   GPIO_HIGH(pinInfo.GPIOx, pinInfo.GPIO_Pin_x);
+  PWM_Write(ir_res->pwm_pin, ir_res->pwm_duty_default);
 }
 
 void BSP_IR_Disable(const void* ir)
@@ -92,6 +97,7 @@ void BSP_IR_Disable(const void* ir)
   IR_Resource_t* ir_res = (IR_Resource_t*)ir;
   PinInfo_TypeDef pinInfo = PIN_MAP[ir_res->en_pin];
   GPIO_LOW(pinInfo.GPIOx, pinInfo.GPIO_Pin_x);
+  PWM_Write(ir_res->pwm_pin, 0);
 }
 
 void BSP_IR_GetRawData(const void* ir, uint16_t* raw)
@@ -104,6 +110,5 @@ void BSP_IR_GetRawData(const void* ir, uint16_t* raw)
 void BSP_IR_SetPWM(const void* ir, uint16_t duty)
 {
   IR_Resource_t* ir_res = (IR_Resource_t*)ir;
-  PinInfo_TypeDef pinInfo = PIN_MAP[ir_res->pwm_pin];
   PWM_Write(ir_res->pwm_pin, duty);
 }

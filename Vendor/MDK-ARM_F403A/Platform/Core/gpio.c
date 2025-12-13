@@ -21,12 +21,14 @@
  * SOFTWARE.
  */
 #include "gpio.h"
+#include "Logger.h"
 
 const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
 {
   /*GPIO_Type* GPIOx;  //对应GPIOx地址
   TIM_Type* TIMx;      //对应TIMx地址
   ADC_Type* ADCx;      //对应ADCx地址
+  uint32_t  PinMux;    //对应复用功能
 
   uint16_t GPIO_Pin_x;    //对应GPIO_Pin位
   uint8_t TimerChannel;   //对应定时器通道
@@ -48,21 +50,21 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
   {GPIOA, NULL,  NULL, MUX_XX, GPIO_PINS_12, 0, ADC_CHANNEL_X  }, /* PA12 */
   {GPIOA, NULL,  NULL, MUX_XX, GPIO_PINS_13, 0, ADC_CHANNEL_X  }, /* PA13 */
   {GPIOA, NULL,  NULL, MUX_XX, GPIO_PINS_14, 0, ADC_CHANNEL_X  }, /* PA14 */
-  {GPIOA, NULL,  NULL, MUX_XX, GPIO_PINS_15, 0, ADC_CHANNEL_X  }, /* PA15 */
+  {GPIOA, TIM2,  NULL, TMR2_GMUX_11, GPIO_PINS_15, 1, ADC_CHANNEL_X  }, /* PA15; Remap/ TIM2_CH1 */
 
   /* PB */
   {GPIOB, TIM3,  ADC1, MUX_XX, GPIO_PINS_0,  3, ADC_CHANNEL_8  }, /* PB0 / TIM3_CH3 / TIM8_CH2C / ADC1_IN8; Remap/ TIM1_CH2C */
   {GPIOB, TIM3,  ADC1, MUX_XX, GPIO_PINS_1,  4, ADC_CHANNEL_9  }, /* PB1 / TIM3_CH4 / TIM8_CH3C / ADC1_IN9; Remap/ TIM1_CH3C */
   {GPIOB, NULL,  NULL, MUX_XX, GPIO_PINS_2,  0, ADC_CHANNEL_X  }, /* PB2 */
-  {GPIOB, NULL,  NULL, MUX_XX, GPIO_PINS_3,  0, ADC_CHANNEL_X  }, /* PB3 */
+  {GPIOB, TIM2,  NULL, TMR2_GMUX_11, GPIO_PINS_3,  2, ADC_CHANNEL_X  }, /* PB3; Remap/ TIM2_CH1 */
   {GPIOB, NULL,  NULL, MUX_XX, GPIO_PINS_4,  0, ADC_CHANNEL_X  }, /* PB4; Remap/ TMR3_CH1 */
   {GPIOB, NULL,  NULL, MUX_XX, GPIO_PINS_5,  0, ADC_CHANNEL_X  }, /* PB5; Remap/ TMR3_CH2 */
   {GPIOB, TIM4,  NULL, MUX_XX, GPIO_PINS_6,  1, ADC_CHANNEL_X  }, /* PB6 / TIM4_CH1 */
   {GPIOB, TIM4,  NULL, MUX_XX, GPIO_PINS_7,  2, ADC_CHANNEL_X  }, /* PB7 / TIM4_CH2 */
   {GPIOB, TIM4,  NULL, MUX_XX, GPIO_PINS_8,  3, ADC_CHANNEL_X  }, /* PB8 / TIM4_CH3 / TIM10_CH1 */
   {GPIOB, TIM4,  NULL, MUX_XX, GPIO_PINS_9,  4, ADC_CHANNEL_X  }, /* PB9 / TIM4_CH4 / TIM11_CH1 */
-  {GPIOB, NULL,  NULL, MUX_XX, GPIO_PINS_10, 0, ADC_CHANNEL_X  }, /* PB10; Remap/ TIM2_CH3 */
-  {GPIOB, NULL,  NULL, MUX_XX, GPIO_PINS_11, 0, ADC_CHANNEL_X  }, /* PB11; Remap/ TIM2_CH4 */
+  {GPIOB, TIM2,  NULL, TMR2_GMUX_11, GPIO_PINS_10, 3, ADC_CHANNEL_X  }, /* PB10; Remap/ TIM2_CH3 */
+  {GPIOB, TIM2,  NULL, TMR2_GMUX_11, GPIO_PINS_11, 4, ADC_CHANNEL_X  }, /* PB11; Remap/ TIM2_CH4 */
   {GPIOB, TIM1,  NULL, MUX_XX, GPIO_PINS_12, 0, ADC_CHANNEL_X  }, /* PB12 / TIM1_BRK */
   {GPIOB, TIM1,  NULL, MUX_XX, GPIO_PINS_13, 1, ADC_CHANNEL_X  }, /* PB13 / TIM1_CH1C */
   {GPIOB, TIM1,  NULL, MUX_XX, GPIO_PINS_14, 2, ADC_CHANNEL_X  }, /* PB14 / TIM1_CH2C / TIM12_CH1 */
@@ -75,10 +77,10 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
   {GPIOC, NULL,  ADC1, MUX_XX, GPIO_PINS_3,  0, ADC_CHANNEL_13 }, /* PC3 / ADC1_IN13 */
   {GPIOC, NULL,  ADC1, MUX_XX, GPIO_PINS_4,  0, ADC_CHANNEL_14 }, /* PC4 / ADC1_IN14 */
   {GPIOC, NULL,  ADC1, MUX_XX, GPIO_PINS_5,  0, ADC_CHANNEL_15 }, /* PC5 / ADC1_IN15 */
-  {GPIOC, TMR8,  NULL, MUX_XX, GPIO_PINS_6,  1, ADC_CHANNEL_X  }, /* PC6 / TIM8_CH1; Remap/ TIM3_CH1 */
-  {GPIOC, TMR8,  NULL, MUX_XX, GPIO_PINS_7,  2, ADC_CHANNEL_X  }, /* PC7 / TIM8_CH2; Remap/ TIM3_CH2 */
-  {GPIOC, TMR8,  NULL, MUX_XX, GPIO_PINS_8,  3, ADC_CHANNEL_X  }, /* PC8 / TIM8_CH3; Remap/ TIM3_CH3 */
-  {GPIOC, TMR8,  NULL, MUX_XX, GPIO_PINS_9,  4, ADC_CHANNEL_X  }, /* PC9 / TIM8_CH4; Remap/ TIM3_CH4 */
+  {GPIOC, TMR3,  NULL, TMR3_MUX_11, GPIO_PINS_6,  1, ADC_CHANNEL_1  }, /* PC6 / TIM8_CH1; Remap/ TIM3_CH1 */
+  {GPIOC, TMR3,  NULL, TMR3_MUX_11, GPIO_PINS_7,  2, ADC_CHANNEL_2  }, /* PC7 / TIM8_CH2; Remap/ TIM3_CH2 */
+  {GPIOC, TMR3,  NULL, TMR3_MUX_11, GPIO_PINS_8,  3, ADC_CHANNEL_3  }, /* PC8 / TIM8_CH3; Remap/ TIM3_CH3 */
+  {GPIOC, TMR3,  NULL, TMR3_MUX_11, GPIO_PINS_9,  4, ADC_CHANNEL_4  }, /* PC9 / TIM8_CH4; Remap/ TIM3_CH4 */
   {GPIOC, NULL,  NULL, MUX_XX, GPIO_PINS_10, 0, ADC_CHANNEL_X  }, /* PC10 */
   {GPIOC, NULL,  NULL, MUX_XX, GPIO_PINS_11, 0, ADC_CHANNEL_X  }, /* PC11 */
   {GPIOC, NULL,  NULL, MUX_XX, GPIO_PINS_12, 0, ADC_CHANNEL_X  }, /* PC12 */
@@ -190,6 +192,12 @@ void GPIOx_Init(
     gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
     gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   }
+  else if (Mode == OUTPUT_PULLUP)
+  {
+    gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
+    gpio_init_struct.gpio_pull = GPIO_PULL_UP;
+    gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
+  }
   else if (Mode == OUTPUT_OPEN_DRAIN)
   {
     gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
@@ -198,12 +206,14 @@ void GPIOx_Init(
   }
   else if (Mode == OUTPUT_AF_PP)
   {
+    crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
     gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
     gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
     gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   }
   else if (Mode == OUTPUT_AF_OD)
   {
+    crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
     gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
     gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
     gpio_init_struct.gpio_out_type = GPIO_OUTPUT_OPEN_DRAIN;
@@ -212,6 +222,8 @@ void GPIOx_Init(
   {
     return;
   }
+
+  // log_d("GPIOx_Init: GPIOx=0x%08X, Pin=0x%04X, Mode=%d, Drive=%d", (uint32_t)GPIOx, GPIO_Pin_x, Mode, GPIO_Drive_x);
 
   crm_periph_clock_enable(CRM_GPIOx_PERIPH_CLOCK, TRUE);
   gpio_init(GPIOx, &gpio_init_struct);

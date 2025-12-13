@@ -83,9 +83,9 @@ typedef enum
 
 typedef struct
 {
-  gpio_type* GPIOx;
-  tmr_type* TIMx;
-  adc_type* ADCx;
+  GPIO_TypeDef* GPIOx;
+  TIM_TypeDef* TIMx;
+  ADC_TypeDef* ADCx;
   uint32_t PinMux;
   uint16_t GPIO_Pin_x;
   uint8_t TimerChannel;
@@ -100,6 +100,7 @@ typedef enum
   INPUT_ANALOG,
   INPUT_ANALOG_DMA,
   OUTPUT,
+  OUTPUT_PULLUP,
   OUTPUT_OPEN_DRAIN,
   OUTPUT_AF_OD,
   OUTPUT_AF_PP,
@@ -158,6 +159,15 @@ gpio_pins_source_type GPIO_GetPinSource(uint16_t GPIO_Pin_x);
   * @retval 无
   */
 uint8_t GPIO_GetPinNum(uint8_t Pin);
+
+/**
+ * @brief 快速设置引脚模式
+ * 
+ * @param pin 
+ * @param mode 
+ * @return uint8_t 
+ */
+uint8_t pinMode(Pin_TypeDef pin, PinMode_TypeDef mode);
 
 #ifdef __cplusplus
 }

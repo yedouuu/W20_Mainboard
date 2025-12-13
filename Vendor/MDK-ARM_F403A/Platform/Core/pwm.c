@@ -23,6 +23,7 @@
 #include "pwm.h"
 #include "timer.h"
 #include "gpio.h"
+#include "Logger.h"
 
 /**
   * @brief  定时器输出捕获初始化
@@ -128,5 +129,10 @@ uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
   */
 void PWM_Write(uint8_t Pin, uint32_t Value)
 {
+  if(!IS_PWM_PIN(Pin))
+  {
+    log_w("PWM_Write: Pin %d is not a PWM pin!", Pin);
+    return ;
+  }
   Timer_SetCompare(PIN_MAP[Pin].TIMx, PIN_MAP[Pin].TimerChannel, Value);
 }

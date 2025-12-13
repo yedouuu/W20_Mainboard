@@ -4,8 +4,10 @@
 
 #include "Common/common.h"
 #include "mcu_core.h"
-#include "Drv_Delay_Wrapper.h"
-#include "Drv_IR_Wrapper.h"
+#include "HAL/drv_delay_wrapper.h"
+#include "HAL/drv_ir_wrapper.h"
+#include "HAL/drv_touch_wrapper.h"
+#include "HAL/drv_lcd_wrapper.h"
 
 typedef bool (*CommitFunc_t)(void* info, void* userData);
 

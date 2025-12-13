@@ -39,7 +39,16 @@
     "errno.h": "c",
     "drv_delay_wrapper.h": "c",
     "drv_wrapper.h": "c",
-    "drv_ir_wrapper.h": "c"
+    "drv_ir_wrapper.h": "c",
+    "pocket_detect.h": "c",
+    "device_manager.h": "c",
+    "bsp_lcd.h": "c",
+    "bsp_touch.h": "c",
+    "i2c.h": "c",
+    "at32f403a_407_i2c.h": "c",
+    "binary.h": "c",
+    "bsp_ns2009.h": "c",
+    "drv_touch_wrapper.h": "c"
   },
   "dotnet.defaultSolution": "Vendor/Simulator/lv_port_pc_visual_studio/LVGL.sln"
 }

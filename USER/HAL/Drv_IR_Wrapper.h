@@ -26,8 +26,11 @@
 
 /* Includes -----------------------------------------------------------------*/
 #include "Common/common.h"
-#include "DeviceManager.h"
+#include "device_manager.h"
 
+
+
+/* Exported types -----------------------------------------------------------*/
 typedef enum
 {
   DRV_IR_HOPPER        = 0,
@@ -43,7 +46,7 @@ typedef enum
   DRV_IR_HOLD       = 0,
   DRV_IR_FREE       = 1,
   DRV_IR_DEBOUNCE   = 2,
-} DRV_IR_Status_e;
+} DRV_IR_State_e;
 
 
 typedef enum
@@ -71,10 +74,15 @@ typedef struct __DRV_IR_Ops_t
 
 typedef struct __DRV_IR_Priv_t
 {
-  const DRV_IR_Type_e   type;
-        uint16_t        pwm_duty;
-        DRV_IR_Status_e status;
-        uint16_t        last_data;
+  const DRV_IR_Type_e   type;          /* IR类型 */
+        DRV_IR_State_e  state;         /* IR当前状态, #Ref DRV_IR_State_e */
+        uint16_t        pwm_duty;      /* PWM占空比 */
+        uint16_t        open_data;     /* 开启时采集的数据 */
+        uint16_t        close_data;    /* 关闭时采集的数据 */
+        uint16_t        diff_thred;    /* 差值阈值 */
+        uint16_t        hold_tick;     /* 保持的时钟 */
+        uint16_t        free_tick;     /* 释放的时钟 */
+        uint16_t        brake_tick;    /* 刹车的时钟 */
 } DRV_IR_Priv_t;
 
 
@@ -83,9 +91,10 @@ Status_t DRV_IR_Init(Device_t* ir_dev);
 Status_t DRV_IR_DeInit(Device_t* ir_dev);
 Status_t DRV_IR_Enable(Device_t* ir_dev);
 Status_t DRV_IR_Disable(Device_t* ir_dev);
-Status_t DRV_IR_GetStatus(Device_t* ir_dev, DRV_IR_Status_e* status);
+Status_t DRV_IR_GetState(Device_t* ir_dev, DRV_IR_State_e* status);
 Status_t DRV_IR_GetRawData(Device_t* ir_dev, uint16_t* raw_data);
 Status_t DRV_IR_SetPWM(Device_t* ir_dev, DRV_IR_PWM_Duty_e duty);
 
 
 #endif /* __DRV_IR_WRAPPER_H__ */
+

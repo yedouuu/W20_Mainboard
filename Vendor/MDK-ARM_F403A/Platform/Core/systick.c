@@ -14,7 +14,7 @@ static volatile uint32_t SystemTickCount = 0;
 void SysTick_Init(void)
 {
   system_core_clock_update();
-  SysTick_Config(F_CPU / SYSTICK_TICK_FREQ); // Default Configure SysTick for 1ms interrupts
+  SysTick_Config(SYSTICK_LOAD_VALUE); // Default Configure SysTick for 1ms interrupts
   NVIC_SetPriority(SysTick_IRQn, SYSTICK_PRIORITY);
 }
 

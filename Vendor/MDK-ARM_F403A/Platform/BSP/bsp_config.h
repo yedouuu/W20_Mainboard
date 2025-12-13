@@ -43,7 +43,7 @@
 /* LED */
 #define LED_NUM                          2
 
-#define LED_GREEN_PIN                    PE4
+#define LED1_PIN                         PE4
 #define DEBUG_PIN                        PE3
 
 /* IR */
@@ -56,6 +56,47 @@
 #define IRL_RX_PIN                       PA7
 #define IRR_RX_PIN                       PB0
 #define IR_CHANNEL_CTRL_PIN              PD12
+
+
+/* Screen */
+#define SCREEN_XMC_D0_PIN                PD14
+#define SCREEN_XMC_D1_PIN                PD15
+#define SCREEN_XMC_D2_PIN                PD0
+#define SCREEN_XMC_D3_PIN                PD1
+#define SCREEN_XMC_D4_PIN                PE7
+#define SCREEN_XMC_D5_PIN                PE8
+#define SCREEN_XMC_D6_PIN                PE9
+#define SCREEN_XMC_D7_PIN                PE10
+
+#define SCREEN_RD_PIN                    PD4
+#define SCREEN_WR_PIN                    PD5
+#define SCREEN_CS_PIN                    PD7
+#define SCREEN_DC_PIN                    PD11
+#define SCREEN_RESET_PIN                 PE0
+#define SCREEN_BLK_PIN                   PA15  /* TIM2 */
+
+#define SCREEN_XMC_BANK                  XMC_BANK1_NOR_SRAM1
+#define SCREEN_MAIN_HOR_RES              (480)
+#define SCREEN_MAIN_VER_RES              (272)
+#define SCREEN_MAIN_TOUCH_IC             "NS2009"
+
+#define TOUCH_NS2009_I2C_SCL_PIN         PB8
+#define TOUCH_NS2009_I2C_SDA_PIN         PB9
+#define TOUCH_NS2009_INT_PIN             PE5
+#define TOUCH_NS2009_A0_PIN              PE6       /* A0 */
+#define TOUCH_NS2009_ADC_RESO            (4095.0f) /* 12位ADC分辨率 */
+#define TOUCH_NS2009_PRESSURE_MIN        (0.3f)    /* 最小压力 */
+#define TOUCH_NS2009_PRESSURE_MAX        (2.0f)    /* 最大压力 */
+
+/* Keyboard */
+#define KEY1_IN_PIN                      PE11
+#define KEY2_IN_PIN                      PE12
+#define KEY3_IN_PIN                      PE13
+#define KEY4_IN_PIN                      PE14
+#define KEY5_OUT_PIN                     PE15
+#define KEY6_OUT_PIN                     PB12
+#define KEY7_OUT_PIN                     PB13
+
 
 /* Sensors */
 // #define CONFIG_SENSOR_ENABLE        1

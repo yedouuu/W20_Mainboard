@@ -18,18 +18,30 @@ The system also drives a stepper motor for bill feeding, controls a TFT LCD disp
 ### Key Directories:
 - `USER/`: Main application-level code. This is where most new business logic should go.
     - `Application/`: High-level application tasks and state management.
+      - `Common/`: Common definitions and shared components.
+      - `Config/`: Configuration files and settings.
+      - `Services/`: Background services like communication with the image board.
+      - `Pages/`: LVGL UI page implementations.
+      - `Resources/`: Fonts, images, and other UI resources.
+    
     - `Middleware/`: Middleware integrations of Third-party libraries.
+    
     - `HAL/`: Hardware Abstraction Layer for the AT32 MCU. Encapsulates direct hardware access by Using Bridge Deisgn Pattern and Object-Oriented principles.
-    - `Resources/`: Fonts, images, and other UI resources.
+        - `Adapter/`: Adapts HAL interfaces to Device Manager.
+    
     - `Utils/`: Utility functions and modules like logging.
-    - `Common/`: Common definitions and shared components.
-    - `Pages/`: LVGL screen definitions and UI logic.
+
 - `Framework/`: Framework-level code.
     - `DeviceManager/`: Device registration and management framework.
     - `PageManager/`: Manages LVGL page transitions and lifecycle.
+
 - `Vendor/`: Contains MCU-specific libraries, drivers, and the Keil MDK project files.
     - `MDK-ARM_F403A/`: Keil MDK project and AT32F403A vendor libraries.
+      - `Platform/`: Low-level platform code including startup files and CMSIS.
+        - `BSP/`: Board Support Package for low-level hardware access (GPIO, Registers).
+        - `Core/`: Core system files like clock configuration and SysTick.
     - `Simulator/`: Contains Visual Studio and VS Code simulator projects for off-target UI development and testing.
+
 - `Libraries/`: Submodule reference for Third-party libraries like LVGL and FreeType, would be edited as needed, just a reference.
 
 
@@ -52,7 +64,7 @@ When working on UI elements in `USER/Pages/`, it's often faster to test them in 
 ### Hardware Abstraction & Device Management
 - **Architecture**: The system follows a layered architecture separating lifecycle management from business logic.
   - **BSP Layer** (`Vendor/.../BSP/`): Handles low-level hardware details (GPIO, Registers).
-  - **HAL Layer** (`USER/HAL/`): Provides type-safe, domain-specific interfaces (e.g., `HAL_IR_GetRawData`) for application logic.
+  - **HAL Layer** (`USER/HAL/`): Provides type-safe, domain-specific interfaces and Wraps low-level BSP functions into type-safe HAL interfaces (e.g., `DRV_IR_GetRawData`) for application logic.
   - **Adapter Layer** (`USER/HAL/Adapter/`): Maps HAL functions to the generic `Device_Ops` virtual table for the Device Manager.
   - **Device Manager** (`Framework/DeviceManager/`): Manages device registration and lifecycle via linker-section magic.
 
@@ -60,12 +72,12 @@ When working on UI elements in `USER/Pages/`, it's often faster to test them in 
 
 - **Usage Strategy**:
   - **System Level**: Use `DeviceManager` interfaces (`DM_DeviceInit`, `DM_DeviceFind`) for system initialization, power management, and generic tools (like CLI).
-  - **Business Logic**: Prefer specific **HAL Interfaces** (e.g., `HAL_IR_Enable`, `HAL_Motor_Run`) over generic DM interfaces (`DM_Read`, `DM_Ioctl`) to ensure type safety, performance, and code readability.
+  - **Business Logic**: Prefer specific **HAL Interfaces** (e.g., `DRV_IR_Enable`, `DRV_Motor_Run`) over generic DM interfaces (`DM_Read`, `DM_Ioctl`) to ensure type safety, performance, and code readability.
 
 - **Implementation Guide**:
   1. Implement hardware logic in **BSP**.
   2. Define specific interfaces in **HAL**.
-  3. Create a `Device_t` instance in **Adapter**, map HAL functions to `Device_Ops`, map BSP functions to specific interfaces which in `HAL_XXX_Device_Ops`, and register with `DEVICE_EXPORT`.
+  3. Create a `Device_t` instance in **Adapter**, map HAL functions to `Device_Ops`, map BSP functions to specific interfaces which in `DRV_XXX_Device_Ops`, and register with `DEVICE_EXPORT`.
   4. **Note**: Even if the application uses HAL functions directly, populate the `Device_Ops` structure fully to support generic debugging tools.
 
 <!-- ### RTOS Usage (FreeRTOS)
@@ -83,7 +95,7 @@ When working on UI elements in `USER/Pages/`, it's often faster to test them in 
 
 
 ### Naming and Style
-- The codebase primarily uses **This_Case** for functions and variables.
+- The codebase primarily uses **Caps_Snake_Case** for functions and variables.
 - Macros are in `ALL_CAPS_SNAKE_CASE`.
 - Header guards follow the `__FILENAME_H__` pattern.
 - Use `<stdint.h>` types like `uint32_t`, `int16_t` for integer variables to ensure portability and clarity.
@@ -91,7 +103,7 @@ When working on UI elements in `USER/Pages/`, it's often faster to test them in 
 - Multi-line variable declarations should be aligned for better readability.
 - Function comments should use Doxygen style for automatic documentation generation.
 - Consistent error handling using `Status_t` enum defined in `Common/Status.h`.
-
+- Logging should use the `Logger` module in `Utils/Logger.h` for debug output, using macros like `log_i`, `log_e`, etc.
 
 ## 4. Key Integration Points
 

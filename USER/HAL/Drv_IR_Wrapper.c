@@ -1,6 +1,6 @@
 
 
-#include "Drv_IR_Wrapper.h"
+#include "drv_ir_wrapper.h"
 
 
 /**
@@ -111,6 +111,20 @@ Status_t DRV_IR_GetRawData(Device_t* ir_dev, uint16_t* raw_data)
   
   ops->GetRawData(ir_dev->res, raw_data);
 
+  return kStatus_Success;
+}
+
+
+Status_t DRV_IR_GetState(Device_t* ir_dev, DRV_IR_State_e* state)
+{
+  DRV_IR_Priv_t* priv = (DRV_IR_Priv_t*)ir_dev->priv;
+  if (priv == NULL)
+  {
+    log_e("IR Device %s has no private data!", ir_dev->name);
+    return kStatus_InvalidArgument;
+  }
+
+  *state = priv->state;
   return kStatus_Success;
 }
 

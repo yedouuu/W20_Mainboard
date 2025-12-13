@@ -222,8 +222,9 @@ void Timer_SetInterrupt(TIM_TypeDef *TIMx, uint32_t Time, Timer_CallbackFunction
       &period,
       &prescaler);
 
-  printf("Timer_SetInterrupt: Time=%u, Clock=%u, Period=%u, Prescaler=%u\r\n",
-         Time, clock, period, prescaler);
+  //printf("Timer_SetInterrupt: Time=%u, Clock=%u, Period=%u, Prescaler=%u\r\n",
+         //Time, clock, period, prescaler);
+	
   /*定时中断配置*/
   Timer_SetInterruptBase(
       TIMx,

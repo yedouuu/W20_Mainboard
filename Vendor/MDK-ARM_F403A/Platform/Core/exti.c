@@ -47,6 +47,11 @@ static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
   return EXINTx_IRQn;
 }
 
+static uint32_t EXTI_GetLine(uint8_t Pin)
+{
+  return 1 << GPIO_GetPinNum(Pin);
+}
+
 
 /**
   * @brief  外部中断初始化
@@ -69,12 +74,12 @@ void EXTIx_Init(
   uint8_t Pinx;
 
   if(!IS_PIN(Pin))
-      return;
+    return;
 
   Pinx = GPIO_GetPinNum(Pin);
 
   if(Pinx > 15)
-      return;
+    return;
 
   EXTI_Function[Pinx] = Function;
 
@@ -82,12 +87,13 @@ void EXTIx_Init(
   gpio_exint_line_config(GPIO_GetPortNum(Pin), (gpio_pins_source_type)Pinx);
 
   exint_default_para_init(&exint_init_struct);
-  exint_init_struct.line_select   = 1 << Pinx;
+  exint_init_struct.line_select   = EXTI_GetLine(Pin);
   exint_init_struct.line_mode     = EXINT_LINE_INTERRUPUT;
   exint_init_struct.line_polarity = line_polarity;
   exint_init_struct.line_enable   = TRUE;
   exint_init(&exint_init_struct);
 
+  exint_interrupt_enable(EXTI_GetIRQn(Pin), TRUE);
   nvic_irq_enable(EXTI_GetIRQn(Pin), PreemptionPriority, SubPriority);
 }
 
@@ -101,8 +107,8 @@ void EXTIx_DeInit(uint8_t Pin)
 
   if(Pinx > 15) return;
 
-  exint_flag_clear(1 << Pinx);
-  nvic_irq_disable(EXTI_GetIRQn(Pin));
+  exint_flag_clear(EXTI_GetLine(Pin));
+  exint_interrupt_enable(EXTI_GetLine(Pin), FALSE);
   EXTI_Function[Pinx] = NULL;
 }
 
@@ -136,7 +142,7 @@ void detachInterrupt(uint8_t Pin)
   if(!IS_PIN(Pin))
     return;
 
-  nvic_irq_disable(EXTI_GetIRQn(Pin));
+  exint_interrupt_enable(EXTI_GetLine(Pin), FALSE);
 }
 
 
@@ -144,8 +150,8 @@ void detachInterrupt(uint8_t Pin)
 do{\
   if(exint_flag_get(EXINT_LINE_##n) != RESET)\
   {\
-    if(EXTI_Function[n]) EXTI_Function[n]();\
     exint_flag_clear(EXINT_LINE_##n);\
+    if(EXTI_Function[n]) EXTI_Function[n]();\
   }\
 }while(0)
 

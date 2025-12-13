@@ -1,8 +1,8 @@
 
 #include "Common/common.h"
-#include "DeviceManager.h"
-#include "Drv_IR_Wrapper.h"
-#include "bsp_IR.h"
+#include "device_manager.h"
+#include "drv_ir_wrapper.h"
+#include "bsp_ir.h"
 
 
 static Status_t __DRV_IR_Read_Adapter(Device_t* dev, uint8_t* buf, uint32_t len)
@@ -46,29 +46,45 @@ static DRV_IR_Ops_t ir_ops = {
 static DRV_IR_Priv_t ir_hopper_priv = {
     .type       = DRV_IR_HOPPER,
     .pwm_duty   = 0,
-    .status     = DRV_IR_FREE,
-    .last_data  = 0,
+    .state     = DRV_IR_FREE,
+    .close_data = 0,
+    .open_data  = 0,
+    .diff_thred = 0,
+    .hold_tick  = 0,
+    .free_tick  = 0,
 };
 
 static DRV_IR_Priv_t ir_stacker_priv = {
     .type       = DRV_IR_STACKER,
     .pwm_duty   = 0,
-    .status     = DRV_IR_FREE,
-    .last_data  = 0,
+    .state     = DRV_IR_FREE,
+    .close_data = 0,
+    .open_data  = 0,
+    .diff_thred = 0,
+    .hold_tick  = 0,
+    .free_tick  = 0,
 };
 
 static DRV_IR_Priv_t ir_right_priv = {
     .type       = DRV_IRR,
     .pwm_duty   = 0,
-    .status     = DRV_IR_FREE,
-    .last_data  = 0,
+    .state     = DRV_IR_FREE,
+    .close_data = 0,
+    .open_data  = 0,
+    .diff_thred = 0,
+    .hold_tick  = 0,
+    .free_tick  = 0,
 };
 
 static DRV_IR_Priv_t ir_left_priv = {
     .type       = DRV_IRL,
     .pwm_duty   = 0,
-    .status     = DRV_IR_FREE,
-    .last_data  = 0,
+    .state     = DRV_IR_FREE,
+    .close_data = 0,
+    .open_data  = 0,
+    .diff_thred = 0,
+    .hold_tick  = 0,
+    .free_tick  = 0,
 };
 
 

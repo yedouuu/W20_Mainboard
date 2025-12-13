@@ -16,6 +16,8 @@
 typedef gpio_type                   GPIO_TypeDef;
 typedef spi_type                    SPI_TypeDef;
 typedef tmr_type                    TIM_TypeDef;
+typedef adc_type                    ADC_TypeDef;
+typedef i2c_type                    I2C_TypeDef;
 
 #define GPIO_Pin_0                  GPIO_PINS_0
 #define GPIO_Pin_1                  GPIO_PINS_1
@@ -77,6 +79,7 @@ typedef tmr_type                    TIM_TypeDef;
 #define TIM_SELECT_CHANNEL_3     TMR_SELECT_CHANNEL_3
 #define TIM_SELECT_CHANNEL_3C    TMR_SELECT_CHANNEL_3C
 #define TIM_SELECT_CHANNEL_4     TMR_SELECT_CHANNEL_4
+
 
 /*=========================
    MCU configuration
