@@ -43,7 +43,10 @@
 
 #define DELAY                            500
 
+
 extern __IO uint8_t g_ns2009_irq_flag;
+extern void NS2009_TickHandler(void);
+extern void DRV_TimerIntervalCore(void);
 
 void tim8_irq_callback(void)
 {
@@ -59,6 +62,7 @@ void tim6_irq_callback(void)
 
 	BSP_LED_Toggle(LED_DEBUG);
   lv_tick_inc(1);
+  DRV_TimerIntervalCore();
 }
 
 __IO uint16_t dma_trans_complete_flag = 0;
@@ -96,6 +100,11 @@ void lv_example_get_started_1(void)
     lv_label_set_text(label, "Hello world");
     lv_obj_set_style_text_color(lv_screen_active(), lv_color_hex(0xffffff), LV_PART_MAIN);
     lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+}
+
+void lv_task_handler_adapter(void)
+{
+  lv_task_handler(); /* let the GUI do its work */
 }
 
 /**
@@ -140,12 +149,6 @@ int main(void)
   // DRV_LCD_SetBlock(lcd_main, 240, 136, 240, 136);
   // DRV_LCD_WriteBlock(lcd_main, GREEN, 1);
 
-  // // DRV_LCD_DrawPoint(lcd_main, 10, 10, GREEN);
-  // // DRV_LCD_DrawPoint(lcd_main, 0, 15, GREEN);
-  // DRV_LCD_DrawPoint(lcd_main, 0, 271, 0xF800);
-  // DRV_LCD_DrawPoint(lcd_main, 479, 0, 0xF800);
-  // DRV_LCD_DrawPoint(lcd_main, 479, 271, 0xF800);
-
 
   // for ( uint32_t i=100; i<200; i++ ) {
   //   for ( uint32_t j=0; j<480; j++ ) {
@@ -188,7 +191,7 @@ int main(void)
   // lv_obj_align_to(myBtn, myLabel, LV_ALIGN_OUT_TOP_MID, 0, -20);               // 对齐于：某对象
 
   Timer_SetInterrupt(TIM8, 500000, tim8_irq_callback); // 500ms
-  Timer_SetInterrupt(TIM6, 1000, tim6_irq_callback); // 1ms
+  Timer_SetInterrupt(TIM6, 1000, tim6_irq_callback);   // 1ms
 
   Timer_SetEnable(TIM8, TRUE);
   Timer_SetEnable(TIM6, TRUE);
@@ -212,26 +215,28 @@ int main(void)
 
   // lv_example_get_started_1();
 
+  DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
+  DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);
+
   while(1)
-  {
-    
+  {  
     /* 5ms调用一次 */
-    DRV_DelayMs(1);
-    static uint32_t cnt = 0;
-    if ( cnt++ >= 5 ) {
-			cnt = 0;
-      // lv_timer_handler(); /* let the GUI do its work */
-      lv_task_handler();
-    }
+    // DRV_DelayMs(1);
+    // static uint32_t cnt = 0;
+    // if ( cnt++ >= 5 ) {
+		// 	cnt = 0;
+    //   // lv_timer_handler(); /* let the GUI do its work */
+    //   lv_task_handler();
+    // }
 
     // extern __IO uint8_t g_ns2009_irq_flag;
-    if (g_ns2009_irq_flag) {
-      g_ns2009_irq_flag = 0;
+    // if (g_ns2009_irq_flag) {
+    //   g_ns2009_irq_flag = 0;
 
-      DRV_Touch_Point_t point;
-      DRV_Touch_Read(touch_main, &point);
-      log_d("Touch Read (IRQ): X=%d, Y=%d, Pressed=%d", point.x, point.y, point.pressed);
-    }
+    //   DRV_Touch_Point_t point;
+    //   DRV_Touch_Read(touch_main, &point);
+    //   log_d("Touch Read (IRQ): X=%d, Y=%d, Pressed=%d", point.x, point.y, point.pressed);
+    // }
 
     if ( dma_trans_complete_flag > 0 ) {
       // log_d("DMA TC Flag: %d", dma_trans_complete_flag);

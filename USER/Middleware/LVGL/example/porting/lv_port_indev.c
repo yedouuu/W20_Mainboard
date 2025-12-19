@@ -61,6 +61,8 @@ static int32_t encoder_diff;
 static lv_indev_state_t encoder_state;
 static Device_t* touch_main_dev;
 
+lv_timer_t * volatile indev_touchpad_timer;
+extern volatile uint8_t g_ns2009_irq_flag;
 /**********************
  *      MACROS
  **********************/
@@ -94,6 +96,7 @@ void lv_port_indev_init(void)
     indev_touchpad = lv_indev_create();
     lv_indev_set_type(indev_touchpad, LV_INDEV_TYPE_POINTER);
     lv_indev_set_read_cb(indev_touchpad, touchpad_read);
+    indev_touchpad_timer = lv_indev_get_read_timer(indev_touchpad);
 
     /*------------------
      * Mouse
@@ -184,9 +187,32 @@ static void touchpad_init(void)
     }
 }
 
+uint32_t last_interrupt_tick;
+
 /*Will be called by the library to read the touchpad*/
 static void touchpad_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
 {
+    uint32_t tick_now = lv_tick_get();
+
+    /* If no interrupt has happened in the past 100 ms, pause the indev timer */
+    if(lv_tick_diff(tick_now, last_interrupt_tick) > 100) {
+        lv_timer_pause(indev_touchpad_timer);
+    }
+
+    if(g_ns2009_irq_flag) {
+        g_ns2009_irq_flag = 0;
+        last_interrupt_tick = tick_now;
+
+        /*
+         * Ensure the timer is running in case an interrupt occurred
+         * just after the timer was paused. Without this, a race condition
+         * could leave the timer paused and input events would not be processed.
+         */
+        lv_timer_resume(indev_touchpad_timer);
+
+        log_d("Touch IRQ handled in indev read.");
+    }
+
     static int32_t last_x = 0;
     static int32_t last_y = 0;
 

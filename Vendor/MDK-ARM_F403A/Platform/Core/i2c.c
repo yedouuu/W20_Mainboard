@@ -41,6 +41,11 @@
  */
 static Status_t I2C_ConvertStatus(i2c_status_type i2c_status)
 {
+  if (i2c_status != I2C_OK)
+  {
+    log_e("I2C Error: %d", i2c_status);
+  }
+  
   switch (i2c_status)
   {
     case I2C_OK:
