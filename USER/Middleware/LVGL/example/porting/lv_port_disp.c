@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include "device_manager.h"
 #include "drv_lcd_wrapper.h"
+#include "bsp_lcd.h"
 /*********************
  *      DEFINES
  *********************/
@@ -31,7 +32,7 @@
 /**********************
  *      TYPEDEFS
  **********************/
-
+#define USE_DMA 1
 /**********************
  *  STATIC PROTOTYPES
  **********************/
@@ -43,6 +44,7 @@ static void disp_flush(lv_display_t * disp, const lv_area_t * area, uint8_t * px
  *  STATIC VARIABLES
  **********************/
 static Device_t* lcd_dev = NULL;
+static lv_display_t* lv_disp_drv_p = NULL;
 
 /**********************
  *      MACROS
@@ -51,6 +53,26 @@ static Device_t* lcd_dev = NULL;
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
+#include "Common/common.h"
+
+void DMA2_Channel2_IRQHandler(void)
+{
+	if(dma_interrupt_flag_get(DMA2_FDT2_FLAG) == SET)
+	{
+        dma_channel_enable(DMA2_CHANNEL2, FALSE);
+		dma_flag_clear(DMA2_FDT2_FLAG);
+		if(lv_disp_drv_p != NULL)
+		{
+			lv_display_flush_ready(lv_disp_drv_p); /* tell lvgl that flushing is done */
+		}	
+	}
+    else if (dma_interrupt_flag_get(DMA2_DTERR2_FLAG) == SET)
+    {
+        dma_flag_clear(DMA2_DTERR2_FLAG);
+        log_e("DMA2 Channel2 Transfer Error!");
+    }
+}
+
 
 void lv_port_disp_init(void)
 {
@@ -67,19 +89,19 @@ void lv_port_disp_init(void)
 
     /* Example 1
      * One buffer for partial rendering*/
-    LV_ATTRIBUTE_MEM_ALIGN
-    static uint8_t buf_1_1[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL];            /*A buffer for 2 rows*/
-    lv_display_set_buffers(disp, buf_1_1, NULL, sizeof(buf_1_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+    // LV_ATTRIBUTE_MEM_ALIGN
+    // static uint8_t buf_1_1[(MY_DISP_HOR_RES * MY_DISP_VER_RES / 4) * BYTE_PER_PIXEL];            /*A buffer for 1/4 screen*/
+    // lv_display_set_buffers(disp, buf_1_1, NULL, sizeof(buf_1_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
 
     /* Example 2
      * Two buffers for partial rendering
      * In flush_cb DMA or similar hardware should be used to update the display in the background.*/
-    // LV_ATTRIBUTE_MEM_ALIGN
-    // static uint8_t buf_2_1[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL];
+    LV_ATTRIBUTE_MEM_ALIGN
+    static uint8_t buf_2_1[MY_DISP_HOR_RES * 30 * BYTE_PER_PIXEL];
 
-    // LV_ATTRIBUTE_MEM_ALIGN
-    // static uint8_t buf_2_2[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL];
-    // lv_display_set_buffers(disp, buf_2_1, buf_2_2, sizeof(buf_2_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+    LV_ATTRIBUTE_MEM_ALIGN
+    static uint8_t buf_2_2[MY_DISP_HOR_RES * 30 * BYTE_PER_PIXEL];
+    lv_display_set_buffers(disp, buf_2_1, buf_2_2, sizeof(buf_2_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
 
     /* Example 3
      * Two buffers screen sized buffer for double buffering.
@@ -128,36 +150,39 @@ void disp_disable_update(void)
  *'lv_display_flush_ready()' has to be called when it's finished.*/
 static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)
 {
+#if USE_DMA == 1
+    /*Using DMA for flushing the screen*/
     if(disp_flush_enabled) {
-        /*The most simple case (but also the slowest) to put all pixels to the screen one-by-one*/
-
-        // int32_t x;
-        // int32_t y;
-        // for(y = area->y1; y <= area->y2; y++) {
-        //     for(x = area->x1; x <= area->x2; x++) {
-        //         /*Put a pixel to the display. For example:*/
-        //         /*put_px(x, y, *px_map)*/
-        //         uint16_t color = *((uint16_t *)px_map);
-        //         DRV_LCD_DrawPoint(lcd_dev, x, y, color);
-        //         px_map++;
-        //     }
-        // }
-        DRV_LCD_SetBlock(lcd_dev, area->x1, area->y1, area->x2, area->y2);
-
+        lv_disp_drv_p = disp_drv;
         uint32_t size = (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1);
         uint16_t * color_p = (uint16_t *)px_map;
+
+        DRV_LCD_SetBlock(lcd_dev, area->x1,  area->y1, area->x2, area->y2);
+
+        dma_channel_enable(DMA2_CHANNEL2, FALSE);
+        dma_data_number_set(DMA2_CHANNEL2, size);
+
+        DMA2_CHANNEL2->dtcnt = size * BYTE_PER_PIXEL;
+        DMA2_CHANNEL2->maddr = (uint32_t)color_p;
+
+        // lcd_dma2_config(size * BYTE_PER_PIXEL, color_p);
+
+        dma_channel_enable(DMA2_CHANNEL2, TRUE);
         
-        for ( uint32_t i=0; i<size; i++ ) {
-            DRV_LCD_WritePoint(lcd_dev, color_p[i]);
-        }
-
-        // DRV_LCD_WriteBlock(lcd_dev, color, size);
     }
-
+#else
+    if(disp_flush_enabled) {
+        lv_disp_drv_p = disp_drv;
+        uint32_t size = (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1);
+        uint16_t * color_p = (uint16_t *)px_map;
+        DRV_LCD_SetBlock(lcd_dev, area->x1,  area->y1, area->x2, area->y2);
+        DRV_LCD_WriteBlock(lcd_dev, color_p, size);
+    }
 
     /*IMPORTANT!!!
      *Inform the graphics library that you are ready with the flushing*/
     lv_display_flush_ready(disp_drv);
+#endif
 }
 
 #else /*Enable this file at the top*/

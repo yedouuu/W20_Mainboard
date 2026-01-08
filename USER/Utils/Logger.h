@@ -27,4 +27,6 @@ typedef struct LoggerOps Logger_t;
 void loggerInit(LogLevel_t level);
 void loggerSetLevel(LogLevel_t level);
 
+/* 使用elog的宏进行输出elog_i elog_w elog_e elog_d elog_v */
+
 #endif // __LOGGER_H__

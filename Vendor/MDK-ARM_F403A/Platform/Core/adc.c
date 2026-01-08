@@ -211,7 +211,7 @@ void ADC_DMA_Init(void)
   crm_periph_clock_enable(CRM_DMA1_PERIPH_CLOCK, TRUE);
   crm_adc_clock_div_set(CRM_ADC_DIV_6);
 
-  nvic_irq_enable(DMA1_Channel1_IRQn, 0, 0);
+  nvic_irq_enable(DMA1_Channel1_IRQn, 10, 0);
   dma_reset(DMA1_CHANNEL1);
 
   dma_default_para_init(&dma_init_structure);

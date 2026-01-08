@@ -146,6 +146,20 @@ void DMA1_Channel1_IRQHandler(void)
   }
 }
 
+
+// void DMA2_Channel2_IRQHandler(void)
+// {
+// 	if(DMA_GetITStatus(DMA2_INT_TC2) == SET)
+// 	{
+// 		DMA_ClearITPendingBit(DMA2_INT_GL2);
+// 		DMA_ChannelEnable(DMA2_Channel2, DISABLE);
+// 		if(lv_disp_drv_p != NULL)
+// 		{
+// 			lv_disp_flush_ready(lv_disp_drv_p); /* tell lvgl that flushing is done */
+// 		}	
+// 	}
+// }
+
 /**
   * @}
   */

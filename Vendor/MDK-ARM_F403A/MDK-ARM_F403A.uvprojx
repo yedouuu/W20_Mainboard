@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>2</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1712,6 +1712,61 @@
               <FileType>1</FileType>
               <FilePath>..\..\USER\Middleware\LVGL\demos\widgets\assets\img_lvgl_logo.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_demo_benchmark.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\lv_demo_benchmark.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_avatar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\img_benchmark_avatar.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_lvgl_logo_argb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\img_benchmark_lvgl_logo_argb.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_lvgl_logo_rgb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\img_benchmark_lvgl_logo_rgb.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_benchmark_montserrat_12_aligned.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\lv_font_benchmark_montserrat_12_aligned.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_benchmark_montserrat_14_aligned.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\lv_font_benchmark_montserrat_14_aligned.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_benchmark_montserrat_16_aligned.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\lv_font_benchmark_montserrat_16_aligned.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_benchmark_montserrat_18_aligned.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\lv_font_benchmark_montserrat_18_aligned.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_benchmark_montserrat_20_aligned.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\lv_font_benchmark_montserrat_20_aligned.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_benchmark_montserrat_24_aligned.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\lv_font_benchmark_montserrat_24_aligned.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_benchmark_montserrat_26_aligned.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Middleware\LVGL\demos\benchmark\assets\lv_font_benchmark_montserrat_26_aligned.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1884,6 +1939,11 @@
               <FileName>startup_at32f403avgt7.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\Platform\Firmware\Device\Source\startup_at32f403avgt7.s</FilePath>
+            </File>
+            <File>
+              <FileName>extend_SRAM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Platform\Firmware\Device\Source\extend_SRAM.c</FilePath>
             </File>
           </Files>
         </Group>

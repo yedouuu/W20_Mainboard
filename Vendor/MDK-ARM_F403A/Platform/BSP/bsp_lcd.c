@@ -247,18 +247,18 @@ void __BSP_LCD_XMC_Init(const struct _LCD_Resource_t* lcd_res)
   xmc_norsram_timing_default_para_init(&rw_timing_struct, &w_timing_struct);
   rw_timing_struct.subbank = lcd_res->bus.xmc.bank;
   rw_timing_struct.write_timing_enable = XMC_WRITE_TIMING_ENABLE;
-  rw_timing_struct.addr_setup_time = 0xf;
+  rw_timing_struct.addr_setup_time = 0x8;
   rw_timing_struct.addr_hold_time = 0x0;
-  rw_timing_struct.data_setup_time = 0xf;
+  rw_timing_struct.data_setup_time = 0x8;
   rw_timing_struct.bus_latency_time = 0x0;
   rw_timing_struct.clk_psc = 0x0;
   rw_timing_struct.data_latency_time = 0x0;
   rw_timing_struct.mode = XMC_ACCESS_MODE_A;
   w_timing_struct.subbank = lcd_res->bus.xmc.bank;
   w_timing_struct.write_timing_enable = XMC_WRITE_TIMING_ENABLE;
-  w_timing_struct.addr_setup_time = 0xf;
+  w_timing_struct.addr_setup_time = 0x8;
   w_timing_struct.addr_hold_time = 0x0;
-  w_timing_struct.data_setup_time = 0xf;
+  w_timing_struct.data_setup_time = 0x8;
   w_timing_struct.bus_latency_time = 0x0;
   w_timing_struct.clk_psc = 0x0;
   w_timing_struct.data_latency_time = 0x0;
@@ -270,6 +270,33 @@ void __BSP_LCD_XMC_Init(const struct _LCD_Resource_t* lcd_res)
 
   /* enable lcd_res->bus.xmc.bank */
   xmc_nor_sram_enable(lcd_res->bus.xmc.bank, TRUE);
+}
+
+void __BSP_LCD_XMC_DMA_Init(const struct _LCD_Resource_t* lcd_res)
+{
+  dma_init_type dma_init_structure;
+  crm_periph_clock_enable(CRM_DMA2_PERIPH_CLOCK, TRUE);
+
+  nvic_irq_enable(DMA2_Channel2_IRQn, 10, 0);
+  dma_reset(DMA2_CHANNEL2);
+
+  dma_default_para_init(&dma_init_structure);
+  dma_init_structure.buffer_size           = 0; // later set in transfer
+  dma_init_structure.direction             = DMA_DIR_MEMORY_TO_PERIPHERAL | DMA_DIR_MEMORY_TO_MEMORY;
+  dma_init_structure.memory_base_addr      = 0; // later set in transfer
+  dma_init_structure.memory_data_width     = DMA_MEMORY_DATA_WIDTH_BYTE;
+  dma_init_structure.memory_inc_enable     = TRUE;
+  dma_init_structure.peripheral_base_addr  = (lcd_res->bus.xmc.data_addr);
+  dma_init_structure.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_BYTE;
+  dma_init_structure.peripheral_inc_enable = FALSE;
+  dma_init_structure.priority              = DMA_PRIORITY_HIGH;
+  dma_init_structure.loop_mode_enable      = FALSE;
+  dma_init(DMA2_CHANNEL2, &dma_init_structure);
+
+  dma_flag_clear(DMA2_GL2_FLAG); // Clear all
+  dma_interrupt_enable(DMA2_CHANNEL2, DMA_FDT_INT, TRUE);
+  dma_interrupt_enable(DMA2_CHANNEL2, DMA_DTERR_INT, TRUE);
+
 }
 
 void __BSP_LCD_ST043A23_Param_Init(const struct _LCD_Resource_t* lcd_res)
@@ -664,7 +691,8 @@ void BSP_LCD_Init(const void* lcd)
     case LCD_BUS_TYPE_XMC:
       log_i("Initializing LCD via XMC interface...");
       __BSP_LCD_XMC_Init(lcd_res);
-      delay_ms(50);
+      __BSP_LCD_XMC_DMA_Init(lcd_res);
+      // delay_ms(50);
       lcd_res->param_init(lcd_res);
 
       PWM_Write(lcd_res->pwm_pin, lcd_res->pwm_duty_default);
@@ -723,11 +751,6 @@ void BSP_LCD_Set_Block(const void* lcd, \
   LCD_WR_DATA(lcd_res, yend & 0xff);
   /* enable write menory */
   LCD_WR_COMMAND(lcd_res, 0x2c);
-
-  __asm__ __volatile__("nop");
-  __asm__ __volatile__("nop");
-  __asm__ __volatile__("nop");
-  __asm__ __volatile__("nop");
 }
 
 void BSP_LCD_Write_One_Point(const void* lcd, uint16_t color)
@@ -738,15 +761,15 @@ void BSP_LCD_Write_One_Point(const void* lcd, uint16_t color)
 }
 
 void BSP_LCD_Write_One_Block(const void* lcd, \
-                             uint16_t color, uint32_t size)
+                             uint16_t* color, uint32_t size)
 {
   const struct _LCD_Resource_t* lcd_res = (const struct _LCD_Resource_t*)lcd;
   uint32_t i;
   for(i = 0; i < size; i++)
   {
     // BSP_LCD_Write_One_Point(lcd_res, color);
-    LCD_WR_DATA(lcd_res, color >> 8);
-    LCD_WR_DATA(lcd_res, color);
+    LCD_WR_DATA(lcd_res, color[i] >> 8);
+    LCD_WR_DATA(lcd_res, color[i]);
   }
 }
 
@@ -755,7 +778,7 @@ void BSP_LCD_DrawPoint(const void* lcd, \
 {
   const struct _LCD_Resource_t* lcd_res = (const struct _LCD_Resource_t*)lcd;
   BSP_LCD_Set_Block(lcd_res, x, y, x, y);
-  BSP_LCD_Write_One_Block(lcd_res, color, 1);
+  BSP_LCD_Write_One_Point(lcd_res, color);
 }
 
 void BSP_LCD_Clear(const void* lcd, uint16_t color)

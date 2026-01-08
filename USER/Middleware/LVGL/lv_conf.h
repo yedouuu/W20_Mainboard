@@ -29,6 +29,8 @@
 /** Color depth: 1 (I1), 8 (L8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888) */
 #define LV_COLOR_DEPTH 16
 
+/** Swap the high and low bytes for RGB565 */
+#define LV_COLOR_16_SWAP 1
 /*=========================
    STDLIB WRAPPER SETTINGS
  *=========================*/
@@ -70,7 +72,7 @@
 
 #if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
     /** Size of memory available for `lv_malloc()` in bytes (>= 2kB) */
-    #define LV_MEM_SIZE (48 * 1024U)          /**< [bytes] */
+    #define LV_MEM_SIZE (32 * 1024U)          /**< [bytes] */
 
     /** Size of the memory expand for `lv_malloc()` in bytes */
     #define LV_MEM_POOL_EXPAND_SIZE 0
@@ -89,11 +91,12 @@
  *====================*/
 
 /** Default display refresh, input device read and animation step period. */
-#define LV_DEF_REFR_PERIOD  33      /**< [ms] */
+#define LV_DEF_REFR_PERIOD  10      /**< [ms] */
 
 /** Default Dots Per Inch. Used to initialize default sizes such as widgets sized, style paddings.
  * (Not so important, you can adjust it to modify default sizes and spaces.) */
-#define LV_DPI_DEF 130              /**< [px/inch] */
+// #define LV_DPI_DEF 130              /**< [px/inch] */
+#define LV_DPI_DEF 100              /**< [px/inch] */
 
 /*=================
  * OPERATING SYSTEM
@@ -811,7 +814,7 @@
 
 #define LV_USE_TILEVIEW   1
 
-#define LV_USE_WIN        1
+#define LV_USE_WIN        0
 
 #define LV_USE_3DTEXTURE  0
 
@@ -1404,7 +1407,7 @@
 
 #if LV_BUILD_DEMOS
     /** Show some widgets. This might be required to increase `LV_MEM_SIZE`. */
-    #define LV_USE_DEMO_WIDGETS 1
+    #define LV_USE_DEMO_WIDGETS 0
 
     /** Demonstrate usage of encoder and keyboard. */
     #define LV_USE_DEMO_KEYPAD_AND_ENCODER 0
@@ -1431,7 +1434,7 @@
         #define LV_DEMO_MUSIC_LANDSCAPE 0
         #define LV_DEMO_MUSIC_ROUND     0
         #define LV_DEMO_MUSIC_LARGE     0
-        #define LV_DEMO_MUSIC_AUTO_PLAY 0
+        #define LV_DEMO_MUSIC_AUTO_PLAY 1
     #endif
 
     /** Vector graphic demo */

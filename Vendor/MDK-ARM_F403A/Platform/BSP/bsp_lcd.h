@@ -37,7 +37,7 @@ void BSP_LCD_Set_Block(const void* lcd, \
                        uint16_t x_start, uint16_t y_start, \
                        uint16_t x_end, uint16_t y_end);
 void BSP_LCD_Write_One_Point(const void* lcd, uint16_t color);
-void BSP_LCD_Write_One_Block(const void* lcd, uint16_t color, uint32_t size);
+void BSP_LCD_Write_One_Block(const void* lcd, uint16_t* color, uint32_t size);
 void BSP_LCD_DrawPoint(const void* lcd, uint16_t x, uint16_t y, uint16_t color);
 void BSP_LCD_Clear(const void* lcd, uint16_t color);
 void BSP_LCD_Blk_On(const void* lcd);

@@ -115,7 +115,7 @@ Status_t DRV_LCD_SetBlock(Device_t* lcd_dev, uint16_t x_start, uint16_t y_start,
   return kStatus_Success;
 }
 
-Status_t DRV_LCD_WriteBlock(Device_t* lcd_dev, uint16_t color, uint32_t size)
+Status_t DRV_LCD_WriteBlock(Device_t* lcd_dev, uint16_t* color, uint32_t size)
 {
   DRV_LCD_Ops_t* ops = __DRV_LCD_GetOps(lcd_dev);
   if (ops == NULL)

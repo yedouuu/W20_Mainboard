@@ -42,9 +42,13 @@ typedef enum
   NS2009_ADDRESS_RD = 0x93,        /* b(1001 0011) */
   NS2009_LOW_POWER_READ_X  = 0xc4, /* 读取时关闭中断 1100 0000 -> 1100 0100 */
   NS2009_LOW_POWER_READ_Y  = 0xd4, /* 读取时关闭中断 1101 0000 -> 1101 0100 */
-  NS2009_LOW_POWER_READ_Z1 = 0xe4,
-  NS2009_LOW_POWER_READ_Z2 = 0xf4,
-  NS2009_ONLY_OPEN_IRQ     = 0x00, /* 只用于重新开启中断 */
+  NS2009_LOW_POWER_READ_Z1 = 0xe4, /* 读取时关闭中断 1110 0000 -> 1110 0100 */
+  NS2009_LOW_POWER_READ_Z2 = 0xf4, /* 读取时关闭中断 1111 0000 -> 1111 0100 */
+  NS2009_LONG_DRIVER_READ_X  = 0x80, /* 读取时开启中断 1000 0000 -> 1000 0000 */
+  NS2009_LONG_DRIVER_READ_Y  = 0x90, /* 读取时开启中断 1001 0000 -> 1001 0000 */
+  NS2009_LONG_DRIVER_READ_Z1 = 0xA0, /* 读取时开启中断 1010 0000 -> 1010 0000 */
+  NS2009_LONG_DRIVER_READ_Z2 = 0xB0, /* 读取时开启中断 1011 0000 -> 1011 0000 */
+  NS2009_ONLY_OPEN_IRQ       = 0x00, /* 只用于重新开启中断 */
 } NS2009_Cmd_e;
 
 typedef enum
@@ -124,6 +128,7 @@ struct _Touch_Resource_t
 
   uint8_t            rst_pin;
   uint8_t            irq_pin;
+  EXTI_POLARITY_TYPE irq_polarity;
 
   /* 硬件地址控制位 */
   uint8_t            a0_pin;
@@ -178,17 +183,18 @@ __IO uint8_t g_ns2009_irq_flag = 0;
 
 const Touch_Resource_t touch_main_res =
 {
-  .ic_type   = TOUCH_IC_NS2009,
-  .bus_type  = TOUCH_BUS_I2C,
-  .hor_res   = SCREEN_MAIN_HOR_RES,
-  .ver_res   = SCREEN_MAIN_VER_RES,
-  .ratio_x   = (float)(SCREEN_MAIN_HOR_RES-1) / TOUCH_NS2009_ADC_RESO,
-  .ratio_y   = (float)(SCREEN_MAIN_VER_RES-1) / TOUCH_NS2009_ADC_RESO,
-  .pres_min  = TOUCH_NS2009_PRESSURE_MIN,
-  .pres_max  = TOUCH_NS2009_PRESSURE_MAX,
-  .a0_pin    = TOUCH_NS2009_A0_PIN,
-  .irq_pin   = TOUCH_NS2009_INT_PIN,
-  .rotation  = 0,
+  .ic_type      = TOUCH_IC_NS2009,
+  .bus_type     = TOUCH_BUS_I2C,
+  .hor_res      = SCREEN_MAIN_HOR_RES,
+  .ver_res      = SCREEN_MAIN_VER_RES,
+  .ratio_x      = (float)(SCREEN_MAIN_HOR_RES-1) / TOUCH_NS2009_ADC_RESO,
+  .ratio_y      = (float)(SCREEN_MAIN_VER_RES-1) / TOUCH_NS2009_ADC_RESO,
+  .pres_min     = TOUCH_NS2009_PRESSURE_MIN,
+  .pres_max     = TOUCH_NS2009_PRESSURE_MAX,
+  .a0_pin       = TOUCH_NS2009_A0_PIN,
+  .irq_pin      = TOUCH_NS2009_INT_PIN,
+  .irq_polarity = CHANGE,
+  .rotation     = 0,
 
   .bus.i2c =
   {
@@ -206,32 +212,30 @@ const Touch_Resource_t touch_main_res =
 };
 
 /* Private function ---------------------------------------------------------*/
+#include "lvgl.h"
+extern lv_timer_t * volatile indev_touchpad_timer;
 static void __NS2009_PENIRQ_Handler(void)
 {
   uint32_t cur_state = digitalRead_FAST(touch_main_res.irq_pin) ? TOUCH_RELEASED : TOUCH_PRESSED;
 
   log_d("NS2009 PENIRQ Handler: State=%d", cur_state);
 
-  if ( cur_state != touch_main_handler.state ) 
-  {
-    touch_main_handler.debounce_active = true;
-    touch_main_handler.state = (Touch_State_e)cur_state;
-    touch_main_handler.debounce_tick = 20; // 20ms 消抖时间
-    touch_main_handler.noise_cnt = 0;
-  }
+  // if ( cur_state != touch_main_handler.state ) 
+  // {
+  //   touch_main_handler.debounce_active = true;
+  //   touch_main_handler.state = (Touch_State_e)cur_state;
+  //   touch_main_handler.debounce_tick = 20; // 20ms 消抖时间
+  //   touch_main_handler.noise_cnt = 0;
+  // }
 
   /* TODO: 使用事件驱动 */
-  //g_ns2009_irq_flag = 1;
+  g_ns2009_irq_flag = 1;
+  lv_timer_resume(indev_touchpad_timer);
 }
 
-#include "lvgl.h"
-extern lv_timer_t * volatile indev_touchpad_timer;
+
 void NS2009_TickHandler(void)
 {
-  // if ( touch_main_handler.debounce_active == false )
-  // {
-  //   return;
-  // }
 
   if (touch_main_handler.debounce_tick > 0) 
   {
@@ -292,7 +296,7 @@ static void __NS2009_Init(const Touch_Resource_t* touch_res)
 
   I2Cx_Init(touch_res->bus.i2c.i2c_instance, touch_res->bus.i2c.speed);
 
-  attachInterrupt(touch_res->irq_pin, __NS2009_PENIRQ_Handler, CHANGE);
+  attachInterrupt(touch_res->irq_pin, __NS2009_PENIRQ_Handler, touch_res->irq_polarity);
 
   uint8_t test_cmd = NS2009_ONLY_OPEN_IRQ;
   Status_t status = I2Cx_Master_Write(touch_res->bus.i2c.i2c_instance, 
@@ -388,9 +392,9 @@ static void __NS2009_ReadCoordinate(const Touch_Resource_t* touch_res, TouchPoin
   p->z2 = z2;
   p->pressed = __NS2009_Calculate_Pressure(p);
 
-  // log_d("NS2009 Read X=%d, Y=%d, Z1=%d, Z2=%d Press=%d", x, y, z1, z2, p->pressed);
+  log_d("NS2009 Read X=%d, Y=%d, Z1=%d, Z2=%d Press=%d", x, y, z1, z2, p->pressed);
 
-  attachInterrupt(touch_res->irq_pin, touch_res->irq_handler, CHANGE);
+  attachInterrupt(touch_res->irq_pin, touch_res->irq_handler, touch_res->irq_polarity);
 }
 
 
@@ -410,7 +414,7 @@ void BSP_Touch_DeInit(const void* touch)
 void BSP_Touch_Open(const void* touch)
 {
   const Touch_Resource_t* touch_res = (const Touch_Resource_t*)touch;
-  attachInterrupt(touch_res->irq_pin, touch_res->irq_handler, CHANGE);
+  attachInterrupt(touch_res->irq_pin, touch_res->irq_handler, touch_res->irq_polarity);
 }
 
 void BSP_Touch_Close(const void* touch)

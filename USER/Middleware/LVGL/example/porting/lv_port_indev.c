@@ -97,6 +97,7 @@ void lv_port_indev_init(void)
     lv_indev_set_type(indev_touchpad, LV_INDEV_TYPE_POINTER);
     lv_indev_set_read_cb(indev_touchpad, touchpad_read);
     indev_touchpad_timer = lv_indev_get_read_timer(indev_touchpad);
+    lv_timer_pause(indev_touchpad_timer);
 
     /*------------------
      * Mouse
@@ -197,6 +198,7 @@ static void touchpad_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
     /* If no interrupt has happened in the past 100 ms, pause the indev timer */
     if(lv_tick_diff(tick_now, last_interrupt_tick) > 100) {
         lv_timer_pause(indev_touchpad_timer);
+        log_d("Touchpad timer paused due to inactivity.");
     }
 
     if(g_ns2009_irq_flag) {
@@ -212,7 +214,8 @@ static void touchpad_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
 
         log_d("Touch IRQ handled in indev read.");
     }
-
+    
+    /* Perform the reading */
     static int32_t last_x = 0;
     static int32_t last_y = 0;
 
@@ -228,14 +231,6 @@ static void touchpad_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
     else {
         data->state = LV_INDEV_STATE_RELEASED;
     }
-
-    // if(touchpad_is_pressed()) {
-    //     touchpad_get_xy(&last_x, &last_y);
-    //     data->state = LV_INDEV_STATE_PRESSED;
-    // }
-    // else {
-    //     data->state = LV_INDEV_STATE_RELEASED;
-    // }
 
     /*Set the last pressed coordinates*/
     data->point.x = last_x;
