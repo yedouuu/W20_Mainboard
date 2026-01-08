@@ -22,7 +22,7 @@ __initial_sp
 ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
 
-Heap_Size       EQU     0x00002000
+Heap_Size       EQU     0x00001000
 
                 AREA    HEAP, NOINIT, READWRITE, ALIGN=3
 __heap_base
@@ -147,6 +147,15 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler                       [WEAK]
                 IMPORT  __main
                 IMPORT  SystemInit
+                IMPORT  extend_SRAM
+
+                MOV32   R0, #0x20001000
+                MOV     SP, R0
+                LDR     R0, =extend_SRAM
+                BLX     R0
+                MOV32   R0, #0x08000000
+                LDR     SP, [R0]
+
                 LDR     R0, =SystemInit
                 BLX     R0
                 LDR     R0, =__main
