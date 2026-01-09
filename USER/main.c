@@ -117,6 +117,7 @@ int main(void)
   Core_Init();
 	BSP_LED_Init();
   BSP_KEY_Init();
+  DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
   DM_DeviceInitALL();
   App_Init();
@@ -125,70 +126,26 @@ int main(void)
   lv_init();
   lv_port_disp_init();
   lv_port_indev_init();
-  lv_demo_widgets();
-  
+  // lv_demo_widgets();
+  // lv_demo_benchmark();
+
   log_i("System initialized.");
-  
-
-  //BSP_LCD_Clear(&lcd_main_res, RED);
-  // Device_t* lcd_main = DM_DeviceFind("LCD_MAIN");
-  // DRV_LCD_Clear(lcd_main, BLUE);
-
-  // DRV_LCD_SetBlock(lcd_main, 0, 0, 479, 0);
-  // DRV_LCD_WriteBlock(lcd_main, GREEN, 480);
-
-  // DRV_LCD_SetBlock(lcd_main, 0, 5, 479, 5);
-  // DRV_LCD_WriteBlock(lcd_main, RED, 480);
-
-  // DRV_LCD_SetBlock(lcd_main, 0, 10, 10, 10);
-  // DRV_LCD_WriteBlock(lcd_main, RED, 10);
-
-  // DRV_LCD_SetBlock(lcd_main, 10, 10, 10, 10);
-  // DRV_LCD_WriteBlock(lcd_main, GREEN, 1);
-
-  // DRV_LCD_SetBlock(lcd_main, 240, 136, 240, 136);
-  // DRV_LCD_WriteBlock(lcd_main, GREEN, 1);
-
-
-  // for ( uint32_t i=100; i<200; i++ ) {
-  //   for ( uint32_t j=0; j<480; j++ ) {
-  //     BSP_LCD_Set_Block(lcd_main->res, j, i, j+1, i+1);
-  //     DRV_LCD_WritePoint(lcd_main, GREEN);
-
-  //     // DRV_LCD_DrawPoint(lcd_main, j, i, GREEN);
-  //   }
-  // }
-  
-  // for ( uint32_t i=200; i<272; i++ ) {
-  //   for ( uint32_t j=0; j<480; j++ ) {
-  //     DRV_LCD_DrawPoint(lcd_main, j, i, BLUE);
-  //   }
-  // }
-
-  // DRV_LCD_SetBlock(lcd_main, 0, 0, 479, 99);
-  // DRV_LCD_WriteBlock(lcd_main, RED, 480*100);
-
-  // DRV_LCD_SetBlock(lcd_main, 0, 100, 479, 199);
-  // DRV_LCD_WriteBlock(lcd_main, YELLOW, 480*100);
-
-  // DRV_LCD_SetBlock(lcd_main, 0, 200, 479, 271);
-  // DRV_LCD_WriteBlock(lcd_main, CYAN, 480*72);
 
   // 按钮
-  // lv_obj_t *myBtn = lv_btn_create(lv_scr_act());                               // 创建按钮; 父对象：当前活动屏幕
-  // lv_obj_set_pos(myBtn, 10, 10);                                               // 设置坐标
-  // lv_obj_set_size(myBtn, 120, 50);                                             // 设置大小
+  lv_obj_t *myBtn = lv_btn_create(lv_scr_act());                               // 创建按钮; 父对象：当前活动屏幕
+  lv_obj_set_pos(myBtn, 10, 10);                                               // 设置坐标
+  lv_obj_set_size(myBtn, 120, 50);                                             // 设置大小
   
-  // // 按钮上的文本
-  // lv_obj_t *label_btn = lv_label_create(myBtn);                                // 创建文本标签，父对象：上面的btn按钮
-  // lv_obj_align(label_btn, LV_ALIGN_CENTER, 0, 0);                              // 对齐于：父对象
-  // lv_label_set_text(label_btn, "Test");                                        // 设置标签的文本
+  // 按钮上的文本
+  lv_obj_t *label_btn = lv_label_create(myBtn);                                // 创建文本标签，父对象：上面的btn按钮
+  lv_obj_align(label_btn, LV_ALIGN_CENTER, 0, 0);                              // 对齐于：父对象
+  lv_label_set_text(label_btn, "Test");                                        // 设置标签的文本
 
-  // // 独立的标签
-  // lv_obj_t *myLabel = lv_label_create(lv_scr_act());                           // 创建文本标签; 父对象：当前活动屏幕
-  // lv_label_set_text(myLabel, "Hello world!");                                  // 设置标签的文本
-  // lv_obj_align(myLabel, LV_ALIGN_CENTER, 0, 0);                                // 对齐于：父对象
-  // lv_obj_align_to(myBtn, myLabel, LV_ALIGN_OUT_TOP_MID, 0, -20);               // 对齐于：某对象
+  // 独立的标签
+  lv_obj_t *myLabel = lv_label_create(lv_scr_act());                           // 创建文本标签; 父对象：当前活动屏幕
+  lv_label_set_text(myLabel, "Hello world!");                                  // 设置标签的文本
+  lv_obj_align(myLabel, LV_ALIGN_CENTER, 0, 0);                                // 对齐于：父对象
+  lv_obj_align_to(myBtn, myLabel, LV_ALIGN_OUT_TOP_MID, 0, -20);               // 对齐于：某对象
 
   Timer_SetInterrupt(TIM8, 500000, tim8_irq_callback); // 500ms
   Timer_SetInterrupt(TIM6, 1000, tim6_irq_callback);   // 1ms
@@ -215,19 +172,19 @@ int main(void)
 
   // lv_example_get_started_1();
 
-  DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
-  DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);
+  // DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
+  // DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);
 
   while(1)
   {  
     /* 5ms调用一次 */
-    // DRV_DelayMs(1);
-    // static uint32_t cnt = 0;
-    // if ( cnt++ >= 5 ) {
-		// 	cnt = 0;
-    //   // lv_timer_handler(); /* let the GUI do its work */
-    //   lv_task_handler();
-    // }
+    DRV_DelayMs(1);
+    static uint32_t cnt = 0;
+    if ( cnt++ >= 5 ) {
+			cnt = 0;
+      lv_timer_handler(); /* let the GUI do its work */
+    }
+    // lv_timer_handler();
 
     // extern __IO uint8_t g_ns2009_irq_flag;
     // if (g_ns2009_irq_flag) {

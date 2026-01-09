@@ -28,7 +28,7 @@
  
 #include <elog.h>
 #include <stdio.h>
-#include "Drv_Delay_Wrapper.h"
+#include "HAL/drv_tick_wrapper.h"
 #include "SEGGER_RTT.h"
 
 /**

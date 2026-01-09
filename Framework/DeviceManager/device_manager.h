@@ -58,9 +58,25 @@ extern "C" {
 
 
 /* Private defines -----------------------------------------------------------*/
-#define DEVICE_SECTION __attribute__((used, section(".device_table")))
-#define DEVICE_EXPORT(dev) \
-    static Device_t * __device_##dev DEVICE_SECTION = &dev
+#if defined(_MSC_VER) /* For Visual Studio */
+    #define DEVICE_EXPORT(dev) \
+        static void __init_##dev(void) __attribute__((constructor)); \
+        static void __init_##dev(void) { DM_DeviceRegister(&dev); }
+
+    #define DEVICE_FOREACH(dev) \
+        for(Device_t *dev = g_device_list_head; dev != NULL; dev = dev->next)
+
+#else /* For ARM Compiler */
+    #define DEVICE_SECTION __attribute__((used, section(".device_table")))
+    #define DEVICE_EXPORT(dev) \
+        static Device_t * __device_##dev DEVICE_SECTION = &dev
+
+    #define DEVICE_FOREACH(dev) \
+        for(Device_t **ptr = (Device_t **)&Image$$RW_DEVICE_TABLE$$Base;  \
+            ptr < (Device_t **)&Image$$RW_DEVICE_TABLE$$Limit; \
+            ptr++) \
+            for(Device_t *dev = *ptr; dev != NULL; dev = NULL) /* 内部循环只执行一次 */
+#endif
 
 #define DM_RET_TYPE Status_t
 
@@ -102,10 +118,12 @@ typedef struct Device_t {
     const void      *ops;      // 指向各设备 ops 表（强转使用）
     void            *priv;     // 私有数据
     void            *res;      // 设备资源
+    struct Device_t *next;     // 指向下一个设备，用于构成链表
 } Device_t;
 
 
 /* Exported functions prototypes ---------------------------------------------*/
+void DM_DeviceRegister(Device_t *dev);
 void DM_DeviceInitALL(void);
 void DM_DeviceDeinitALL(void);
 Device_t *DM_DeviceFind(const char *name);
@@ -115,7 +133,7 @@ DM_RET_TYPE DM_DeviceOpen(const char *name);
 DM_RET_TYPE DM_DeviceClose(const char *name);
 DM_RET_TYPE DM_DeviceRead(const char *name, uint8_t* buf, uint32_t len);
 DM_RET_TYPE DM_DeviceWrite(const char *name, const uint8_t* buf, uint32_t len);
-
+DM_RET_TYPE DM_DeviceIOCTL(const char *name, uint32_t cmd, void* arg);
 #ifdef __cplusplus
 }
 #endif

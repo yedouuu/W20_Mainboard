@@ -4,7 +4,17 @@
 
 /* Includes ----------------------------------------------------------*/
 #include <stdint.h>
-#include "elog.h"
+
+#ifndef LVGL_WINDOWS_SIMULATOR 
+#  include "elog.h"
+#else
+#  define log_e 
+#  define log_i
+#  define log_w
+#  define log_d
+#  define log_v
+#endif
+
 /* Private defines -----------------------------------------------------------*/
 
 

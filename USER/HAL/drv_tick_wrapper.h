@@ -9,13 +9,23 @@ extern "C" {
 
 typedef void (*TimerInterval_CB_t)(void);
 
-typedef enum
+typedef enum _TimerInterval_Type_e
 {
   TIMER_INTERVAL_ONCE = 0,
   TIMER_INTERVAL_REPEAT,
 } TimerInterval_Type_e;
 
+typedef struct _DRV_Tick_Ops_t
+{
+  uint32_t (*GetMillis)(void);
+  uint32_t (*GetMicros)(void);
+  void     (*DelayMs)(uint32_t ms);
+  void     (*DelayUs)(uint32_t us);
+} DRV_Tick_Ops_t;
 
+typedef struct _DRV_Tick_Ops_t DRV_Tick_Ops_t;
+
+void DRV_Tick_Init(DRV_Tick_Ops_t* ops);
 uint32_t DRV_GetMillis(void);
 uint32_t DRV_GetMicros(void);
 void DRV_DelayMs(uint32_t ms);

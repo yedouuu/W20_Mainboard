@@ -370,18 +370,20 @@ virtualFolder:
       folders: []
     - name: HAL
       files:
-        - path: ../../USER/HAL/drv_delay_wrapper.c
         - path: ../../USER/HAL/drv_ir_wrapper.c
         - path: ../../USER/HAL/drv_led_wrapper.c
         - path: ../../USER/HAL/drv_lcd_wrapper.c
         - path: ../../USER/HAL/drv_touch_wrapper.c
         - path: ../../USER/HAL/drv_wrapper.h
+        - path: ../../USER/HAL/drv_tick_wrapper.c
+        - path: ../../USER/HAL/drv_wrapper.c
       folders:
         - name: Adapter
           files:
             - path: ../../USER/HAL/Adapter/drv_ir_adapter.c
             - path: ../../USER/HAL/Adapter/drv_touch_adapter.c
             - path: ../../USER/HAL/Adapter/drv_lcd_adapter.c
+            - path: ../../USER/HAL/Adapter/drv_tick_adapter.c
           folders: []
     - name: Platform
       files: []
@@ -498,7 +500,6 @@ targets:
       libList: []
     excludeList:
       - <virtual_root>/Platform/Firmware/Device/startup_at32f403avgt7_ext_ram.s
-      - <virtual_root>/Middleware/LVGL/demos
     toolchain: AC6
     toolchainConfigMap:
       AC5:

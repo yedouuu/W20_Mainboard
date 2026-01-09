@@ -2,8 +2,27 @@
 #include "device_manager.h"
 #include <string.h>
 
+/* 全局设备链表头指针 */
+static Device_t *g_device_list_head = NULL;
+
+#if !defined(_MSC_VER)
 extern uint32_t Image$$RW_DEVICE_TABLE$$Base;
 extern uint32_t Image$$RW_DEVICE_TABLE$$Limit;
+#endif
+
+/**
+ * @brief 注册设备到全局设备链表
+ * 
+ * @param dev 指向要注册的设备结构体指针
+ */
+void DM_DeviceRegister(Device_t *dev)
+{
+  if( dev == NULL )
+    return;
+
+  dev->next = g_device_list_head;
+  g_device_list_head = dev;
+}
 
 /**
  * @brief  系统设备初始化
@@ -11,17 +30,8 @@ extern uint32_t Image$$RW_DEVICE_TABLE$$Limit;
  */
 void DM_DeviceInitALL(void)
 {
-  /* 获取设备表的起始和结束地址 */
-  Device_t **dev_ptr_start = (Device_t **)&Image$$RW_DEVICE_TABLE$$Base;
-  Device_t **dev_ptr_end   = (Device_t **)&Image$$RW_DEVICE_TABLE$$Limit;
-
-  Device_t **ptr;
-
-  /* 遍历指针数组 */
-  for (ptr = dev_ptr_start; ptr < dev_ptr_end; ptr++)
+  DEVICE_FOREACH(dev)
   {
-    Device_t *dev = *ptr;
-
     if (dev && dev->ops)
     {
       /* 强转为 Device_Ops_t 并调用 init */
@@ -41,17 +51,8 @@ void DM_DeviceInitALL(void)
  */
 void DM_DeviceDeinitALL(void)
 {
-  /* 获取设备表的起始和结束地址 */
-  Device_t **dev_ptr_start = (Device_t **)&Image$$RW_DEVICE_TABLE$$Base;
-  Device_t **dev_ptr_end   = (Device_t **)&Image$$RW_DEVICE_TABLE$$Limit;
-
-  Device_t **ptr;
-
-  /* 遍历指针数组 */
-  for (ptr = dev_ptr_start; ptr < dev_ptr_end; ptr++)
+  DEVICE_FOREACH(dev)
   {
-    Device_t *dev = *ptr;
-
     if (dev && dev->ops)
     {
       /* 强转为 Device_Ops_t 并调用 deinit */
@@ -98,18 +99,14 @@ DM_RET_TYPE DM_DeviceDeinit(char *name)
  */
 Device_t *DM_DeviceFind(const char *name)
 {
-  Device_t **dev_ptr_start = (Device_t **)&Image$$RW_DEVICE_TABLE$$Base;
-  Device_t **dev_ptr_end   = (Device_t **)&Image$$RW_DEVICE_TABLE$$Limit;
-  Device_t **ptr;
-
-  for (ptr = dev_ptr_start; ptr < dev_ptr_end; ptr++)
+  DEVICE_FOREACH(dev)
   {
-    Device_t *dev = *ptr;
     if (dev && dev->name && strcmp(dev->name, name) == 0)
     {
       return dev;
     }
   }
+  
   return NULL;
 }
 

@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#ifdef LVGL_WINDOWS_SIMULATOR
+
+/* TODO: 仿真环境下的日志打印 */
+
+#else
+
 #include "SEGGER_RTT.h"
 
 #define LOGGER_TAG "LOG"
@@ -111,5 +117,5 @@ static void _eloggerLog(LogLevel_t level, const char *format, ...)
 
   // va_end(args);
 }
-
+#endif /* LVGL_WINDOWS_SIMULATOR */
 

@@ -3,8 +3,7 @@
 #define __HAL_H__
 
 #include "Common/common.h"
-#include "mcu_core.h"
-#include "HAL/drv_delay_wrapper.h"
+#include "HAL/drv_tick_wrapper.h"
 #include "HAL/drv_ir_wrapper.h"
 #include "HAL/drv_touch_wrapper.h"
 #include "HAL/drv_lcd_wrapper.h"

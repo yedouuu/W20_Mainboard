@@ -1,6 +1,6 @@
 
 #include "Common/common.h"
-#include "device_manager.h"
+#include "DeviceManager/device_manager.h"
 #include "drv_ir_wrapper.h"
 #include "bsp_ir.h"
 

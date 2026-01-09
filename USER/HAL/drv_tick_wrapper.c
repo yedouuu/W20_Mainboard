@@ -1,7 +1,6 @@
 
 #include "drv_wrapper.h"
-#include "systick.h"
-#include "Logger.h"
+
 
 #define TIMER_INTERVAL_MAX 10
 
@@ -12,30 +11,38 @@ typedef struct {
     uint32_t last_tick;
 } TimerInterval_t;
 
+static DRV_Tick_Ops_t* Tick_Ops = NULL;
 static TimerInterval_t Interval_CBFunctions[TIMER_INTERVAL_MAX] = { 0 };
 
 
+void DRV_Tick_Init(DRV_Tick_Ops_t* ops)
+{
+  if ( ops != NULL ) {
+    Tick_Ops = ops;
+  }
+}
+
 uint32_t DRV_GetMillis(void)
 {
-  return millis();
+  return Tick_Ops->GetMillis();
 }
 
 
 uint32_t DRV_GetMicros(void)
 {
-  return micros();
+  return Tick_Ops->GetMicros();
 }
 
 
 void DRV_DelayMs(uint32_t ms)
 {
-  delay_ms(ms);
+  Tick_Ops->DelayMs(ms);
 }
 
 
 void DRV_DelayUs(uint32_t us)
 {
-  delay_us(us);
+  Tick_Ops->DelayUs(us);
 }
 
 

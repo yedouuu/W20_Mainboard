@@ -4,6 +4,8 @@
 
 
 /* Includes ------------------------------------------------------------------*/
+#include "Common/common.h"
+#include "DeviceManager/device_manager.h"
 
 typedef enum
 {

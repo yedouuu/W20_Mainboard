@@ -5,7 +5,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "Common/common.h"
-#include "device_manager.h"
+#include "DeviceManager/device_manager.h"
 
 
 /* Exported types -----------------------------------------------------------*/

@@ -1,7 +1,4 @@
 
-#include "device_manager.h"
-#include "Logger.h"
-
 #include "drv_lcd_wrapper.h"
 
 /**

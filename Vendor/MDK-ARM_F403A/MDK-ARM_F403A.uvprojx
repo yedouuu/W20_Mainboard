@@ -1776,11 +1776,6 @@
           <GroupName>HAL</GroupName>
           <Files>
             <File>
-              <FileName>drv_delay_wrapper.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\USER\HAL\drv_delay_wrapper.c</FilePath>
-            </File>
-            <File>
               <FileName>drv_ir_wrapper.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\USER\HAL\drv_ir_wrapper.c</FilePath>
@@ -1805,6 +1800,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\USER\HAL\drv_wrapper.h</FilePath>
             </File>
+            <File>
+              <FileName>drv_tick_wrapper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\HAL\drv_tick_wrapper.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_wrapper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\HAL\drv_wrapper.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1824,6 +1829,11 @@
               <FileName>drv_lcd_adapter.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\USER\HAL\Adapter\drv_lcd_adapter.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_tick_adapter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\HAL\Adapter\drv_tick_adapter.c</FilePath>
             </File>
           </Files>
         </Group>
