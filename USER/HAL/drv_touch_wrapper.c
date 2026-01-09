@@ -1,6 +1,4 @@
 
-#include "Logger.h"
-
 #include "drv_touch_wrapper.h"
 
 /**
