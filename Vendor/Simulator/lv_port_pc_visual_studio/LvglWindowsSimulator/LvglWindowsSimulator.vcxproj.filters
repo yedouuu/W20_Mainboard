@@ -2075,6 +2075,42 @@
       <Filter>lvgl\src\widgets\win</Filter>
     </ClInclude>
     <ClInclude Include="lv_conf.h" />
+    <ClInclude Include="..\..\..\..\USER\HAL\drv_wrapper.h">
+      <Filter>HAL\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\HAL\drv_ir_wrapper.h">
+      <Filter>HAL\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\HAL\drv_lcd_wrapper.h">
+      <Filter>HAL\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\HAL\drv_tick_wrapper.h">
+      <Filter>HAL\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\HAL\drv_touch_wrapper.h">
+      <Filter>HAL\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Utils\Logger.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Framework\DeviceManager\device_manager.h">
+      <Filter>Framework\DeviceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Common\binary.h">
+      <Filter>Application\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Common\comm_macro.h">
+      <Filter>Application\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Common\common.h">
+      <Filter>Application\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Common\context.h">
+      <Filter>Application\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Common\errno.h">
+      <Filter>Application\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindowsSimulator.manifest" />
@@ -4664,6 +4700,39 @@
       <Filter>lvgl\src\widgets\win</Filter>
     </ClCompile>
     <ClCompile Include="LvglWindowsSimulator.cpp" />
+    <ClCompile Include="..\..\..\..\USER\HAL\drv_wrapper.c">
+      <Filter>HAL\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\HAL\drv_ir_wrapper.c">
+      <Filter>HAL\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\HAL\drv_lcd_wrapper.c">
+      <Filter>HAL\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\HAL\drv_led_wrapper.c">
+      <Filter>HAL\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\HAL\drv_tick_wrapper.c">
+      <Filter>HAL\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\HAL\drv_touch_wrapper.c">
+      <Filter>HAL\wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\LvglPlatform\HAL\Adapter\drv_ir_adapter.c">
+      <Filter>HAL\adapter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\LvglPlatform\HAL\Adapter\drv_tick_adapter.c">
+      <Filter>HAL\adapter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Utils\Logger.c">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Framework\DeviceManager\device_manager.c">
+      <Filter>Framework\DeviceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Common\context.c">
+      <Filter>Application\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="freetype">
@@ -6405,6 +6474,24 @@
     </Filter>
     <Filter Include="lvgl\zephyr">
       <UniqueIdentifier>{17539506-a5ac-49ce-9772-7b20ea9d803d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HAL\wrapper">
+      <UniqueIdentifier>{0d9113c8-28ad-4185-911f-4916af18b2c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HAL\adapter">
+      <UniqueIdentifier>{994b5005-aeca-49b2-af0a-91eabfc03057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Common">
+      <UniqueIdentifier>{90cadd1f-62e6-431f-bffe-7dd720ae3479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Pages">
+      <UniqueIdentifier>{deefa819-e5dc-4843-b532-7b6e9659e4dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Services">
+      <UniqueIdentifier>{8e63744c-8425-4436-8144-78cef85ec835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\DeviceManager">
+      <UniqueIdentifier>{ded167e1-e4eb-45b0-96d6-3ac99938daa8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -17955,5 +18042,12 @@
     <None Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\zephyr\module.yml">
       <Filter>lvgl\zephyr</Filter>
     </None>
+    <None Include="freetype.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Application" />
+    <Filter Include="HAL" />
+    <Filter Include="Framework" />
+    <Filter Include="Utils" />
   </ItemGroup>
 </Project>
