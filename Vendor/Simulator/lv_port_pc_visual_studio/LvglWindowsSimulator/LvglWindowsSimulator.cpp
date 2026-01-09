@@ -6,6 +6,8 @@
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/demos/lv_demos.h"
 
+#include "Application/App.h"
+
 #define SCREEN_HOR_RES  480
 #define SCREEN_VER_RES  272
 
@@ -80,7 +82,8 @@ int main()
         return -1;
     }
 
-    lv_demo_widgets();
+    App_Init();
+    //lv_demo_widgets();
     //lv_demo_benchmark();
 
     while (1)

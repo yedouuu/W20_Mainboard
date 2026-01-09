@@ -732,11 +732,16 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\LvglPlatform\lvgl\src\widgets\win\lv_win_private.h" />
     <ClInclude Include="..\..\..\..\Framework\DeviceManager\device_manager.h" />
+    <ClInclude Include="..\..\..\..\USER\Application\App.h" />
     <ClInclude Include="..\..\..\..\USER\Application\Common\binary.h" />
     <ClInclude Include="..\..\..\..\USER\Application\Common\common.h" />
     <ClInclude Include="..\..\..\..\USER\Application\Common\comm_macro.h" />
     <ClInclude Include="..\..\..\..\USER\Application\Common\context.h" />
     <ClInclude Include="..\..\..\..\USER\Application\Common\errno.h" />
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\MainPage\MainPage.h" />
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.h" />
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.h" />
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\Page.h" />
     <ClInclude Include="..\..\..\..\USER\HAL\drv_ir_wrapper.h" />
     <ClInclude Include="..\..\..\..\USER\HAL\drv_lcd_wrapper.h" />
     <ClInclude Include="..\..\..\..\USER\HAL\drv_tick_wrapper.h" />
@@ -4194,7 +4199,11 @@
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Framework\DeviceManager\device_manager.c" />
+    <ClCompile Include="..\..\..\..\USER\Application\App.c" />
     <ClCompile Include="..\..\..\..\USER\Application\Common\context.c" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPage.c" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.c" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.c" />
     <ClCompile Include="..\..\..\..\USER\HAL\drv_ir_wrapper.c" />
     <ClCompile Include="..\..\..\..\USER\HAL\drv_lcd_wrapper.c" />
     <ClCompile Include="..\..\..\..\USER\HAL\drv_led_wrapper.c" />

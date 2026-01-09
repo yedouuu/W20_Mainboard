@@ -26,8 +26,15 @@ virtualFolder:
             - path: ../../USER/Application/Services/pocket_detect.c
           folders: []
         - name: Pages
-          files: []
-          folders: []
+          files:
+            - path: ../../USER/Application/Pages/Page.h
+          folders:
+            - name: MainPage
+              files:
+                - path: ../../USER/Application/Pages/MainPage/MainPage.c
+                - path: ../../USER/Application/Pages/MainPage/MainPageModel.c
+                - path: ../../USER/Application/Pages/MainPage/MainPageView.c
+              folders: []
     - name: Utils
       files:
         - path: ../../USER/Utils/Logger.c
@@ -497,6 +504,7 @@ targets:
         - ../../USER/Middleware/LVGL/demos/benchmark
         - ../../USER/Middleware/LVGL/demos/music
         - ../../USER/Middleware/LVGL/demos/music/assets
+        - ../../USER/Application/Pages
       libList: []
     excludeList:
       - <virtual_root>/Platform/Firmware/Device/startup_at32f403avgt7_ext_ram.s

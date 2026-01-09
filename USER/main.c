@@ -52,60 +52,18 @@ void tim8_irq_callback(void)
 {
   // log_d("TIM8 interrupt triggered.");
   BSP_LED_Toggle(LED1);
-  //ns2009_irq_flag = 1;
   // Pocket_Detect_Update();
 }
 
 void tim6_irq_callback(void)
 {
   // log_d("TIM6 interrupt triggered.");
-
 	BSP_LED_Toggle(LED_DEBUG);
   lv_tick_inc(1);
   DRV_TimerIntervalCore();
 }
 
 __IO uint16_t dma_trans_complete_flag = 0;
-
-void lv_log_adapater(lv_log_level_t level, const char * buf)
-{
-  switch(level)
-  {
-    case LV_LOG_LEVEL_ERROR:
-      log_e("LVGL", "%s", buf);
-      break;
-    case LV_LOG_LEVEL_WARN:
-      log_w("LVGL", "%s", buf);
-      break;
-    case LV_LOG_LEVEL_INFO:
-      log_i("LVGL", "%s", buf);
-      break;
-    case LV_LOG_LEVEL_TRACE:
-      log_d("LVGL", "%s", buf);
-      break;
-    default:
-      log_v("LVGL", "%s", buf);
-      break;
-  }
-}
-
-
-void lv_example_get_started_1(void)
-{
-    /*Change the active screen's background color*/
-    lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
-
-    /*Create a white label, set its text and align it to the center*/
-    lv_obj_t * label = lv_label_create(lv_screen_active());
-    lv_label_set_text(label, "Hello world");
-    lv_obj_set_style_text_color(lv_screen_active(), lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
-}
-
-void lv_task_handler_adapter(void)
-{
-  lv_task_handler(); /* let the GUI do its work */
-}
 
 /**
   * @brief  main function.
@@ -120,32 +78,18 @@ int main(void)
   DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
   DM_DeviceInitALL();
-  App_Init();
-  ADC_DMA_Init();
-
+  
   lv_init();
   lv_port_disp_init();
   lv_port_indev_init();
+
+  App_Init();
+  ADC_DMA_Init();
+
   // lv_demo_widgets();
   // lv_demo_benchmark();
 
   log_i("System initialized.");
-
-  // 按钮
-  lv_obj_t *myBtn = lv_btn_create(lv_scr_act());                               // 创建按钮; 父对象：当前活动屏幕
-  lv_obj_set_pos(myBtn, 10, 10);                                               // 设置坐标
-  lv_obj_set_size(myBtn, 120, 50);                                             // 设置大小
-  
-  // 按钮上的文本
-  lv_obj_t *label_btn = lv_label_create(myBtn);                                // 创建文本标签，父对象：上面的btn按钮
-  lv_obj_align(label_btn, LV_ALIGN_CENTER, 0, 0);                              // 对齐于：父对象
-  lv_label_set_text(label_btn, "Test");                                        // 设置标签的文本
-
-  // 独立的标签
-  lv_obj_t *myLabel = lv_label_create(lv_scr_act());                           // 创建文本标签; 父对象：当前活动屏幕
-  lv_label_set_text(myLabel, "Hello world!");                                  // 设置标签的文本
-  lv_obj_align(myLabel, LV_ALIGN_CENTER, 0, 0);                                // 对齐于：父对象
-  lv_obj_align_to(myBtn, myLabel, LV_ALIGN_OUT_TOP_MID, 0, -20);               // 对齐于：某对象
 
   Timer_SetInterrupt(TIM8, 500000, tim8_irq_callback); // 500ms
   Timer_SetInterrupt(TIM6, 1000, tim6_irq_callback);   // 1ms
@@ -168,9 +112,6 @@ int main(void)
 
   // Pocket_Detect_Init();
   // ADCx_Start(ADC1);
-	// 按钮
-
-  // lv_example_get_started_1();
 
   // DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
   // DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);

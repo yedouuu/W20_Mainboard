@@ -2111,6 +2111,21 @@
     <ClInclude Include="..\..\..\..\USER\Application\Common\errno.h">
       <Filter>Application\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\Page.h">
+      <Filter>Application\Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\MainPage\MainPage.h">
+      <Filter>Application\Pages\MainPage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.h">
+      <Filter>Application\Pages\MainPage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.h">
+      <Filter>Application\Pages\MainPage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\App.h">
+      <Filter>Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindowsSimulator.manifest" />
@@ -4733,6 +4748,18 @@
     <ClCompile Include="..\..\..\..\USER\Application\Common\context.c">
       <Filter>Application\Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPage.c">
+      <Filter>Application\Pages\MainPage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.c">
+      <Filter>Application\Pages\MainPage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.c">
+      <Filter>Application\Pages\MainPage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\App.c">
+      <Filter>Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="freetype">
@@ -6492,6 +6519,9 @@
     </Filter>
     <Filter Include="Framework\DeviceManager">
       <UniqueIdentifier>{ded167e1-e4eb-45b0-96d6-3ac99938daa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Pages\MainPage">
+      <UniqueIdentifier>{f5a031a2-bebd-455a-953d-618489b997aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
