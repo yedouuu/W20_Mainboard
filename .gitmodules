@@ -13,3 +13,6 @@
 [submodule "Libraries/Unity"]
 	path = Libraries/Unity
 	url = https://github.com/ThrowTheSwitch/Unity.git
+[submodule "Libraries/CmBacktrace"]
+	path = Libraries/CmBacktrace
+	url = https://github.com/armink/CmBacktrace.git
