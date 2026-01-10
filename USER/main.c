@@ -34,12 +34,15 @@
 #include "Logger.h"
 #include "device_manager.h"
 #include "Services/pocket_detect.h"
+#include "cm_backtrace.h"
 
 #include "lvgl.h"
 #include "lv_port_disp.h"
 #include "lv_port_indev.h"
 #include "lv_demos.h"
 
+
+#include "fault_test.h"
 
 #define DELAY                            500
 
@@ -77,6 +80,8 @@ int main(void)
   BSP_KEY_Init();
   DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
+
+  cm_backtrace_init("W20_Mainboard_Firmware", "V1.0", "V1.0.0");
   DM_DeviceInitALL();
   
   lv_init();
@@ -125,7 +130,6 @@ int main(void)
 			cnt = 0;
       lv_timer_handler(); /* let the GUI do its work */
     }
-    // lv_timer_handler();
 
     // extern __IO uint8_t g_ns2009_irq_flag;
     // if (g_ns2009_irq_flag) {

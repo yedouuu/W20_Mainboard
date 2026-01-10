@@ -42,6 +42,7 @@ virtualFolder:
     - name: Tests
       files:
         - path: ../../USER/Tests/unit_test.c
+        - path: ../../USER/Tests/fault_test.c
       folders: []
     - name: Middleware
       files: []
@@ -372,6 +373,13 @@ virtualFolder:
                 - path: ../../USER/Middleware/LVGL/demos/music/assets/img_lv_demo_music_wave_top.c
                 - path: ../../USER/Middleware/LVGL/demos/music/assets/img_lv_demo_music_wave_top_large.c
               folders: []
+        - name: CmBacktrace
+          files:
+            - path: ../../USER/Middleware/CmBacktrace/cm_backtrace/cm_backtrace.c
+            - path: ../../USER/Middleware/CmBacktrace/cm_backtrace/cmb_cfg.h
+            - path: ../../USER/Middleware/CmBacktrace/cm_backtrace/cmb_def.h
+            - path: ../../USER/Middleware/CmBacktrace/cm_backtrace/fault_handler/keil/cmb_fault.S
+          folders: []
     - name: OSAL
       files: []
       folders: []
@@ -505,6 +513,9 @@ targets:
         - ../../USER/Middleware/LVGL/demos/music
         - ../../USER/Middleware/LVGL/demos/music/assets
         - ../../USER/Application/Pages
+        - ../../USER/Middleware/CmBacktrace/cm_backtrace
+        - ../../USER/Middleware/CmBacktrace/cm_backtrace/Languages/zh-CN
+        - ../../USER/Middleware/CmBacktrace/cm_backtrace/Languages/en-US
       libList: []
     excludeList:
       - <virtual_root>/Platform/Firmware/Device/startup_at32f403avgt7_ext_ram.s
@@ -565,7 +576,7 @@ targets:
             language-c: c11
             language-cpp: c++11
             one-elf-section-per-function: true
-            optimization: level-1
+            optimization: level-0
             short-enums#wchar: true
             warnings: ac5-like-warnings
           global:
