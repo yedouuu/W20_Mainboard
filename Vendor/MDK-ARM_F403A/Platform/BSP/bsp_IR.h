@@ -29,6 +29,10 @@
 #include "bsp_config.h"
 
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 /* Private defines -----------------------------------------------------------*/
 
 
@@ -73,6 +77,11 @@ void BSP_IR_Enable(const void* ir);
 void BSP_IR_Disable(const void* ir);
 void BSP_IR_SetPWM(const void* ir, uint16_t duty);
 void BSP_IR_GetRawData(const void* ir, uint16_t* raw);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

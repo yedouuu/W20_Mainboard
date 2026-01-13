@@ -23,13 +23,13 @@
 #ifndef __DEVICE_MANAGER_H__
 #define __DEVICE_MANAGER_H__
 
+#include <stdint.h>
+#include "Common/errno.h"
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stdint.h>
-#include "Common/errno.h"
 
 
 /* ========================================================================== */
@@ -82,7 +82,7 @@ extern "C" {
 
 
 /* Exported types ------------------------------------------------------------*/
-typedef enum {
+typedef enum Device_Class_e{
     DEV_CLASS_MOTOR,
     DEV_CLASS_DISPLAY,
     DEV_CLASS_SENSOR,
@@ -114,7 +114,7 @@ typedef struct Device_Ops {
 
 typedef struct Device_t {
     const char      *name;     // 设备名
-    Device_Class_e   class;    // 设备类别
+    Device_Class_e   dev_class;    // 设备类别
     const void      *ops;      // 指向各设备 ops 表（强转使用）
     void            *priv;     // 私有数据
     void            *res;      // 设备资源

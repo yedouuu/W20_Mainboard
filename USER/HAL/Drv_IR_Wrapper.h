@@ -28,6 +28,10 @@
 #include "Common/common.h"
 #include "DeviceManager/device_manager.h"
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 
 /* Exported types -----------------------------------------------------------*/
 typedef enum
@@ -94,6 +98,10 @@ Status_t DRV_IR_GetState(Device_t* ir_dev, DRV_IR_State_e* status);
 Status_t DRV_IR_GetRawData(Device_t* ir_dev, uint16_t* raw_data);
 Status_t DRV_IR_SetPWM(Device_t* ir_dev, DRV_IR_PWM_Duty_e duty);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __DRV_IR_WRAPPER_H__ */
 

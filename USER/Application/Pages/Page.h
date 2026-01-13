@@ -25,6 +25,8 @@
 
 
 #include "lvgl.h"
+#include "Pages/MainPage/MainPage.h"
+#include "Pages/UserSettings/UserSettings.h"
 
 
 #endif // __PAGE_H__

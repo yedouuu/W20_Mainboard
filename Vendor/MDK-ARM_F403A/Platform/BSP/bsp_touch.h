@@ -26,6 +26,10 @@
 #include "bsp_config.h"
 
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 /* Exported Typedef --------------------------------------------------------*/
 typedef struct _Touch_Resource_t Touch_Resource_t;
 
@@ -39,5 +43,9 @@ void BSP_Touch_Open(const void* touch);
 void BSP_Touch_Close(const void* touch);
 void BSP_Touch_Read(const void* touch, uint16_t* x, uint16_t* y, uint8_t* pressed);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __BSP_TOUCH_H__ */

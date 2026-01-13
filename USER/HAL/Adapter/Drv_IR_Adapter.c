@@ -89,35 +89,35 @@ static DRV_IR_Priv_t ir_left_priv = {
 
 
 Device_t ir_hopper = {
-    .name  = "IR_HOPPER",
-    .class = DEV_CLASS_SENSOR,
-    .ops   = (void *)&ir_ops,
-    .priv  = (void *)&ir_hopper_priv,
-    .res   = (void *)&ir_hopper_res,
+    .name      = "IR_HOPPER",
+    .dev_class = DEV_CLASS_SENSOR,
+    .ops       = (void *)&ir_ops,
+    .priv      = (void *)&ir_hopper_priv,
+    .res       = (void *)&ir_hopper_res,
 };
 
 Device_t ir_stacker = {
-    .name  = "IR_STACKER",
-    .class = DEV_CLASS_SENSOR,
-    .ops   = (void *)&ir_ops,
-    .priv  = (void *)&ir_stacker_priv,
-    .res   = (void *)&ir_stacker_res,
+    .name      = "IR_STACKER",
+    .dev_class = DEV_CLASS_SENSOR,
+    .ops       = (void *)&ir_ops,
+    .priv      = (void *)&ir_stacker_priv,
+    .res       = (void *)&ir_stacker_res,
 };
 
 Device_t ir_right = {
-    .name  = "IRR",
-    .class = DEV_CLASS_SENSOR,
-    .ops   = (void *)&ir_ops,
-    .priv  = (void *)&ir_right_priv,
-    .res   = (void *)&ir_right_res,
+    .name      = "IRR",
+    .dev_class = DEV_CLASS_SENSOR,
+    .ops       = (void *)&ir_ops,
+    .priv      = (void *)&ir_right_priv,
+    .res       = (void *)&ir_right_res,
 };
 
 Device_t ir_left = {
-    .name  = "IRL",
-    .class = DEV_CLASS_SENSOR,
-    .ops   = (void *)&ir_ops,
-    .priv  = (void *)&ir_left_priv,
-    .res   = (void *)&ir_left_res,
+    .name      = "IRL",
+    .dev_class = DEV_CLASS_SENSOR,
+    .ops       = (void *)&ir_ops,
+    .priv      = (void *)&ir_left_priv,
+    .res       = (void *)&ir_left_res,
 };
 
 

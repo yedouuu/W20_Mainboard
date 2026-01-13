@@ -33,11 +33,11 @@ static DRV_LCD_Ops_t lcd_ops = {
 
 
 Device_t lcd_main = {
-  .name  = "LCD_MAIN",
-  .class = DEV_CLASS_DISPLAY,
-  .ops   = (void *)&lcd_ops,
-  .priv  = NULL,
-  .res   = (void *)&lcd_main_res,
+  .name      = "LCD_MAIN",
+  .dev_class = DEV_CLASS_DISPLAY,
+  .ops       = (void *)&lcd_ops,
+  .priv      = NULL,
+  .res       = (void *)&lcd_main_res,
 };
 
 DEVICE_EXPORT(lcd_main);

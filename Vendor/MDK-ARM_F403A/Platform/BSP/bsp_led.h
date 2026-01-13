@@ -27,6 +27,10 @@
 #include "mcu_type.h"
 #include "bsp_config.h"
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 /* Private defines -----------------------------------------------------------*/
 
 
@@ -48,5 +52,8 @@ void BSP_LED_On(uint8_t led);
 void BSP_LED_Off(uint8_t led);
 void BSP_LED_Toggle(uint8_t led);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -7,6 +7,10 @@
 #include "Common/common.h"
 #include "DeviceManager/device_manager.h"
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 typedef enum
 {
   DRV_LCD_MAIN      = 0,
@@ -44,5 +48,9 @@ Status_t DRV_LCD_WriteBlock(Device_t* lcd_dev, uint16_t* color, uint32_t size);
 Status_t DRV_LCD_WritePoint(Device_t* lcd_dev, uint16_t color);
 Status_t DRV_LCD_DrawPoint(Device_t* lcd_dev, uint16_t x, uint16_t y, uint16_t color);
 Status_t DRV_LCD_Clear(Device_t* lcd_dev, uint16_t color);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __DRV_LCD_WRAPPER_H__ */

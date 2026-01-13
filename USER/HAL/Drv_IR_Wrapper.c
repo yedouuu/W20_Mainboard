@@ -17,7 +17,7 @@ static DRV_IR_Ops_t* __DRV_IR_GetOps(Device_t* dev)
     return NULL;
   }
 
-  if (dev->class != DEV_CLASS_SENSOR)
+  if (dev->dev_class != DEV_CLASS_SENSOR)
   {
     log_e("Type Mismatch: Device %s is not a Sensor!", dev->name);
     return NULL;

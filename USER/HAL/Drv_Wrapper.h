@@ -8,11 +8,19 @@
 #include "HAL/drv_touch_wrapper.h"
 #include "HAL/drv_lcd_wrapper.h"
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 typedef bool (*CommitFunc_t)(void* info, void* userData);
 
 void DRV_Init(void);
 void DRV_Update(void);
 
+
+#ifdef __cplusplus
+  }
+#endif
 /* LED */
 
 

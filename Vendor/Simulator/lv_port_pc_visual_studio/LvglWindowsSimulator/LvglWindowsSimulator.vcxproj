@@ -742,6 +742,9 @@
     <ClInclude Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.h" />
     <ClInclude Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.h" />
     <ClInclude Include="..\..\..\..\USER\Application\Pages\Page.h" />
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettings.h" />
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsModel.h" />
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsView.h" />
     <ClInclude Include="..\..\..\..\USER\HAL\drv_ir_wrapper.h" />
     <ClInclude Include="..\..\..\..\USER\HAL\drv_lcd_wrapper.h" />
     <ClInclude Include="..\..\..\..\USER\HAL\drv_tick_wrapper.h" />
@@ -4199,11 +4202,15 @@
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Framework\DeviceManager\device_manager.c" />
-    <ClCompile Include="..\..\..\..\USER\Application\App.c" />
+    <ClCompile Include="..\..\..\..\USER\Application\App.cpp" />
     <ClCompile Include="..\..\..\..\USER\Application\Common\context.c" />
-    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPage.c" />
-    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.c" />
-    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.c" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPage.cpp" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.cpp" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.cpp" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettings.cpp" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsModel.cpp" />
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsView.cpp" />
+    <ClCompile Include="..\..\..\..\USER\Application\Resources\BankosaMainPage.c" />
     <ClCompile Include="..\..\..\..\USER\HAL\drv_ir_wrapper.c" />
     <ClCompile Include="..\..\..\..\USER\HAL\drv_lcd_wrapper.c" />
     <ClCompile Include="..\..\..\..\USER\HAL\drv_led_wrapper.c" />

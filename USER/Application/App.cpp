@@ -5,7 +5,8 @@
 void App_Init(void)
 {
   // 应用程序初始化代码
-  MainPage_Init();
+  MainPage_Init(lv_scr_act());
+  // UserSettings_Init();
 
 }
 

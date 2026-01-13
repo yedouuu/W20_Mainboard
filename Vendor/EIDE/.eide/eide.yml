@@ -10,11 +10,11 @@ virtualFolder:
   folders:
     - name: USER
       files:
-        - path: ../../USER/main.c
+        - path: ../../USER/main.cpp
       folders: []
     - name: Application
       files:
-        - path: ../../USER/Application/App.c
+        - path: ../../USER/Application/App.cpp
       folders:
         - name: Common
           files:
@@ -31,10 +31,20 @@ virtualFolder:
           folders:
             - name: MainPage
               files:
-                - path: ../../USER/Application/Pages/MainPage/MainPage.c
-                - path: ../../USER/Application/Pages/MainPage/MainPageModel.c
-                - path: ../../USER/Application/Pages/MainPage/MainPageView.c
+                - path: ../../USER/Application/Pages/MainPage/MainPage.cpp
+                - path: ../../USER/Application/Pages/MainPage/MainPageModel.cpp
+                - path: ../../USER/Application/Pages/MainPage/MainPageView.cpp
               folders: []
+            - name: UserSettings
+              files:
+                - path: ../../USER/Application/Pages/UserSettings/UserSettings.cpp
+                - path: ../../USER/Application/Pages/UserSettings/UserSettingsModel.cpp
+                - path: ../../USER/Application/Pages/UserSettings/UserSettingsView.cpp
+              folders: []
+        - name: Resources
+          files:
+            - path: ../../USER/Application/Resources/BankosaMainPage.c
+          folders: []
     - name: Utils
       files:
         - path: ../../USER/Utils/Logger.c
@@ -472,6 +482,17 @@ virtualFolder:
           files:
             - path: ../../Framework/DeviceManager/device_manager.c
           folders: []
+        - name: PageManager
+          files:
+            - path: ../../Framework/PageManager/PageBase.c
+            - path: ../../Framework/PageManager/PageFactory.h
+            - path: ../../Framework/PageManager/PageManager.h
+            - path: ../../Framework/PageManager/PM_Base.cpp
+            - path: ../../Framework/PageManager/PM_Drag.cpp
+            - path: ../../Framework/PageManager/PM_Log.h
+            - path: ../../Framework/PageManager/PM_Router.cpp
+            - path: ../../Framework/PageManager/PM_State.cpp
+          folders: []
 dependenceList: []
 outDir: build
 miscInfo:
@@ -576,7 +597,7 @@ targets:
             language-c: c11
             language-cpp: c++11
             one-elf-section-per-function: true
-            optimization: level-0
+            optimization: level-1
             short-enums#wchar: true
             warnings: ac5-like-warnings
           global:

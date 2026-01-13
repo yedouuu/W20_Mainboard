@@ -15,7 +15,7 @@ static DRV_Touch_Ops_t* __DRV_Touch_GetOps(Device_t* dev)
     return NULL;
   }
 
-  if (dev->class != DEV_CLASS_INPUT)
+  if (dev->dev_class != DEV_CLASS_INPUT)
   {
     log_e("Type Mismatch: Device %s is not a input device", dev->name);
     return NULL;

@@ -25,6 +25,9 @@
 /* Includes ----------------------------------------------------------*/
 #include "mcu_type.h"
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
 
 /* Private defines -----------------------------------------------------------*/
 #define PRINT_UART                       USART1
@@ -46,5 +49,9 @@
 /* Exported functions prototypes ---------------------------------------------*/
 void Uart_Print_Init(uint32_t baudrate);
 
+
+#ifdef __cplusplus
+  }
+#endif
 
 #endif

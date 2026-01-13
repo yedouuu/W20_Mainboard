@@ -7,6 +7,9 @@
 #include "Common/common.h"
 #include "DeviceManager/device_manager.h"
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
 
 /* Exported types -----------------------------------------------------------*/
 typedef enum
@@ -61,5 +64,8 @@ Status_t DRV_Touch_Open(Device_t* touch_dev);
 Status_t DRV_Touch_Close(Device_t* touch_dev);
 Status_t DRV_Touch_Read(Device_t* touch_dev, DRV_Touch_Point_t* point);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __DRV_TOUCH_WRAPPER_H__ */

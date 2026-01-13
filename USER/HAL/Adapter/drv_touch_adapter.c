@@ -53,11 +53,11 @@ static DRV_Touch_Priv_t touch_main_priv = {
 };
 
 Device_t touch_main = {
-  .name  = "TOUCH_MAIN",
-  .class = DEV_CLASS_INPUT,
-  .ops   = (void *)&touch_ops,
-  .priv  = (void *)&touch_main_priv,
-  .res   = (void *)&touch_main_res,
+  .name      = "TOUCH_MAIN",
+  .dev_class = DEV_CLASS_INPUT,
+  .ops       = (void *)&touch_ops,
+  .priv      = (void *)&touch_main_priv,
+  .res       = (void *)&touch_main_res,
 };
 
 DEVICE_EXPORT(touch_main);

@@ -2126,6 +2126,15 @@
     <ClInclude Include="..\..\..\..\USER\Application\App.h">
       <Filter>Application</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettings.h">
+      <Filter>Application\Pages\UserSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsModel.h">
+      <Filter>Application\Pages\UserSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsView.h">
+      <Filter>Application\Pages\UserSettings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindowsSimulator.manifest" />
@@ -4748,17 +4757,29 @@
     <ClCompile Include="..\..\..\..\USER\Application\Common\context.c">
       <Filter>Application\Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPage.c">
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPage.cpp">
       <Filter>Application\Pages\MainPage</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.c">
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageModel.cpp">
       <Filter>Application\Pages\MainPage</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.c">
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\MainPage\MainPageView.cpp">
       <Filter>Application\Pages\MainPage</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\USER\Application\App.c">
+    <ClCompile Include="..\..\..\..\USER\Application\App.cpp">
       <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Resources\BankosaMainPage.c">
+      <Filter>Application\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettings.cpp">
+      <Filter>Application\Pages\UserSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsModel.cpp">
+      <Filter>Application\Pages\UserSettings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsView.cpp">
+      <Filter>Application\Pages\UserSettings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -6522,6 +6543,12 @@
     </Filter>
     <Filter Include="Application\Pages\MainPage">
       <UniqueIdentifier>{f5a031a2-bebd-455a-953d-618489b997aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Resources">
+      <UniqueIdentifier>{49fab57c-af42-423d-b91c-c7070a216ae9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Pages\UserSettings">
+      <UniqueIdentifier>{9e03dcaa-79a3-40ef-a05b-adccf795afa9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

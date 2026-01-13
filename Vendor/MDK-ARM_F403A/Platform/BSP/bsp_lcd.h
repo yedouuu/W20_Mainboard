@@ -6,6 +6,10 @@
 #include "mcu_type.h"
 #include "bsp_config.h"
 
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 
 #define WHITE         	 0xFFFF
 #define BLACK         	 0x0000
@@ -43,5 +47,9 @@ void BSP_LCD_Clear(const void* lcd, uint16_t color);
 void BSP_LCD_Blk_On(const void* lcd);
 void BSP_LCD_Blk_Off(const void* lcd);
 void BSP_LCD_Blk_Set_PWM(const void* lcd, uint16_t duty);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __BSP_LCD_H__ */

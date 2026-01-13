@@ -48,8 +48,17 @@
 
 
 extern __IO uint8_t g_ns2009_irq_flag;
+
+#ifdef __cplusplus
+  extern "C" {
+#endif
+
 extern void NS2009_TickHandler(void);
 extern void DRV_TimerIntervalCore(void);
+
+#ifdef __cplusplus
+  }
+#endif
 
 void tim8_irq_callback(void)
 {

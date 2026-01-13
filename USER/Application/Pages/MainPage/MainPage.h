@@ -7,6 +7,6 @@
 #include "MainPageModel.h"
 
 
-void MainPage_Init(void);
+void MainPage_Init(lv_obj_t* parent);
 
 #endif // __MAINPAGE_H__

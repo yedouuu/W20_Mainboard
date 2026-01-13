@@ -15,7 +15,7 @@ static DRV_LCD_Ops_t* __DRV_LCD_GetOps(Device_t* dev)
     return NULL;
   }
 
-  if (dev->class != DEV_CLASS_DISPLAY)
+  if (dev->dev_class != DEV_CLASS_DISPLAY)
   {
     log_e("Type Mismatch: Device %s is not a display device", dev->name);
     return NULL;
