@@ -9,8 +9,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -26,14 +26,15 @@
 #include "Logger.h"
 
 /**
-  * @brief  定时器输出捕获初始化
-  * @param  TIMx: 定时器地址
-  * @param  arr: 自动重装值
-  * @param  psc: 时钟预分频数
-  * @param  TimerChannel: 定时器通道
-  * @retval 无
-  */
-static void TIMx_OCxInit(tmr_type* TIMx, uint32_t arr, uint16_t psc, uint8_t TimerChannel)
+ * @brief  定时器输出捕获初始化
+ * @param  TIMx: 定时器地址
+ * @param  arr: 自动重装值
+ * @param  psc: 时钟预分频数
+ * @param  TimerChannel: 定时器通道
+ * @retval 无
+ */
+static void
+TIMx_OCxInit(tmr_type *TIMx, uint32_t arr, uint16_t psc, uint8_t TimerChannel)
 {
   tmr_output_config_type tmr_output_struct;
 
@@ -44,67 +45,66 @@ static void TIMx_OCxInit(tmr_type* TIMx, uint32_t arr, uint16_t psc, uint8_t Tim
   tmr_div_value_set(TIMx, TMR_CLOCK_DIV1);
 
   tmr_output_default_para_init(&tmr_output_struct);
-  tmr_output_struct.oc_mode = TMR_OUTPUT_CONTROL_PWM_MODE_B;
-  tmr_output_struct.oc_polarity = TMR_OUTPUT_ACTIVE_LOW;
-  tmr_output_struct.oc_idle_state = TRUE;
-  tmr_output_struct.occ_polarity = TMR_OUTPUT_ACTIVE_HIGH;
-  tmr_output_struct.occ_idle_state = FALSE;
-  tmr_output_struct.oc_output_state = TRUE;
+  tmr_output_struct.oc_mode          = TMR_OUTPUT_CONTROL_PWM_MODE_B;
+  tmr_output_struct.oc_polarity      = TMR_OUTPUT_ACTIVE_LOW;
+  tmr_output_struct.oc_idle_state    = TRUE;
+  tmr_output_struct.occ_polarity     = TMR_OUTPUT_ACTIVE_HIGH;
+  tmr_output_struct.occ_idle_state   = FALSE;
+  tmr_output_struct.oc_output_state  = TRUE;
   tmr_output_struct.occ_output_state = TRUE;
 
-  switch(TimerChannel)
+  switch (TimerChannel)
   {
-  case 1:
-    tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_1, &tmr_output_struct);
-    break;
-  case 2:
-    tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_2, &tmr_output_struct);
-    break;
-  case 3:
-    tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_3, &tmr_output_struct);
-    break;
-  case 4:
-    tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_4, &tmr_output_struct);
-    break;
+    case 1:
+      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_1, &tmr_output_struct);
+      break;
+    case 2:
+      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_2, &tmr_output_struct);
+      break;
+    case 3:
+      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_3, &tmr_output_struct);
+      break;
+    case 4:
+      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_4, &tmr_output_struct);
+      break;
 #ifdef TIM_SELECT_CHANNEL_5
-  case 5:
-    tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_5, &tmr_output_struct);
-    break;
+    case 5:
+      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_5, &tmr_output_struct);
+      break;
 #endif
-  default:
-    return;
+    default:
+      return;
   }
 
   tmr_output_enable(TIMx, TRUE);
   tmr_counter_enable(TIMx, TRUE);
 }
 
-
 /**
-  * @brief  PWM输出初始化
-  * @param  Pin:引脚编号
-  * @param  Resolution: PWM分辨率
-  * @param  Frequency: PWM频率
-  * @retval 引脚对应的定时器通道
-  */
+ * @brief  PWM输出初始化
+ * @param  Pin:引脚编号
+ * @param  Resolution: PWM分辨率
+ * @param  Frequency: PWM频率
+ * @retval 引脚对应的定时器通道
+ */
 uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
 {
   uint32_t arr, psc;
 
-  if(!IS_PWM_PIN(Pin))
+  if (!IS_PWM_PIN(Pin)) { return 0; }
+
+  if (Resolution == 0 || Frequency == 0 || (Resolution * Frequency) > F_CPU)
   {
     return 0;
   }
 
-  if(Resolution == 0 || Frequency == 0 || (Resolution * Frequency) > F_CPU)
-  {
-    return 0;
-  }
-
-  tmr_type* TIMx = PIN_MAP[Pin].TIMx;
+  tmr_type *TIMx = PIN_MAP[Pin].TIMx;
 
   // pinMode(Pin, OUTPUT_AF_PP);
-  GPIOx_Init(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x, OUTPUT_AF_PP, GPIO_DRIVE_DEFAULT);
+  GPIOx_Init(PIN_MAP[Pin].GPIOx,
+             PIN_MAP[Pin].GPIO_Pin_x,
+             OUTPUT_AF_PP,
+             GPIO_DRIVE_DEFAULT);
   if (PIN_MAP[Pin].PinMux != MUX_XX)
   {
     crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
@@ -120,19 +120,18 @@ uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
   return PIN_MAP[Pin].TimerChannel;
 }
 
-
 /**
-  * @brief  输出PWM信号
-  * @param  Pin: 引脚编号
-  * @param  Value: PWM输出值
-  * @retval PWM占空比值
-  */
+ * @brief  输出PWM信号
+ * @param  Pin: 引脚编号
+ * @param  Value: PWM输出值
+ * @retval PWM占空比值
+ */
 void PWM_Write(uint8_t Pin, uint32_t Value)
 {
-  if(!IS_PWM_PIN(Pin))
+  if (!IS_PWM_PIN(Pin))
   {
     log_w("PWM_Write: Pin %d is not a PWM pin!", Pin);
-    return ;
+    return;
   }
   Timer_SetCompare(PIN_MAP[Pin].TIMx, PIN_MAP[Pin].TimerChannel, Value);
 }

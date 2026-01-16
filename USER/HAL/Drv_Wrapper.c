@@ -5,10 +5,10 @@
 
 void DRV_Init(void)
 {
-    // Initialize HAL components here
-    DRV_TickAdapter_Init();
+  // Initialize HAL components here
+  DRV_TickAdapter_Init();
 
-    DRV_SetInterval(DRV_Update, 10, TIMER_INTERVAL_REPEAT);
+  DRV_SetInterval(DRV_Update, 10, TIMER_INTERVAL_REPEAT);
 }
 
 /**
@@ -17,7 +17,5 @@ void DRV_Init(void)
  */
 void DRV_Update(void)
 {
-    // Update HAL components here
+  // Update HAL components here
 }
-
-

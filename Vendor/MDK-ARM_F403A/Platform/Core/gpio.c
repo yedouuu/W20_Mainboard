@@ -9,8 +9,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -125,45 +125,51 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
   {GPIOE, NULL,  NULL, MUX_XX, GPIO_PINS_15, 0, ADC_CHANNEL_X  }, /* PE15 */
 };
 
-
 /**
-  * @brief  GPIO初始化
-  * @param  GPIOx: GPIO地址
-  * @param  GPIO_Pin_x: GPIO对应位
-  * @param  GPIO_Mode_x: GPIO模式
-  * @param  GPIO_Drive_x: GPIO速度
-  * @retval 无
-  */
-void GPIOx_Init(
-    GPIO_TypeDef* GPIOx,
-    uint16_t GPIO_Pin_x,
-    PinMode_TypeDef Mode,
-    gpio_drive_type GPIO_Drive_x
-)
+ * @brief  GPIO初始化
+ * @param  GPIOx: GPIO地址
+ * @param  GPIO_Pin_x: GPIO对应位
+ * @param  GPIO_Mode_x: GPIO模式
+ * @param  GPIO_Drive_x: GPIO速度
+ * @retval 无
+ */
+void GPIOx_Init(GPIO_TypeDef   *GPIOx,
+                uint16_t        GPIO_Pin_x,
+                PinMode_TypeDef Mode,
+                gpio_drive_type GPIO_Drive_x)
 {
-  gpio_init_type gpio_init_struct;
+  gpio_init_type        gpio_init_struct;
   crm_periph_clock_type CRM_GPIOx_PERIPH_CLOCK;
 
-  if(GPIOx == GPIOA)     CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOA_PERIPH_CLOCK;
-  else if(GPIOx == GPIOB)CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOB_PERIPH_CLOCK;
-  else if(GPIOx == GPIOC)CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOC_PERIPH_CLOCK;
-  else if(GPIOx == GPIOD)CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOD_PERIPH_CLOCK;
+  if (GPIOx == GPIOA)
+    CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOA_PERIPH_CLOCK;
+  else if (GPIOx == GPIOB)
+    CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOB_PERIPH_CLOCK;
+  else if (GPIOx == GPIOC)
+    CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOC_PERIPH_CLOCK;
+  else if (GPIOx == GPIOD)
+    CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOD_PERIPH_CLOCK;
 #ifdef GPIOE
-  else if(GPIOx == GPIOE)CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOE_PERIPH_CLOCK;
+  else if (GPIOx == GPIOE)
+    CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOE_PERIPH_CLOCK;
 #endif
 #ifdef GPIOF
-  else if(GPIOx == GPIOF)CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOF_PERIPH_CLOCK;
+  else if (GPIOx == GPIOF)
+    CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOF_PERIPH_CLOCK;
 #endif
 #ifdef GPIOG
-  else if(GPIOx == GPIOG)CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOG_PERIPH_CLOCK;
+  else if (GPIOx == GPIOG)
+    CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOG_PERIPH_CLOCK;
 #endif
 #ifdef GPIOH
-  else if(GPIOx == GPIOH)CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOH_PERIPH_CLOCK;
+  else if (GPIOx == GPIOH)
+    CRM_GPIOx_PERIPH_CLOCK = CRM_GPIOH_PERIPH_CLOCK;
 #endif
-  else return;
+  else
+    return;
 
   gpio_default_para_init(&gpio_init_struct);
-  gpio_init_struct.gpio_pins = GPIO_Pin_x;
+  gpio_init_struct.gpio_pins           = GPIO_Pin_x;
   gpio_init_struct.gpio_drive_strength = GPIO_Drive_x;
 
   if (Mode == INPUT)
@@ -188,34 +194,34 @@ void GPIOx_Init(
   }
   else if (Mode == OUTPUT)
   {
-    gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-    gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+    gpio_init_struct.gpio_mode     = GPIO_MODE_OUTPUT;
+    gpio_init_struct.gpio_pull     = GPIO_PULL_NONE;
     gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   }
   else if (Mode == OUTPUT_PULLUP)
   {
-    gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-    gpio_init_struct.gpio_pull = GPIO_PULL_UP;
+    gpio_init_struct.gpio_mode     = GPIO_MODE_OUTPUT;
+    gpio_init_struct.gpio_pull     = GPIO_PULL_UP;
     gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   }
   else if (Mode == OUTPUT_OPEN_DRAIN)
   {
-    gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-    gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+    gpio_init_struct.gpio_mode     = GPIO_MODE_OUTPUT;
+    gpio_init_struct.gpio_pull     = GPIO_PULL_NONE;
     gpio_init_struct.gpio_out_type = GPIO_OUTPUT_OPEN_DRAIN;
   }
   else if (Mode == OUTPUT_AF_PP)
   {
     crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
-    gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
-    gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+    gpio_init_struct.gpio_mode     = GPIO_MODE_MUX;
+    gpio_init_struct.gpio_pull     = GPIO_PULL_NONE;
     gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   }
   else if (Mode == OUTPUT_AF_OD)
   {
     crm_periph_clock_enable(CRM_IOMUX_PERIPH_CLOCK, TRUE);
-    gpio_init_struct.gpio_mode = GPIO_MODE_MUX;
-    gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+    gpio_init_struct.gpio_mode     = GPIO_MODE_MUX;
+    gpio_init_struct.gpio_pull     = GPIO_PULL_NONE;
     gpio_init_struct.gpio_out_type = GPIO_OUTPUT_OPEN_DRAIN;
   }
   else
@@ -223,17 +229,18 @@ void GPIOx_Init(
     return;
   }
 
-  // log_d("GPIOx_Init: GPIOx=0x%08X, Pin=0x%04X, Mode=%d, Drive=%d", (uint32_t)GPIOx, GPIO_Pin_x, Mode, GPIO_Drive_x);
+  // log_d("GPIOx_Init: GPIOx=0x%08X, Pin=0x%04X, Mode=%d, Drive=%d",
+  // (uint32_t)GPIOx, GPIO_Pin_x, Mode, GPIO_Drive_x);
 
   crm_periph_clock_enable(CRM_GPIOx_PERIPH_CLOCK, TRUE);
   gpio_init(GPIOx, &gpio_init_struct);
 }
 
 /**
-  * @brief  禁用JTAG引脚
-  * @param  无
-  * @retval 无
-  */
+ * @brief  禁用JTAG引脚
+ * @param  无
+ * @retval 无
+ */
 void GPIO_JTAG_Disable(void)
 {
   // RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_AFIO, ENABLE);
@@ -244,32 +251,30 @@ void GPIO_JTAG_Disable(void)
  * @brief  获取当前引脚对应的GPIOx编号
  * PA1 -> 1
  * PB3 -> 2
- * 
+ *
  * @param  Pin: 引脚编号
  * @retval 无
  */
 uint8_t GPIO_GetPortNum(uint8_t Pin)
 {
-  uint8_t retval = 0xFF;
-  uint8_t index;
+  uint8_t       retval = 0xFF;
+  uint8_t       index;
   GPIO_TypeDef *GPIOx = PIN_MAP[Pin].GPIOx;
 
-  GPIO_TypeDef *GPIO_Map[] =
-      {
-          GPIOA,
-          GPIOB,
-          GPIOC,
-          GPIOD,
+  GPIO_TypeDef *GPIO_Map[] = {GPIOA,
+                              GPIOB,
+                              GPIOC,
+                              GPIOD,
 #ifdef GPIOE
-          GPIOE,
+                              GPIOE,
 #endif
 #ifdef GPIOF
-          GPIOF,
+                              GPIOF,
 #endif
 #ifdef GPIOG
-          GPIOG
+                              GPIOG
 #endif
-      };
+  };
 
   for (index = 0; index < sizeof(GPIO_Map) / sizeof(GPIO_Map[0]); index++)
   {
@@ -284,17 +289,17 @@ uint8_t GPIO_GetPortNum(uint8_t Pin)
 }
 
 /**
-  * @brief  获取当前引脚对应的 PinSource
-  * PA1 --> 1
-  * PB3 --> 3
-  * 
-  * @param  GPIO_Pin_x: GPIO对应位
-  * @retval 无
-  */
+ * @brief  获取当前引脚对应的 PinSource
+ * PA1 --> 1
+ * PB3 --> 3
+ *
+ * @param  GPIO_Pin_x: GPIO对应位
+ * @retval 无
+ */
 uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x)
 {
   uint8_t PinSource = 0;
-  while(GPIO_Pin_x > 1)
+  while (GPIO_Pin_x > 1)
   {
     GPIO_Pin_x >>= 1;
     PinSource++;
@@ -303,13 +308,13 @@ uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x)
 }
 
 /**
-  * @brief  获取当前引脚对应的编号
-  * PA1 --> 0x0001
-  * PB3 --> 0x0008
-  * 
-  * @param  Pin: 引脚编号
-  * @retval 无
-  */
+ * @brief  获取当前引脚对应的编号
+ * PA1 --> 0x0001
+ * PB3 --> 0x0008
+ *
+ * @param  Pin: 引脚编号
+ * @retval 无
+ */
 uint8_t GPIO_GetPinNum(uint8_t Pin)
 {
   return GPIO_GetPinSource(PIN_MAP[Pin].GPIO_Pin_x);

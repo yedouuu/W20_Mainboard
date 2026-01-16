@@ -7,9 +7,9 @@
  * @param  dev: 通用设备指针
  * @retval 有效的 DRV_Touch_Ops_t 指针，如果校验失败返回 NULL
  */
-static DRV_Touch_Ops_t* __DRV_Touch_GetOps(Device_t* dev)
+static DRV_Touch_Ops_t *__DRV_Touch_GetOps(Device_t *dev)
 {
-  if (dev == NULL) 
+  if (dev == NULL)
   {
     log_e("Device is NULL!");
     return NULL;
@@ -27,7 +27,7 @@ static DRV_Touch_Ops_t* __DRV_Touch_GetOps(Device_t* dev)
     return NULL;
   }
 
-  DRV_Touch_Ops_t* ops = (DRV_Touch_Ops_t*)dev->ops;
+  DRV_Touch_Ops_t *ops = (DRV_Touch_Ops_t *)dev->ops;
   if (ops->magic != DEVICE_MAGIC_TOUCH)
   {
     log_e("Magic Mismatch: Device %s is not a Touch Device!", dev->name);
@@ -37,25 +37,27 @@ static DRV_Touch_Ops_t* __DRV_Touch_GetOps(Device_t* dev)
   return ops;
 }
 
-Status_t DRV_Touch_Init(Device_t* touch_dev)
+Status_t DRV_Touch_Init(Device_t *touch_dev)
 {
-  DRV_Touch_Ops_t* ops = __DRV_Touch_GetOps(touch_dev);
+  DRV_Touch_Ops_t *ops = __DRV_Touch_GetOps(touch_dev);
   if (ops == NULL)
   {
     log_e("%s Invalid Argument!", touch_dev->name);
     return kStatus_InvalidArgument;
   }
 
-  log_i("Init device: %s, type %d", touch_dev->name, ((DRV_Touch_Priv_t*)touch_dev->priv)->type);
+  log_i("Init device: %s, type %d",
+        touch_dev->name,
+        ((DRV_Touch_Priv_t *)touch_dev->priv)->type);
 
   ops->BSP_Init(touch_dev->res);
 
   return kStatus_Success;
 }
 
-Status_t DRV_Touch_DeInit(Device_t* touch_dev)
+Status_t DRV_Touch_DeInit(Device_t *touch_dev)
 {
-  DRV_Touch_Ops_t* ops = __DRV_Touch_GetOps(touch_dev);
+  DRV_Touch_Ops_t *ops = __DRV_Touch_GetOps(touch_dev);
   if (ops == NULL)
   {
     log_e("Invalid Argument!");
@@ -67,9 +69,9 @@ Status_t DRV_Touch_DeInit(Device_t* touch_dev)
   return kStatus_Success;
 }
 
-Status_t DRV_Touch_Open(Device_t* touch_dev)
+Status_t DRV_Touch_Open(Device_t *touch_dev)
 {
-  DRV_Touch_Ops_t* ops = __DRV_Touch_GetOps(touch_dev);
+  DRV_Touch_Ops_t *ops = __DRV_Touch_GetOps(touch_dev);
   if (ops == NULL)
   {
     log_e("Invalid Argument!");
@@ -81,9 +83,9 @@ Status_t DRV_Touch_Open(Device_t* touch_dev)
   return kStatus_Success;
 }
 
-Status_t DRV_Touch_Close(Device_t* touch_dev)
+Status_t DRV_Touch_Close(Device_t *touch_dev)
 {
-  DRV_Touch_Ops_t* ops = __DRV_Touch_GetOps(touch_dev);
+  DRV_Touch_Ops_t *ops = __DRV_Touch_GetOps(touch_dev);
   if (ops == NULL)
   {
     log_e("Invalid Argument!");
@@ -95,17 +97,16 @@ Status_t DRV_Touch_Close(Device_t* touch_dev)
   return kStatus_Success;
 }
 
-Status_t DRV_Touch_Read(Device_t* touch_dev, DRV_Touch_Point_t* point)
+Status_t DRV_Touch_Read(Device_t *touch_dev, DRV_Touch_Point_t *point)
 {
-  DRV_Touch_Ops_t* ops = __DRV_Touch_GetOps(touch_dev);
+  DRV_Touch_Ops_t *ops = __DRV_Touch_GetOps(touch_dev);
   if (ops == NULL)
   {
     log_e("Invalid Argument!");
     return kStatus_InvalidArgument;
   }
-  
+
   ops->Read(touch_dev->res, &point->x, &point->y, &point->pressed);
 
   return kStatus_Success;
 }
-

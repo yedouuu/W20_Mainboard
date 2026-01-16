@@ -25,12 +25,14 @@ typedef struct _DRV_Tick_Ops_t
 
 typedef struct _DRV_Tick_Ops_t DRV_Tick_Ops_t;
 
-void DRV_Tick_Init(DRV_Tick_Ops_t* ops);
+void     DRV_Tick_Init(DRV_Tick_Ops_t *ops);
 uint32_t DRV_GetMillis(void);
 uint32_t DRV_GetMicros(void);
-void DRV_DelayMs(uint32_t ms);
-void DRV_DelayUs(uint32_t us);
-Status_t DRV_SetInterval(TimerInterval_CB_t callback, uint32_t interval_ms, TimerInterval_Type_e repeat);
+void     DRV_DelayMs(uint32_t ms);
+void     DRV_DelayUs(uint32_t us);
+Status_t DRV_SetInterval(TimerInterval_CB_t   callback,
+                         uint32_t             interval_ms,
+                         TimerInterval_Type_e repeat);
 Status_t DRV_ClearInterval(TimerInterval_CB_t callback);
 
 #if defined(__cplusplus)

@@ -60,14 +60,20 @@ virtualFolder:
             - path: ../../USER/Application/Resources/LightMode.c
           folders: []
     - name: Utils
-      files:
-        - path: ../../USER/Utils/Logger.c
-        - path: ../../USER/Utils/new.cpp
+      files: []
       folders:
         - name: lv_ext
           files:
             - path: ../../USER/Utils/lv_ext/lv_anim_timeline_wrapper.c
             - path: ../../USER/Utils/lv_ext/lv_obj_ext_func.cpp
+          folders: []
+        - name: Logger
+          files:
+            - path: ../../USER/Utils/Logger.c
+          folders: []
+        - name: new
+          files:
+            - path: ../../USER/Utils/new.cpp
           folders: []
     - name: Tests
       files:
@@ -440,6 +446,7 @@ virtualFolder:
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_ir.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_lcd.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_touch.c
+            - path: ../MDK-ARM_F403A/Platform/BSP/bsp_ext_flash.c
           folders: []
         - name: Core
           files:
@@ -560,6 +567,7 @@ targets:
         - ../../USER/Middleware/CmBacktrace/cm_backtrace/Languages/en-US
         - ../../Framework/PageManager
         - ../../USER/Utils/lv_ext
+        - ../../USER/Utils/Logger
       libList: []
     excludeList:
       - <virtual_root>/Platform/Firmware/Device/startup_at32f403avgt7_ext_ram.s

@@ -1,16 +1,27 @@
 # For more options, open this url: https://clang.llvm.net.cn/docs/ClangFormatStyleOptions.html
 ---
-BasedOnStyle: Microsoft
-IndentWidth: 4
+BasedOnStyle: LLVM
+IndentWidth: 2
 UseTab: Never
-TabWidth: 4
-ColumnLimit: 0
+TabWidth: 2
+ColumnLimit: 50
 ---
 Language: Cpp
 AccessModifierOffset: -4
 NamespaceIndentation: All
 FixNamespaceComments: false
 BreakBeforeBraces: Linux
+# BreakBeforeBraces: Custom
+# BraceWrapping:
+#   AfterFunction: true
+#   AfterControlStatement: true
+#   AfterStruct: true
+#   AfterEnum: true
+#   AfterUnion: true
+#   AfterClass: true
+#   BeforeElse: true
+#   BeforeCatch: true
+#   IndentBraces: false
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
 AllowShortBlocksOnASingleLine: true

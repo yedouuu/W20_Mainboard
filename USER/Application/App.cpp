@@ -34,9 +34,11 @@ void App_Init(void)
   lv_style_set_pad_all(&root_style, 0);
   pageManager.SetRootDefaultStyle(&root_style);
 
+  // clang-format off
   pageManager.Install("MainPage",     "Pages/MainPage");
   pageManager.Install("Startup",      "Pages/Startup");
   pageManager.Install("UserSettings", "Pages/UserSettings");
+  // clang-format on
 
   pageManager.SetGlobalLoadAnimType(PageManager::LOAD_ANIM_OVER_LEFT);
 

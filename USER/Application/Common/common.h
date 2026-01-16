@@ -10,6 +10,6 @@
 #include "comm_macro.h"
 #include "errno.h"
 
-#include "Utils/Logger.h"
+#include "Utils/Logger/Logger.h"
 
 #endif /* __COMMON_H__ */

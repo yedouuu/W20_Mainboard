@@ -9,8 +9,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -24,7 +24,7 @@
 #include <stdbool.h>
 
 /* Private defines -----------------------------------------------------------*/
-#define ADC_DMA_REGMAX 18
+#define ADC_DMA_REGMAX          18
 #define IS_ADC_CHANNEL(channel) (channel <= ADC_CHANNEL_17)
 
 /* Private variables --------------------------------------------------------*/
@@ -48,10 +48,7 @@ static int16_t ADC_DMA_SearchChannel(uint16_t ADC_Channel)
 
   for (index = 0; index < ADC_DMA_RegCnt; index++)
   {
-    if (ADC_Channel == ADC_DMA_RegChannelList[index])
-    {
-      return index;
-    }
+    if (ADC_Channel == ADC_DMA_RegChannelList[index]) { return index; }
   }
   return -1;
 }
@@ -65,10 +62,7 @@ void ADCx_Init(adc_type *ADCx)
 {
   adc_base_config_type adc_base_struct;
 
-  if (ADCx == ADC1)
-  {
-    crm_periph_clock_enable(CRM_ADC1_PERIPH_CLOCK, TRUE);
-  }
+  if (ADCx == ADC1) { crm_periph_clock_enable(CRM_ADC1_PERIPH_CLOCK, TRUE); }
   else if (ADCx == ADC2)
   {
     crm_periph_clock_enable(CRM_ADC2_PERIPH_CLOCK, TRUE);
@@ -85,9 +79,9 @@ void ADCx_Init(adc_type *ADCx)
   crm_adc_clock_div_set(CRM_ADC_DIV_6);
 
   adc_base_default_para_init(&adc_base_struct);
-  adc_base_struct.sequence_mode = FALSE;
-  adc_base_struct.repeat_mode = FALSE;
-  adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
+  adc_base_struct.sequence_mode           = FALSE;
+  adc_base_struct.repeat_mode             = FALSE;
+  adc_base_struct.data_align              = ADC_RIGHT_ALIGNMENT;
   adc_base_struct.ordinary_channel_length = 1;
   adc_base_config(ADCx, &adc_base_struct);
 
@@ -103,11 +97,9 @@ void ADCx_Init(adc_type *ADCx)
 
   /* adc calibration */
   adc_calibration_init(ADCx);
-  while (adc_calibration_init_status_get(ADCx))
-    ;
+  while (adc_calibration_init_status_get(ADCx));
   adc_calibration_start(ADCx);
-  while (adc_calibration_status_get(ADCx))
-    ;
+  while (adc_calibration_status_get(ADCx));
 }
 
 /**
@@ -118,16 +110,16 @@ void ADCx_Init(adc_type *ADCx)
  */
 uint16_t ADCx_GetValue(adc_type *ADCx, uint16_t ADC_Channel)
 {
-  // adc_ordinary_channel_set(ADCx, (adc_channel_select_type)ADC_Channel, 1, ADC_SAMPLETIME_47_5);
+  // adc_ordinary_channel_set(ADCx, (adc_channel_select_type)ADC_Channel, 1,
+  // ADC_SAMPLETIME_47_5);
 
   // adc_ordinary_software_trigger_enable(ADCx, TRUE);
   // while (!adc_flag_get(ADCx, ADC_OCCE_FLAG))
   //   ;
 
   // return adc_ordinary_conversion_data_get(ADCx);
-	return 0;
+  return 0;
 }
-
 
 /**
  * @brief  启动 ADC 转换
@@ -138,7 +130,6 @@ void ADCx_Start(adc_type *ADCx)
 {
   adc_ordinary_software_trigger_enable(ADCx, TRUE);
 }
-
 
 /**
  * @brief  注册需要DMA搬运的ADC通道
@@ -152,18 +143,12 @@ ADC_DMA_Res_Type ADC_DMA_Register(uint8_t ADC_Channel)
   if (!isInit)
   {
     uint8_t i;
-    for (i = 0; i < ADC_DMA_REGMAX; i++)
-    {
-      ADC_DMA_RegChannelList[i] = 0xFF;
-    }
+    for (i = 0; i < ADC_DMA_REGMAX; i++) { ADC_DMA_RegChannelList[i] = 0xFF; }
     isInit = true;
   }
 
   /*是否是合法ADC通道*/
-  if (!IS_ADC_CHANNEL(ADC_Channel))
-  {
-    return ADC_DMA_RES_NOT_ADC_CHANNEL;
-  }
+  if (!IS_ADC_CHANNEL(ADC_Channel)) { return ADC_DMA_RES_NOT_ADC_CHANNEL; }
 
   /*是否已在引脚列表重复注册*/
   if (ADC_DMA_SearchChannel(ADC_Channel) != -1)
@@ -203,9 +188,9 @@ uint8_t ADC_DMA_GetRegisterCount(void)
  */
 void ADC_DMA_Init(void)
 {
-  dma_init_type dma_init_structure;
+  dma_init_type        dma_init_structure;
   adc_base_config_type adc_base_struct;
-  uint8_t index;
+  uint8_t              index;
 
   crm_periph_clock_enable(CRM_ADC1_PERIPH_CLOCK, TRUE);
   crm_periph_clock_enable(CRM_DMA1_PERIPH_CLOCK, TRUE);
@@ -215,16 +200,16 @@ void ADC_DMA_Init(void)
   dma_reset(DMA1_CHANNEL1);
 
   dma_default_para_init(&dma_init_structure);
-  dma_init_structure.buffer_size = ADC_DMA_RegCnt;
-  dma_init_structure.direction = DMA_DIR_PERIPHERAL_TO_MEMORY;
-  dma_init_structure.memory_base_addr = (uint32_t)ADC_DMA_ConvertedValue;
-  dma_init_structure.memory_data_width = DMA_MEMORY_DATA_WIDTH_HALFWORD;
-  dma_init_structure.memory_inc_enable = TRUE;
-  dma_init_structure.peripheral_base_addr = (uint32_t)(&(ADC1->odt));
+  dma_init_structure.buffer_size           = ADC_DMA_RegCnt;
+  dma_init_structure.direction             = DMA_DIR_PERIPHERAL_TO_MEMORY;
+  dma_init_structure.memory_base_addr      = (uint32_t)ADC_DMA_ConvertedValue;
+  dma_init_structure.memory_data_width     = DMA_MEMORY_DATA_WIDTH_HALFWORD;
+  dma_init_structure.memory_inc_enable     = TRUE;
+  dma_init_structure.peripheral_base_addr  = (uint32_t)(&(ADC1->odt));
   dma_init_structure.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_HALFWORD;
   dma_init_structure.peripheral_inc_enable = FALSE;
-  dma_init_structure.priority = DMA_PRIORITY_HIGH;
-  dma_init_structure.loop_mode_enable = TRUE;
+  dma_init_structure.priority              = DMA_PRIORITY_HIGH;
+  dma_init_structure.loop_mode_enable      = TRUE;
   dma_init(DMA1_CHANNEL1, &dma_init_structure);
 
   dma_interrupt_enable(DMA1_CHANNEL1, DMA_FDT_INT, TRUE);
@@ -233,9 +218,9 @@ void ADC_DMA_Init(void)
   adc_reset(ADC1);
   adc_combine_mode_select(ADC_INDEPENDENT_MODE);
   adc_base_default_para_init(&adc_base_struct);
-  adc_base_struct.sequence_mode = TRUE;
-  adc_base_struct.repeat_mode = TRUE;
-  adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
+  adc_base_struct.sequence_mode           = TRUE;
+  adc_base_struct.repeat_mode             = TRUE;
+  adc_base_struct.data_align              = ADC_RIGHT_ALIGNMENT;
   adc_base_struct.ordinary_channel_length = ADC_DMA_RegCnt;
   adc_base_config(ADC1, &adc_base_struct);
 
@@ -258,13 +243,10 @@ void ADC_DMA_Init(void)
   // while (adc_flag_get(ADC1, ADC_RDY_FLAG) == RESET)
   //   ;
   adc_calibration_init(ADC1);
-  while (adc_calibration_init_status_get(ADC1))
-    ;
+  while (adc_calibration_init_status_get(ADC1));
   adc_calibration_start(ADC1);
-  while (adc_calibration_status_get(ADC1))
-    ;
+  while (adc_calibration_status_get(ADC1));
 }
-
 
 /**
  * @brief  获取DMA搬运的ADC值
@@ -275,12 +257,10 @@ uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel)
 {
   int16_t index;
 
-  if (!IS_ADC_CHANNEL(ADC_Channel))
-    return 0;
+  if (!IS_ADC_CHANNEL(ADC_Channel)) return 0;
 
   index = ADC_DMA_SearchChannel(ADC_Channel);
-  if (index == -1)
-    return 0;
+  if (index == -1) return 0;
 
   return ADC_DMA_ConvertedValue[index];
 }
