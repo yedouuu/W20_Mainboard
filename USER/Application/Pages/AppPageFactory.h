@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2026 Yedouuu
+ * Copyright (c) 2021 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -9,8 +9,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -20,17 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "PageManager/PageManager.h"
 
-#ifndef __PAGE_FACTORY_H__
-#define __PAGE_FACTORY_H__
-
-class PageFactory
+class AppPageFactory : public PageFactory
 {
 public:
-  virtual PageBase *CreatePage(const char *name)
-  {
-    return nullptr;
-  };
-};
+  virtual PageBase *CreatePage(const char *name);
 
-#endif // __PAGE_FACTORY_H__
+private:
+};

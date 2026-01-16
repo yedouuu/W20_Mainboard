@@ -36,6 +36,9 @@
 #include "Services/pocket_detect.h"
 #include "cm_backtrace.h"
 
+#include "PageManager/PageManager.h"
+#include "PageManager/PageBase.h"
+
 #include "lvgl.h"
 #include "lv_port_disp.h"
 #include "lv_port_indev.h"

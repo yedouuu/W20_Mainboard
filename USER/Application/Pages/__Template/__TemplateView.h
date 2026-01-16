@@ -2,19 +2,31 @@
 #ifndef ____TEMPLATE_VIEW_H__
 #define ____TEMPLATE_VIEW_H__
 
-
 #include "Pages/Page.h"
 
+namespace Page
+{
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+class __TemplateView
+{
 
-void __Template_Create(lv_obj_t* parent);
+public:
+  struct
+  {
+    lv_obj_t *btn;
+  } ui;
 
+  void Create(lv_obj_t *parent);
 
-#ifdef __cplusplus
-}
-#endif
+private:
+  void SiderCreate(lv_obj_t *parent);
+  void TopInfoCreate(lv_obj_t *parent);
+  void ContentCreate(lv_obj_t *parent);
+  void BottomInfoCreate(lv_obj_t *parent);
+  void settings_btn_event_cb(lv_event_t *e);
 
-#endif // __MAINPAGEVIEW_H__
+}; // class __TemplateView;
+
+} // namespace Page
+
+#endif // ____TemplateVIEW_H__

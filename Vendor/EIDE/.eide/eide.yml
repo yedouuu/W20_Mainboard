@@ -28,6 +28,7 @@ virtualFolder:
         - name: Pages
           files:
             - path: ../../USER/Application/Pages/Page.h
+            - path: ../../USER/Application/Pages/AppPageFactory.cpp
           folders:
             - name: MainPage
               files:
@@ -41,14 +42,33 @@ virtualFolder:
                 - path: ../../USER/Application/Pages/UserSettings/UserSettingsModel.cpp
                 - path: ../../USER/Application/Pages/UserSettings/UserSettingsView.cpp
               folders: []
+            - name: Startup
+              files:
+                - path: ../../USER/Application/Pages/Startup/Startup.cpp
+                - path: ../../USER/Application/Pages/Startup/StartupModel.cpp
+                - path: ../../USER/Application/Pages/Startup/StartupView.cpp
+              folders: []
+            - name: __Template
+              files:
+                - path: ../../USER/Application/Pages/__Template/__Template.cpp
+                - path: ../../USER/Application/Pages/__Template/__TemplateModel.cpp
+                - path: ../../USER/Application/Pages/__Template/__TemplateView.cpp
+              folders: []
         - name: Resources
           files:
             - path: ../../USER/Application/Resources/BankosaMainPage.c
+            - path: ../../USER/Application/Resources/LightMode.c
           folders: []
     - name: Utils
       files:
         - path: ../../USER/Utils/Logger.c
-      folders: []
+        - path: ../../USER/Utils/new.cpp
+      folders:
+        - name: lv_ext
+          files:
+            - path: ../../USER/Utils/lv_ext/lv_anim_timeline_wrapper.c
+            - path: ../../USER/Utils/lv_ext/lv_obj_ext_func.cpp
+          folders: []
     - name: Tests
       files:
         - path: ../../USER/Tests/unit_test.c
@@ -484,7 +504,7 @@ virtualFolder:
           folders: []
         - name: PageManager
           files:
-            - path: ../../Framework/PageManager/PageBase.c
+            - path: ../../Framework/PageManager/PageBase.cpp
             - path: ../../Framework/PageManager/PageFactory.h
             - path: ../../Framework/PageManager/PageManager.h
             - path: ../../Framework/PageManager/PM_Base.cpp
@@ -492,6 +512,7 @@ virtualFolder:
             - path: ../../Framework/PageManager/PM_Log.h
             - path: ../../Framework/PageManager/PM_Router.cpp
             - path: ../../Framework/PageManager/PM_State.cpp
+            - path: ../../Framework/PageManager/PM_Anim.cpp
           folders: []
 dependenceList: []
 outDir: build
@@ -537,6 +558,8 @@ targets:
         - ../../USER/Middleware/CmBacktrace/cm_backtrace
         - ../../USER/Middleware/CmBacktrace/cm_backtrace/Languages/zh-CN
         - ../../USER/Middleware/CmBacktrace/cm_backtrace/Languages/en-US
+        - ../../Framework/PageManager
+        - ../../USER/Utils/lv_ext
       libList: []
     excludeList:
       - <virtual_root>/Platform/Firmware/Device/startup_at32f403avgt7_ext_ram.s
@@ -597,12 +620,11 @@ targets:
             language-c: c11
             language-cpp: c++11
             one-elf-section-per-function: true
-            optimization: level-1
+            optimization: level-balanced
             short-enums#wchar: true
             warnings: ac5-like-warnings
           global:
             output-debug-info: enable
-            use-microLIB: true
           linker:
             $outputTaskExcludes:
               - .bin

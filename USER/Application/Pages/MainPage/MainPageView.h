@@ -2,19 +2,31 @@
 #ifndef __MAINPAGEVIEW_H__
 #define __MAINPAGEVIEW_H__
 
-
 #include "Pages/Page.h"
 
+namespace Page
+{
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+class MainPageView
+{
 
-void MainPage_Create(lv_obj_t* parent);
+public:
+  struct
+  {
+    lv_obj_t *btn;
+  } ui;
 
+  void Create(lv_obj_t *parent);
 
-#ifdef __cplusplus
-}
-#endif
+private:
+  void SiderCreate(lv_obj_t *parent);
+  void TopInfoCreate(lv_obj_t *parent);
+  void ContentCreate(lv_obj_t *parent);
+  void BottomInfoCreate(lv_obj_t *parent);
+  void settings_btn_event_cb(lv_event_t *e);
+
+}; // class MainPageView;
+
+} // namespace Page
 
 #endif // __MAINPAGEVIEW_H__

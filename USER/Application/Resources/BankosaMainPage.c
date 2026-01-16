@@ -12,6 +12,9 @@
     #include "lvgl/lvgl.h"
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
 #define LV_ATTRIBUTE_MEM_ALIGN
@@ -304,3 +307,8 @@ const lv_image_dsc_t BankosaMainPage = {
   .data_size = 130560 * 2,
   .data = BankosaMainPage_map,
 };
+
+
+#ifdef __cplusplus
+} /*extern "C"*/
+#endif

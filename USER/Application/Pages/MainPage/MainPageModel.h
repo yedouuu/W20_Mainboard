@@ -2,19 +2,16 @@
 #ifndef __MAINPAGEMODEL_H__
 #define __MAINPAGEMODEL_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace Page
+{
 
+class MainPageModel
+{
+public:
+  void Init();
+  void Deinit();
+};
 
-
-
-
-#ifdef __cplusplus
 }
-#endif
-
-
 
 #endif // __MAINPAGEMODEL_H__
-

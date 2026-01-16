@@ -25,8 +25,10 @@
 
 
 #include "lvgl.h"
-#include "Pages/MainPage/MainPage.h"
-#include "Pages/UserSettings/UserSettings.h"
+#include "PageManager/PageManager.h"
+#include "PageManager/PageBase.h"
+#include "Utils/lv_ext/lv_obj_ext_func.h"
+#include "Utils/lv_ext/lv_anim_timeline_wrapper.h"
 
 
 #endif // __PAGE_H__

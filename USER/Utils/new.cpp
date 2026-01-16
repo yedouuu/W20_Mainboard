@@ -21,16 +21,41 @@
  * SOFTWARE.
  */
 
-#ifndef __PAGE_FACTORY_H__
-#define __PAGE_FACTORY_H__
+#include "lvgl/lvgl.h"
 
-class PageFactory
+typedef void* (*alloc_func_t)(size_t);
+
+static void* first_alloc(size_t size);
+
+static alloc_func_t alloc_func = first_alloc;
+
+static void* first_alloc(size_t size)
 {
-public:
-  virtual PageBase *CreatePage(const char *name)
-  {
-    return nullptr;
-  };
-};
+    if(!lv_is_initialized())
+    {
+        lv_init();
+    }
 
-#endif // __PAGE_FACTORY_H__
+    alloc_func = lv_malloc;
+    return lv_malloc(size);
+}
+
+void *operator new(size_t size)
+{
+    return alloc_func(size);
+}
+
+void *operator new[](size_t size)
+{
+    return alloc_func(size);
+}
+
+void operator delete(void* ptr) noexcept
+{
+    lv_free(ptr);
+}
+
+void operator delete[](void* ptr) noexcept
+{
+    lv_free(ptr);
+}

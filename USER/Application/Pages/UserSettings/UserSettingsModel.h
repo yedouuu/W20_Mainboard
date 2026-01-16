@@ -1,20 +1,15 @@
 
-#ifndef ____TemplateMODEL_H__
-#define ____TemplateMODEL_H__
+#ifndef __USER_SETTINGS_MODEL_H__
+#define __USER_SETTINGS_MODEL_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace Page
+{
 
+class UserSettingsModel
+{
+};
 
-
-
-
-#ifdef __cplusplus
 }
-#endif
 
 
-
-#endif // ____TemplateMODEL_H__
-
+#endif // __UserSettingsMODEL_H__

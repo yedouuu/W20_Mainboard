@@ -311,7 +311,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>6</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -337,7 +337,7 @@
               <MiscControls/>
               <Define>AT32F403AVGT7,USE_STDPERIPH_DRIVER,LV_LVGL_H_INCLUDE_SIMPLE</Define>
               <Undefine/>
-              <IncludePath>.;..\MDK-ARM_F403A\Platform\Firmware\CMSIS;..\MDK-ARM_F403A\Platform\Firmware\Device\Include;..\MDK-ARM_F403A\Platform\Firmware\Device\StdPeriph_Driver\inc;..\MDK-ARM_F403A\Platform;..\MDK-ARM_F403A\Platform\Core;..\MDK-ARM_F403A\Platform\BSP;..\..\USER\HAL;..\..\USER\Middleware\EasyLogger\inc;..\..\USER\Middleware\Unity;..\..\USER\Middleware\RTT;..\..\USER\Middleware\LVGL\example\porting;..\..\USER\Middleware\LVGL\src;..\..\USER\Middleware\LVGL\demos;..\..\USER\Middleware\LVGL;..\..\USER\Middleware;..\..\USER\Utils;..\..\USER\Tests;..\..\USER\Application;..\..\USER;..\..\Framework;..\..\Framework\DeviceManager;..\..\USER\Middleware\LVGL\demos\widgets;.cmsis\include;..\MDK-ARM_F403A\RTE\_W20_Mainboard;..\..\USER\Middleware\LVGL\demos\benchmark;..\..\USER\Middleware\LVGL\demos\music;..\..\USER\Middleware\LVGL\demos\music\assets;..\..\USER\Application\Pages;..\..\USER\Middleware\CmBacktrace\cm_backtrace;..\..\USER\Middleware\CmBacktrace\cm_backtrace\Languages\zh-CN;..\..\USER\Middleware\CmBacktrace\cm_backtrace\Languages\en-US</IncludePath>
+              <IncludePath>.;..\MDK-ARM_F403A\Platform\Firmware\CMSIS;..\MDK-ARM_F403A\Platform\Firmware\Device\Include;..\MDK-ARM_F403A\Platform\Firmware\Device\StdPeriph_Driver\inc;..\MDK-ARM_F403A\Platform;..\MDK-ARM_F403A\Platform\Core;..\MDK-ARM_F403A\Platform\BSP;..\..\USER\HAL;..\..\USER\Middleware\EasyLogger\inc;..\..\USER\Middleware\Unity;..\..\USER\Middleware\RTT;..\..\USER\Middleware\LVGL\example\porting;..\..\USER\Middleware\LVGL\src;..\..\USER\Middleware\LVGL\demos;..\..\USER\Middleware\LVGL;..\..\USER\Middleware;..\..\USER\Utils;..\..\USER\Tests;..\..\USER\Application;..\..\USER;..\..\Framework;..\..\Framework\DeviceManager;..\..\USER\Middleware\LVGL\demos\widgets;.cmsis\include;..\MDK-ARM_F403A\RTE\_W20_Mainboard;..\..\USER\Middleware\LVGL\demos\benchmark;..\..\USER\Middleware\LVGL\demos\music;..\..\USER\Middleware\LVGL\demos\music\assets;..\..\USER\Application\Pages;..\..\USER\Middleware\CmBacktrace\cm_backtrace;..\..\USER\Middleware\CmBacktrace\cm_backtrace\Languages\zh-CN;..\..\USER\Middleware\CmBacktrace\cm_backtrace\Languages\en-US;..\..\Framework\PageManager;..\..\USER\Utils\lv_ext</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -378,6 +378,56 @@
         </TargetArmAds>
       </TargetOption>
       <Groups>
+        <Group>
+          <GroupName>Framework/PageManager</GroupName>
+          <Files>
+            <File>
+              <FileName>PageBase.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../Framework/PageManager/PageBase.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PageFactory.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../../Framework/PageManager/PageFactory.h</FilePath>
+            </File>
+            <File>
+              <FileName>PageManager.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../../Framework/PageManager/PageManager.h</FilePath>
+            </File>
+            <File>
+              <FileName>PM_Base.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../Framework/PageManager/PM_Base.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PM_Drag.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../Framework/PageManager/PM_Drag.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PM_Log.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../../Framework/PageManager/PM_Log.h</FilePath>
+            </File>
+            <File>
+              <FileName>PM_Router.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../Framework/PageManager/PM_Router.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PM_State.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../Framework/PageManager/PM_State.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PM_Anim.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../Framework/PageManager/PM_Anim.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
         <Group>
           <GroupName>Framework/DeviceManager</GroupName>
           <Files>
@@ -2321,15 +2371,50 @@
               <FileType>1</FileType>
               <FilePath>../../USER/Utils/Logger.c</FilePath>
             </File>
+            <File>
+              <FileName>new.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Utils/new.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utils/lv_ext</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_anim_timeline_wrapper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../USER/Utils/lv_ext/lv_anim_timeline_wrapper.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_obj_ext_func.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Utils/lv_ext/lv_obj_ext_func.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Application</GroupName>
           <Files>
             <File>
-              <FileName>App.c</FileName>
+              <FileName>App.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/App.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/Resources</GroupName>
+          <Files>
+            <File>
+              <FileName>BankosaMainPage.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../USER/Application/App.c</FilePath>
+              <FilePath>../../USER/Application/Resources/BankosaMainPage.c</FilePath>
+            </File>
+            <File>
+              <FileName>LightMode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../USER/Application/Resources/LightMode.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2341,25 +2426,90 @@
               <FileType>5</FileType>
               <FilePath>../../USER/Application/Pages/Page.h</FilePath>
             </File>
+            <File>
+              <FileName>AppPageFactory.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/AppPageFactory.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/Pages/__Template</GroupName>
+          <Files>
+            <File>
+              <FileName>__Template.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/__Template/__Template.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>__TemplateModel.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/__Template/__TemplateModel.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>__TemplateView.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/__Template/__TemplateView.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/Pages/Startup</GroupName>
+          <Files>
+            <File>
+              <FileName>Startup.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/Startup/Startup.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>StartupModel.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/Startup/StartupModel.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>StartupView.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/Startup/StartupView.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/Pages/UserSettings</GroupName>
+          <Files>
+            <File>
+              <FileName>UserSettings.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/UserSettings/UserSettings.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>UserSettingsModel.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/UserSettings/UserSettingsModel.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>UserSettingsView.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/UserSettings/UserSettingsView.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Application/Pages/MainPage</GroupName>
           <Files>
             <File>
-              <FileName>MainPage.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../USER/Application/Pages/MainPage/MainPage.c</FilePath>
+              <FileName>MainPage.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/MainPage/MainPage.cpp</FilePath>
             </File>
             <File>
-              <FileName>MainPageModel.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../USER/Application/Pages/MainPage/MainPageModel.c</FilePath>
+              <FileName>MainPageModel.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/MainPage/MainPageModel.cpp</FilePath>
             </File>
             <File>
-              <FileName>MainPageView.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../USER/Application/Pages/MainPage/MainPageView.c</FilePath>
+              <FileName>MainPageView.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/Application/Pages/MainPage/MainPageView.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -2392,9 +2542,9 @@
           <GroupName>USER</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../USER/main.c</FilePath>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>../../USER/main.cpp</FilePath>
             </File>
           </Files>
         </Group>

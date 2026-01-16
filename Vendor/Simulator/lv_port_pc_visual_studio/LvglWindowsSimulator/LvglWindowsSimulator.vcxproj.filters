@@ -2135,6 +2135,36 @@
     <ClInclude Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsView.h">
       <Filter>Application\Pages\UserSettings</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Framework\PageManager\PageBase.h">
+      <Filter>Framework\PageManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Framework\PageManager\PageFactory.h">
+      <Filter>Framework\PageManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Framework\PageManager\PageManager.h">
+      <Filter>Framework\PageManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Framework\PageManager\PM_Log.h">
+      <Filter>Framework\PageManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\AppPageFactory.h">
+      <Filter>Application\Pages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\Startup\Startup.h">
+      <Filter>Application\Pages\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\Startup\StartupModel.h">
+      <Filter>Application\Pages\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Application\Pages\Startup\StartupView.h">
+      <Filter>Application\Pages\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Utils\lv_ext\lv_anim_timeline_wrapper.h">
+      <Filter>Utils\lv_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Utils\lv_ext\lv_obj_ext_func.h">
+      <Filter>Utils\lv_ext</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LvglWindowsSimulator.manifest" />
@@ -4781,6 +4811,45 @@
     <ClCompile Include="..\..\..\..\USER\Application\Pages\UserSettings\UserSettingsView.cpp">
       <Filter>Application\Pages\UserSettings</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Framework\PageManager\PageBase.cpp">
+      <Filter>Framework\PageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Framework\PageManager\PM_Base.cpp">
+      <Filter>Framework\PageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Framework\PageManager\PM_Drag.cpp">
+      <Filter>Framework\PageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Framework\PageManager\PM_Router.cpp">
+      <Filter>Framework\PageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Framework\PageManager\PM_State.cpp">
+      <Filter>Framework\PageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Framework\PageManager\PM_Anim.cpp">
+      <Filter>Framework\PageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\AppPageFactory.cpp">
+      <Filter>Application\Pages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\Startup\Startup.cpp">
+      <Filter>Application\Pages\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\Startup\StartupModel.cpp">
+      <Filter>Application\Pages\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Pages\Startup\StartupView.cpp">
+      <Filter>Application\Pages\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Utils\lv_ext\lv_anim_timeline_wrapper.c">
+      <Filter>Utils\lv_ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Utils\lv_ext\lv_obj_ext_func.cpp">
+      <Filter>Utils\lv_ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Application\Resources\LightMode.c">
+      <Filter>Application\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="freetype">
@@ -6549,6 +6618,15 @@
     </Filter>
     <Filter Include="Application\Pages\UserSettings">
       <UniqueIdentifier>{9e03dcaa-79a3-40ef-a05b-adccf795afa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\PageManager">
+      <UniqueIdentifier>{b9a6f7bf-e50c-447d-a40e-c7d8b11e98e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Pages\Startup">
+      <UniqueIdentifier>{19c78f5a-25db-49e8-9900-2b49db39281a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\lv_ext">
+      <UniqueIdentifier>{cb905edd-59dc-414b-9909-8e8de913cde0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

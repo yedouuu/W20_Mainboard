@@ -1,18 +1,18 @@
 
-#ifndef ____Template_H__
-#define ____Template_H__
+#ifndef __Startup_H__
+#define __Startup_H__
 
-#include "__TemplateView.h"
-#include "__TemplateModel.h"
+#include "StartupView.h"
+#include "StartupModel.h"
 
 namespace Page
 {
 
-class __Template : public PageBase
+class Startup : public PageBase
 {
 public:
-  __Template();
-  virtual ~__Template();
+  Startup();
+  virtual ~Startup();
 
   void onCustomAttrConfig() override;
   void onViewLoad() override;
@@ -29,16 +29,16 @@ private:
 
 private:
   static void onTimerUpdate(lv_timer_t *timer);
+  static void onTimer(lv_timer_t *timer);
   static void onEvent(lv_event_t *event);
   void        onBtnClicked(lv_obj_t *btn);
 
 private:
-  lv_timer_t   *timer;
-  __TemplateModel _model;
-  __TemplateView  _view;
+  lv_timer_t  *timer;
+  StartupModel _model;
+  StartupView  _view;
 
-}; // class __Template;
-
+}; // class Startup;
 
 } // namespace Page
-#endif // ____Template_H__
+#endif // __Startup_H__

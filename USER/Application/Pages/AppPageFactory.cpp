@@ -20,17 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "AppPageFactory.h"
+#include "MainPage/MainPage.h"
+#include "UserSettings/UserSettings.h"
+#include "Startup/Startup.h"
 
-#ifndef __PAGE_FACTORY_H__
-#define __PAGE_FACTORY_H__
+#define APP_CLASS_MATCH(className)\
+do{\
+    if (strcmp(name, #className) == 0)\
+    {\
+        return new Page::className;\
+    }\
+}while(0)
 
-class PageFactory
+PageBase *AppPageFactory::CreatePage(const char *name)
 {
-public:
-  virtual PageBase *CreatePage(const char *name)
-  {
-    return nullptr;
-  };
-};
+  APP_CLASS_MATCH(MainPage);
+  APP_CLASS_MATCH(UserSettings);
+  APP_CLASS_MATCH(Startup);
 
-#endif // __PAGE_FACTORY_H__
+  return nullptr;
+}
+

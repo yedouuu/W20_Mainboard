@@ -2,19 +2,17 @@
 #ifndef ____TemplateMODEL_H__
 #define ____TemplateMODEL_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace Page
+{
 
+class __TemplateModel
+{
+public:
+  void Init();
+  void Deinit();
 
+};
 
-
-
-#ifdef __cplusplus
 }
-#endif
-
-
 
 #endif // ____TemplateMODEL_H__
-

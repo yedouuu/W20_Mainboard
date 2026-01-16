@@ -15,7 +15,7 @@
         "files.associations": {
             ".eideignore": "ignore",
             "*.a51": "a51",
-            "*.h": "c",
+            "*.h": "cpp",
             "*.c": "c",
             "*.hxx": "cpp",
             "*.hpp": "cpp",
