@@ -9,8 +9,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -23,8 +23,7 @@
 #include "bsp_led.h"
 #include "gpio.h"
 
-
-uint16_t led_gpio_pin[LED_NUM] = { LED1_PIN, DEBUG_PIN };
+uint16_t led_gpio_pin[LED_NUM] = {LED1_PIN, DEBUG_PIN};
 
 void BSP_LED_Init(void)
 {
@@ -58,7 +57,9 @@ void BSP_LED_Toggle(uint8_t led)
   if (led < LED_NUM)
   {
     PinInfo_TypeDef pinInfo = PIN_MAP[led_gpio_pin[led]];
-    uint8_t status = gpio_input_data_bit_read(pinInfo.GPIOx, pinInfo.GPIO_Pin_x);
-    gpio_bits_write(pinInfo.GPIOx, pinInfo.GPIO_Pin_x, (status == FALSE) ? TRUE : FALSE);
+    uint8_t         status =
+        gpio_input_data_bit_read(pinInfo.GPIOx, pinInfo.GPIO_Pin_x);
+    gpio_bits_write(
+        pinInfo.GPIOx, pinInfo.GPIO_Pin_x, (status == FALSE) ? TRUE : FALSE);
   }
 }

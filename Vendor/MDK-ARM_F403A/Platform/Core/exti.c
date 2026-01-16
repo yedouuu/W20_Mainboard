@@ -5,44 +5,38 @@
 static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
 
 /**
-  * @brief  获取外部中断的中断通道
-  * @param  Pin: 引脚编号
-  * @retval 通道编号
-  */
+ * @brief  获取外部中断的中断通道
+ * @param  Pin: 引脚编号
+ * @retval 通道编号
+ */
 static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
 {
   IRQn_Type EXINTx_IRQn = EXINT0_IRQn;
-  uint8_t Pinx = GPIO_GetPinNum(Pin);
+  uint8_t   Pinx        = GPIO_GetPinNum(Pin);
 
-  if(Pinx <= 4)
+  if (Pinx <= 4)
   {
-    switch(Pinx)
+    switch (Pinx)
     {
-    case 0:
+      case 0:
         EXINTx_IRQn = EXINT0_IRQn;
         break;
-    case 1:
+      case 1:
         EXINTx_IRQn = EXINT1_IRQn;
         break;
-    case 2:
+      case 2:
         EXINTx_IRQn = EXINT2_IRQn;
         break;
-    case 3:
+      case 3:
         EXINTx_IRQn = EXINT3_IRQn;
         break;
-    case 4:
+      case 4:
         EXINTx_IRQn = EXINT4_IRQn;
         break;
     }
   }
-  else if(Pinx >= 5 && Pinx <= 9)
-  {
-    EXINTx_IRQn = EXINT9_5_IRQn;
-  }
-  else if(Pinx >= 10 && Pinx <= 15)
-  {
-    EXINTx_IRQn = EXINT15_10_IRQn;
-  }
+  else if (Pinx >= 5 && Pinx <= 9) { EXINTx_IRQn = EXINT9_5_IRQn; }
+  else if (Pinx >= 10 && Pinx <= 15) { EXINTx_IRQn = EXINT15_10_IRQn; }
 
   return EXINTx_IRQn;
 }
@@ -52,34 +46,29 @@ static uint32_t EXTI_GetLine(uint8_t Pin)
   return 1 << GPIO_GetPinNum(Pin);
 }
 
-
 /**
-  * @brief  外部中断初始化
-  * @param  Pin: 引脚编号
-  * @param  Function: 回调函数
-  * @param  polarity_config: 触发方式
-  * @param  PreemptionPriority: 抢占优先级
-  * @param  SubPriority: 子优先级
-  * @retval 无
-  */
-void EXTIx_Init(
-    uint8_t Pin,
-    EXTI_CallbackFunction_t Function,
-    exint_polarity_config_type line_polarity,
-    uint8_t PreemptionPriority,
-    uint8_t SubPriority
-)
+ * @brief  外部中断初始化
+ * @param  Pin: 引脚编号
+ * @param  Function: 回调函数
+ * @param  polarity_config: 触发方式
+ * @param  PreemptionPriority: 抢占优先级
+ * @param  SubPriority: 子优先级
+ * @retval 无
+ */
+void EXTIx_Init(uint8_t                    Pin,
+                EXTI_CallbackFunction_t    Function,
+                exint_polarity_config_type line_polarity,
+                uint8_t                    PreemptionPriority,
+                uint8_t                    SubPriority)
 {
   exint_init_type exint_init_struct;
-  uint8_t Pinx;
+  uint8_t         Pinx;
 
-  if(!IS_PIN(Pin))
-    return;
+  if (!IS_PIN(Pin)) return;
 
   Pinx = GPIO_GetPinNum(Pin);
 
-  if(Pinx > 15)
-    return;
+  if (Pinx > 15) return;
 
   EXTI_Function[Pinx] = Function;
 
@@ -101,11 +90,11 @@ void EXTIx_DeInit(uint8_t Pin)
 {
   uint8_t Pinx;
 
-  if(!IS_PIN(Pin)) return;
+  if (!IS_PIN(Pin)) return;
 
   Pinx = GPIO_GetPinNum(Pin);
 
-  if(Pinx > 15) return;
+  if (Pinx > 15) return;
 
   exint_flag_clear(EXTI_GetLine(Pin));
   exint_interrupt_enable(EXTI_GetLine(Pin), FALSE);
@@ -113,103 +102,100 @@ void EXTIx_DeInit(uint8_t Pin)
 }
 
 /**
-  * @brief  外部中断初始化
-  * @param  Pin: 引脚编号
-  * @param  function: 回调函数
-  * @param  line_polarity: 触发方式
-  * @retval 无
-  */
-void attachInterrupt(uint8_t Pin,
-                     EXTI_CallbackFunction_t Function,
+ * @brief  外部中断初始化
+ * @param  Pin: 引脚编号
+ * @param  function: 回调函数
+ * @param  line_polarity: 触发方式
+ * @retval 无
+ */
+void attachInterrupt(uint8_t                    Pin,
+                     EXTI_CallbackFunction_t    Function,
                      exint_polarity_config_type line_polarity)
 {
-  EXTIx_Init(
-    Pin,
-    Function,
-    line_polarity,
-    EXTI_PREPRIORITY_DEFAULT,
-    EXTI_SUBPRIORITY_DEFAULT
-  );
+  EXTIx_Init(Pin,
+             Function,
+             line_polarity,
+             EXTI_PREPRIORITY_DEFAULT,
+             EXTI_SUBPRIORITY_DEFAULT);
 }
 
 /**
-  * @brief  关闭给定的中断 (Arduino)
-  * @param  Pin: 引脚编号
-  * @retval 无
-  */
+ * @brief  关闭给定的中断 (Arduino)
+ * @param  Pin: 引脚编号
+ * @retval 无
+ */
 void detachInterrupt(uint8_t Pin)
 {
-  if(!IS_PIN(Pin))
-    return;
+  if (!IS_PIN(Pin)) return;
 
   exint_interrupt_enable(EXTI_GetLine(Pin), FALSE);
 }
 
-
-#define EXTIx_IRQHANDLER(n) \
-do{\
-  if(exint_flag_get(EXINT_LINE_##n) != RESET)\
-  {\
-    exint_flag_clear(EXINT_LINE_##n);\
-    if(EXTI_Function[n]) EXTI_Function[n]();\
-  }\
-}while(0)
+#define EXTIx_IRQHANDLER(n)                                                    \
+  do                                                                           \
+  {                                                                            \
+    if (exint_flag_get(EXINT_LINE_##n) != RESET)                               \
+    {                                                                          \
+      exint_flag_clear(EXINT_LINE_##n);                                        \
+      if (EXTI_Function[n]) EXTI_Function[n]();                                \
+    }                                                                          \
+  } while (0)
 
 /**
-  * @brief  外部中断入口，通道0
-  * @param  无
-  * @retval 无
-  */
+ * @brief  外部中断入口，通道0
+ * @param  无
+ * @retval 无
+ */
 void EXTI0_IRQHandler(void)
 {
   EXTIx_IRQHANDLER(0);
 }
 
 /**
-  * @brief  外部中断入口，通道1
-  * @param  无
-  * @retval 无
-  */
+ * @brief  外部中断入口，通道1
+ * @param  无
+ * @retval 无
+ */
 void EXTI1_IRQHandler(void)
 {
   EXTIx_IRQHANDLER(1);
 }
 
 /**
-  * @brief  外部中断入口，通道2
-  * @param  无
-  * @retval 无
-  */
+ * @brief  外部中断入口，通道2
+ * @param  无
+ * @retval 无
+ */
 void EXTI2_IRQHandler(void)
 {
   EXTIx_IRQHANDLER(2);
 }
 
 /**
-  * @brief  外部中断入口，通道3
-  * @param  无
-  * @retval 无
-  */
+ * @brief  外部中断入口，通道3
+ * @param  无
+ * @retval 无
+ */
 void EXTI3_IRQHandler(void)
 {
   EXTIx_IRQHANDLER(3);
 }
 
 /**
-  * @brief  外部中断入口，通道4
-  * @param  无
-  * @retval 无
-  */
+ * @brief  外部中断入口，通道4
+ * @param  无
+ * @retval 无
+ */
 void EXTI4_IRQHandler(void)
 {
   EXTIx_IRQHANDLER(4);
 }
 
 /**
-  * @brief  外部中断入口，通道9~5
-  * @param  无
-  * @retval 无
-  */
+ * @brief  外部中断入口，通道9~5
+ * @param  无
+ * @retval 无
+ */
 void EXTI9_5_IRQHandler(void)
 {
   EXTIx_IRQHANDLER(5);
@@ -220,10 +206,10 @@ void EXTI9_5_IRQHandler(void)
 }
 
 /**
-  * @brief  外部中断入口，通道15~10
-  * @param  无
-  * @retval 无
-  */
+ * @brief  外部中断入口，通道15~10
+ * @param  无
+ * @retval 无
+ */
 void EXTI15_10_IRQHandler(void)
 {
   EXTIx_IRQHANDLER(10);
