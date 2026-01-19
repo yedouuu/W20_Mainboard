@@ -19,3 +19,6 @@
 [submodule "Libraries/FAL"]
 	path = Libraries/FAL
 	url = https://github.com/RT-Thread-packages/fal.git
+[submodule "Libraries/SFUD"]
+	path = Libraries/SFUD
+	url = https://github.com/armink/SFUD.git
