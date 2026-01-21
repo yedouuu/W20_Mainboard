@@ -28,7 +28,7 @@
 #define PAGE_MANAGER_LOG_ENABLE 1
 
 #if PAGE_MANAGER_LOG_ENABLE
-    #include "Utils/Logger.h"
+    #include "Utils/Logger/Logger.h"
     #define PM_LOG_I(fmt, ...)   log_i(fmt, ##__VA_ARGS__)
     #define PM_LOG_D(fmt, ...)   log_d(fmt, ##__VA_ARGS__)
     #define PM_LOG_W(fmt, ...)   log_w(fmt, ##__VA_ARGS__)

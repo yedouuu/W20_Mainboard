@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-#include "Utils/Logger.h"
+#include "Utils/Logger/Logger.h"
 
 #include <stdio.h>
 // #define UNITY_INCLUDE_CONFIG_H

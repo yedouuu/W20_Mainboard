@@ -3,23 +3,24 @@
 
 using namespace Page;
 
-extern "C" LV_IMG_DECLARE(LightMode);
+//extern "C" LV_IMG_DECLARE(LightMode);
+// LV_IMG_DECLARE(LightMode);
 
 void MainPageView::Create(lv_obj_t *parent)
 {
   // 2. 创建一个图片对象
-  lv_obj_t* img = lv_img_create(parent);
+  // lv_obj_t* img = lv_img_create(parent);
 
-  // 3. 设置图片源
-  lv_img_set_src(img, &LightMode);
+  // // 3. 设置图片源
+  // lv_img_set_src(img, &LightMode);
 
-  // 4. 将图片居中对齐
-  lv_obj_align(img, LV_ALIGN_CENTER, 0, 0);
+  // // 4. 将图片居中对齐
+  // lv_obj_align(img, LV_ALIGN_CENTER, 0, 0);
 
-  // TopInfoCreate(parent);
+  TopInfoCreate(parent);
   BottomInfoCreate(parent);
-  // ContentCreate(parent);
-  // SiderCreate(parent);
+  ContentCreate(parent);
+  SiderCreate(parent);
 }
 
 void MainPageView::SiderCreate(lv_obj_t *parent)
@@ -99,7 +100,7 @@ void MainPageView::BottomInfoCreate(lv_obj_t *parent)
   // lv_obj_remove_style_all(bottom_info);
 
   LV_LOG("【DEBUG】Parent height: %d weight: %d\r\n", lv_obj_get_height(parent), lv_obj_get_width(parent));
-  // lv_obj_set_size(bottom_info, lv_pct(100), 50);
+  lv_obj_set_size(bottom_info, lv_pct(100), 50);
   lv_obj_align(bottom_info, LV_ALIGN_BOTTOM_MID, 0, 0);
 
   // 设置容器样式（可选）

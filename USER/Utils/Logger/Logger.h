@@ -4,6 +4,10 @@
 /* Includes ----------------------------------------------------------*/
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef LVGL_WINDOWS_SIMULATOR
 #include "elog.h"
 #else
@@ -47,5 +51,9 @@ void loggerInit(LogLevel_t level);
 void loggerSetLevel(LogLevel_t level);
 
 /* 使用elog的宏进行输出elog_i elog_w elog_e elog_d elog_v */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __LOGGER_H__

@@ -758,7 +758,7 @@
     <ClInclude Include="..\..\..\..\USER\HAL\drv_tick_wrapper.h" />
     <ClInclude Include="..\..\..\..\USER\HAL\drv_touch_wrapper.h" />
     <ClInclude Include="..\..\..\..\USER\HAL\drv_wrapper.h" />
-    <ClInclude Include="..\..\..\..\USER\Utils\Logger.h" />
+    <ClInclude Include="..\..\..\..\USER\Utils\Logger\Logger.h" />
     <ClInclude Include="..\..\..\..\USER\Utils\lv_ext\lv_anim_timeline_wrapper.h" />
     <ClInclude Include="..\..\..\..\USER\Utils\lv_ext\lv_obj_ext_func.h" />
     <ClInclude Include="lv_conf.h" />
@@ -4238,7 +4238,7 @@
     <ClCompile Include="..\..\..\..\USER\HAL\drv_tick_wrapper.c" />
     <ClCompile Include="..\..\..\..\USER\HAL\drv_touch_wrapper.c" />
     <ClCompile Include="..\..\..\..\USER\HAL\drv_wrapper.c" />
-    <ClCompile Include="..\..\..\..\USER\Utils\Logger.c" />
+    <ClCompile Include="..\..\..\..\USER\Utils\Logger\Logger.c" />
     <ClCompile Include="..\..\..\..\USER\Utils\lv_ext\lv_anim_timeline_wrapper.c" />
     <ClCompile Include="..\..\..\..\USER\Utils\lv_ext\lv_obj_ext_func.cpp" />
     <ClCompile Include="..\LvglPlatform\HAL\Adapter\drv_ir_adapter.c" />

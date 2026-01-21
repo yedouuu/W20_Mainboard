@@ -69,11 +69,11 @@ virtualFolder:
           folders: []
         - name: Logger
           files:
-            - path: ../../USER/Utils/Logger.c
+            - path: ../../USER/Utils/Logger/Logger.c
           folders: []
         - name: new
           files:
-            - path: ../../USER/Utils/new.cpp
+            - path: ../../USER/Utils/new/new.cpp
           folders: []
     - name: Tests
       files:
@@ -446,7 +446,6 @@ virtualFolder:
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_ir.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_lcd.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_touch.c
-            - path: ../MDK-ARM_F403A/Platform/BSP/bsp_ext_flash.c
           folders: []
         - name: Core
           files:
@@ -625,7 +624,7 @@ targets:
             $use: asm-auto
           beforeBuildTasks: []
           c/cpp-compiler:
-            language-c: c11
+            language-c: c99
             language-cpp: c++11
             one-elf-section-per-function: true
             optimization: level-balanced
