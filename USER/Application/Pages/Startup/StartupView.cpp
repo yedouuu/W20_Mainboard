@@ -5,18 +5,8 @@ using namespace Page;
 
 #define COLOR_ORANGE lv_color_hex(0xff931e)
 
-// LV_IMG_DECLARE(BankosaStartup);
-
 void StartupView::Create(lv_obj_t *parent)
 {
-  // // 2. 创建一个图片对象
-  // lv_obj_t* img = lv_img_create(parent);
-
-  // // 3. 设置图片源
-  // lv_img_set_src(img, &BankosaStartup);
-
-  // // 4. 将图片居中对齐
-  // lv_obj_align(img, LV_ALIGN_CENTER, 0, 0);
   lv_obj_t *cont = lv_obj_create(parent);
   lv_obj_remove_style_all(cont);
   lv_obj_clear_flag(cont, LV_OBJ_FLAG_SCROLLABLE);

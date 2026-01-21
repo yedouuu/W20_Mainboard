@@ -9,8 +9,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,35 +31,42 @@ extern "C" {
 #endif
 
 #ifndef NULL
-#  define NULL ((void*)0)
+#  define NULL ((void *)0)
 #endif
 
 /* Private defines -----------------------------------------------------------*/
 
-#define IS_PIN(Pin)     (Pin < PIN_MAX)
-#define IS_ADC_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].ADCx != NULL && PIN_MAP[Pin].ADC_Channel  != ADC_CHANNEL_X)
-#define IS_PWM_PIN(Pin) (IS_PIN(Pin) && PIN_MAP[Pin].TIMx != NULL && PIN_MAP[Pin].TimerChannel != 0)
+#define IS_PIN(Pin) (Pin < PIN_MAX)
+#define IS_ADC_PIN(Pin)                                                        \
+  (IS_PIN(Pin) && PIN_MAP[Pin].ADCx != NULL &&                                 \
+   PIN_MAP[Pin].ADC_Channel != ADC_CHANNEL_X)
+#define IS_PWM_PIN(Pin)                                                        \
+  (IS_PIN(Pin) && PIN_MAP[Pin].TIMx != NULL && PIN_MAP[Pin].TimerChannel != 0)
 
-#define GPIO_HIGH(GPIOX,GPIO_PIN_X)    ((GPIOX)->scr     = (GPIO_PIN_X))
-#define GPIO_LOW(GPIOX,GPIO_PIN_X)     ((GPIOX)->clr     = (GPIO_PIN_X))
-#define GPIO_READ(GPIOX,GPIO_PIN_X)   (((GPIOX)->idt     & (GPIO_PIN_X))!=0)
-#define GPIO_TOGGLE(GPIOX,GPIO_PIN_X)  ((GPIOX)->odt    ^= (GPIO_PIN_X))
+#define GPIO_HIGH(GPIOX, GPIO_PIN_X)   ((GPIOX)->scr = (GPIO_PIN_X))
+#define GPIO_LOW(GPIOX, GPIO_PIN_X)    ((GPIOX)->clr = (GPIO_PIN_X))
+#define GPIO_READ(GPIOX, GPIO_PIN_X)   (((GPIOX)->idt & (GPIO_PIN_X)) != 0)
+#define GPIO_TOGGLE(GPIOX, GPIO_PIN_X) ((GPIOX)->odt ^= (GPIO_PIN_X))
 
-#define portInputRegister(Port)     (&(Port->idt))
-#define portOutputRegister(Port)    (&(Port->odt))
+#define portInputRegister(Port)        (&(Port->idt))
+#define portOutputRegister(Port)       (&(Port->odt))
 
-#define analogInPinToBit(Pin)       (Pin)
-#define digitalPinToInterrupt(Pin)  (Pin)
-#define digitalPinToPort(Pin)       (PIN_MAP[Pin].GPIOx)
-#define digitalPinToBitMask(Pin)    (PIN_MAP[Pin].GPIO_Pin_x)
+#define analogInPinToBit(Pin)          (Pin)
+#define digitalPinToInterrupt(Pin)     (Pin)
+#define digitalPinToPort(Pin)          (PIN_MAP[Pin].GPIOx)
+#define digitalPinToBitMask(Pin)       (PIN_MAP[Pin].GPIO_Pin_x)
 
-#define digitalWrite_HIGH(Pin)      GPIO_HIGH  (PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
-#define digitalWrite_LOW(Pin)       GPIO_LOW   (PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
-#define digitalRead_FAST(Pin)       GPIO_READ  (PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
-#define togglePin(Pin)              GPIO_TOGGLE(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
-
+#define digitalWrite_HIGH(Pin)                                                 \
+  GPIO_HIGH(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
+#define digitalWrite_LOW(Pin)                                                  \
+  GPIO_LOW(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
+#define digitalRead_FAST(Pin)                                                  \
+  GPIO_READ(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
+#define togglePin(Pin) GPIO_TOGGLE(PIN_MAP[Pin].GPIOx, PIN_MAP[Pin].GPIO_Pin_x)
 
 /* Exported types ------------------------------------------------------------*/
+
+// clang-format off
 typedef enum
 {
   PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7, PA8, PA9, PA10, PA11, PA12, PA13, PA14, PA15,
@@ -80,16 +87,17 @@ typedef enum
 #endif
   PIN_MAX
 } Pin_TypeDef;
+// clang-format on
 
 typedef struct
 {
-  GPIO_TypeDef* GPIOx;
-  TIM_TypeDef* TIMx;
-  ADC_TypeDef* ADCx;
-  uint32_t PinMux;
-  uint16_t GPIO_Pin_x;
-  uint8_t TimerChannel;
-  uint8_t ADC_Channel;
+  GPIO_TypeDef *GPIOx;
+  TIM_TypeDef  *TIMx;
+  ADC_TypeDef  *ADCx;
+  uint32_t      PinMux;
+  uint16_t      GPIO_Pin_x;
+  uint8_t       TimerChannel;
+  uint8_t       ADC_Channel;
 } PinInfo_TypeDef;
 
 typedef enum
@@ -107,65 +115,60 @@ typedef enum
   PWM
 } PinMode_TypeDef;
 
-
 /* Exported variables prototypes ---------------------------------------------*/
 extern const PinInfo_TypeDef PIN_MAP[PIN_MAX];
 
 /* Exported functions prototypes ---------------------------------------------*/
 
-
 /**
-  * @brief  GPIO初始化
-  * @param  GPIOx: GPIO地址
-  * @param  GPIO_Pin_x: GPIO对应位
-  * @param  GPIO_Mode_x: GPIO模式
-  * @param  GPIO_Drive_x: GPIO速度
-  * @retval 无
-  */
-void GPIOx_Init(
-  gpio_type* GPIOx,
-  uint16_t GPIO_Pin_x,
-  PinMode_TypeDef Mode,
-  gpio_drive_type GPIO_Driver_x
-);
-
+ * @brief  GPIO初始化
+ * @param  GPIOx: GPIO地址
+ * @param  GPIO_Pin_x: GPIO对应位
+ * @param  GPIO_Mode_x: GPIO模式
+ * @param  GPIO_Drive_x: GPIO速度
+ * @retval 无
+ */
+void GPIOx_Init(gpio_type      *GPIOx,
+                uint16_t        GPIO_Pin_x,
+                PinMode_TypeDef Mode,
+                gpio_drive_type GPIO_Driver_x);
 
 /**
  * @brief  获取当前引脚对应的GPIOx编号
  * PA1 -> GPIOA (1)
  * PB3 -> GPIOB (2)
- * 
+ *
  * @param  Pin: 引脚编号
  * @retval 无
  */
 gpio_port_source_type GPIO_GetPortNum(uint8_t Pin);
 
 /**
-  * @brief  获取当前引脚对应的 PinSource
-  * PA1 --> PIN1
-  * PB3 --> PIN3
-  * 
-  * @param  GPIO_Pin_x: GPIO对应位
-  * @retval 无
-  */
+ * @brief  获取当前引脚对应的 PinSource
+ * PA1 --> PIN1
+ * PB3 --> PIN3
+ *
+ * @param  GPIO_Pin_x: GPIO对应位
+ * @retval 无
+ */
 gpio_pins_source_type GPIO_GetPinSource(uint16_t GPIO_Pin_x);
 
 /**
-  * @brief  获取当前引脚对应的编号
-  * PA1 --> 0x0001
-  * PB3 --> 0x0008
-  * 
-  * @param  Pin: 引脚编号
-  * @retval 无
-  */
+ * @brief  获取当前引脚对应的编号
+ * PA1 --> 0x0001
+ * PB3 --> 0x0008
+ *
+ * @param  Pin: 引脚编号
+ * @retval 无
+ */
 uint8_t GPIO_GetPinNum(uint8_t Pin);
 
 /**
  * @brief 快速设置引脚模式
- * 
- * @param pin 
- * @param mode 
- * @return uint8_t 
+ *
+ * @param pin
+ * @param mode
+ * @return uint8_t
  */
 uint8_t pinMode(Pin_TypeDef pin, PinMode_TypeDef mode);
 

@@ -97,6 +97,14 @@
 #define KEY6_OUT_PIN                     PB12
 #define KEY7_OUT_PIN                     PB13
 
+/* SPI Flash */
+#define SFLASH_CS_PIN                    PA8     /* SPIM_CS */
+#define SFLASH_CLK_PIN                   PB1     /* SPIM_SCK */
+#define SFLASH_HOLD_PIN                  PB6     /* SPIM_IO3 */
+#define SFLASH_WP_PIN                    PB7     /* SPIM_IO2 */
+#define SFLASH_MOSI_PIN                  PB10    /* Remap: SPIM_IO0 */
+#define SFLASH_MISO_PIN                  PB11    /* Remap: SPIM_IO1 */
+
 
 /* Sensors */
 // #define CONFIG_SENSOR_ENABLE        1

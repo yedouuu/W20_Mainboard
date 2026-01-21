@@ -23,8 +23,6 @@ typedef struct _DRV_Tick_Ops_t
   void     (*DelayUs)(uint32_t us);
 } DRV_Tick_Ops_t;
 
-typedef struct _DRV_Tick_Ops_t DRV_Tick_Ops_t;
-
 void     DRV_Tick_Init(DRV_Tick_Ops_t *ops);
 uint32_t DRV_GetMillis(void);
 uint32_t DRV_GetMicros(void);

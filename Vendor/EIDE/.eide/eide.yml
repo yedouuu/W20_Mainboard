@@ -416,6 +416,24 @@ virtualFolder:
             - path: ../../USER/Middleware/CmBacktrace/cm_backtrace/cmb_def.h
             - path: ../../USER/Middleware/CmBacktrace/cm_backtrace/fault_handler/keil/cmb_fault.S
           folders: []
+        - name: SFUD
+          files: []
+          folders:
+            - name: porting
+              files:
+                - path: ../../USER/Middleware/SFUD/port/sfud_port.c
+              folders: []
+            - name: scr
+              files:
+                - path: ../../USER/Middleware/SFUD/src/sfud.c
+                - path: ../../USER/Middleware/SFUD/src/sfud_sfdp.c
+                - path: ../../USER/Middleware/SFUD/inc/sfud_cfg.h
+                - path: ../../USER/Middleware/SFUD/inc/sfud_def.h
+                - path: ../../USER/Middleware/SFUD/inc/sfud_flash_def.h
+              folders: []
+        - name: FAL
+          files: []
+          folders: []
     - name: OSAL
       files: []
       folders: []
@@ -462,6 +480,7 @@ virtualFolder:
             - path: ../MDK-ARM_F403A/Platform/Core/adc.c
             - path: ../MDK-ARM_F403A/Platform/Core/i2c.c
             - path: ../MDK-ARM_F403A/Platform/Core/i2c_application.c
+            - path: ../MDK-ARM_F403A/Platform/Core/spi.c
           folders: []
         - name: Firmware
           files: []
@@ -567,9 +586,11 @@ targets:
         - ../../Framework/PageManager
         - ../../USER/Utils/lv_ext
         - ../../USER/Utils/Logger
+        - ../../USER/Middleware/SFUD/inc
       libList: []
     excludeList:
       - <virtual_root>/Platform/Firmware/Device/startup_at32f403avgt7_ext_ram.s
+      - <virtual_root>/Middleware/SFUD
     toolchain: AC6
     toolchainConfigMap:
       AC5:

@@ -2090,9 +2090,6 @@
     <ClInclude Include="..\..\..\..\USER\HAL\drv_touch_wrapper.h">
       <Filter>HAL\wrapper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\USER\Utils\Logger.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\Framework\DeviceManager\device_manager.h">
       <Filter>Framework\DeviceManager</Filter>
     </ClInclude>
@@ -2164,6 +2161,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\USER\Utils\lv_ext\lv_obj_ext_func.h">
       <Filter>Utils\lv_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\USER\Utils\Logger\Logger.h">
+      <Filter>Utils\Logger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -4778,9 +4778,6 @@
     <ClCompile Include="..\LvglPlatform\HAL\Adapter\drv_tick_adapter.c">
       <Filter>HAL\adapter</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\USER\Utils\Logger.c">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Framework\DeviceManager\device_manager.c">
       <Filter>Framework\DeviceManager</Filter>
     </ClCompile>
@@ -4849,6 +4846,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\USER\Application\Resources\LightMode.c">
       <Filter>Application\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\USER\Utils\Logger\Logger.c">
+      <Filter>Utils\Logger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -6627,6 +6627,9 @@
     </Filter>
     <Filter Include="Utils\lv_ext">
       <UniqueIdentifier>{cb905edd-59dc-414b-9909-8e8de913cde0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Logger">
+      <UniqueIdentifier>{198a9923-c528-41e0-bc8b-2fbe109e96a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
