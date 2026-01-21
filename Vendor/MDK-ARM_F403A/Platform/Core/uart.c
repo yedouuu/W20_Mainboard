@@ -3,36 +3,145 @@
 #include "uart.h"
 
 /* support printf function, usemicrolib is unnecessary */
-#if (__ARMCC_VERSION > 6000000)
-__asm(".global __use_no_semihosting\n\t");
-void _sys_exit(int x)
-{
-  x = x;
-}
-/* __use_no_semihosting was requested, but _ttywrch was */
-void _ttywrch(int ch)
-{
-  ch = ch;
-}
-FILE __stdout;
+#if defined(__MICROLIB)
+  /* MicroLIB is used, no need for semihosting stub */
 #else
-#  ifdef __CC_ARM
-#    pragma import(__use_no_semihosting)
-struct __FILE
-{
-  int handle;
-};
-FILE __stdout;
-void _sys_exit(int x)
-{
-  x = x;
-}
-/* __use_no_semihosting was requested, but _ttywrch was */
-void _ttywrch(int ch)
-{
-  ch = ch;
-}
-#  endif
+  /* Standard library: disable semihosting */
+  #if defined(__CC_ARM)
+    /* ARM Compiler 5 */
+    #pragma import(__use_no_semihosting)
+    
+    struct __FILE 
+    {
+      int handle;
+    };
+    
+    void _sys_exit(int x)
+    {
+      (void)x;
+    }
+    
+    void _ttywrch(int ch)
+    {
+      (void)ch;
+    }
+    
+    /* Required system call stubs for no-semihosting */
+    int _sys_open(const char *name, int openmode)
+    {
+      (void)name;
+      (void)openmode;
+      return -1;
+    }
+    
+    int _sys_close(int fh)
+    {
+      (void)fh;
+      return 0;
+    }
+    
+    int _sys_write(int fh, const unsigned char *buf, unsigned int len, int mode)
+    {
+      (void)fh;
+      (void)buf;
+      (void)mode;
+      return len;
+    }
+    
+    int _sys_read(int fh, unsigned char *buf, unsigned int len, int mode)
+    {
+      (void)fh;
+      (void)buf;
+      (void)len;
+      (void)mode;
+      return -1;
+    }
+    
+    int _sys_istty(int fh)
+    {
+      (void)fh;
+      return 0;
+    }
+    
+    int _sys_seek(int fh, long pos)
+    {
+      (void)fh;
+      (void)pos;
+      return -1;
+    }
+    
+    long _sys_flen(int fh)
+    {
+      (void)fh;
+      return -1;
+    }
+    
+  #elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+    /* ARM Compiler 6 */
+    __asm(".global __use_no_semihosting\n");
+    
+    /* __FILE is already defined in stdio.h for AC6, do not redefine */
+    
+    void _sys_exit(int x)
+    {
+      (void)x;
+    }
+    
+    void _ttywrch(int ch)
+    {
+      (void)ch;
+    }
+    
+    /* Required system call stubs for no-semihosting */
+    int _sys_open(const char *name, int openmode)
+    {
+      (void)name;
+      (void)openmode;
+      return -1;
+    }
+    
+    int _sys_close(int fh)
+    {
+      (void)fh;
+      return 0;
+    }
+    
+    int _sys_write(int fh, const unsigned char *buf, unsigned int len, int mode)
+    {
+      (void)fh;
+      (void)buf;
+      (void)mode;
+      return len;
+    }
+    
+    int _sys_read(int fh, unsigned char *buf, unsigned int len, int mode)
+    {
+      (void)fh;
+      (void)buf;
+      (void)len;
+      (void)mode;
+      return -1;
+    }
+    
+    int _sys_istty(int fh)
+    {
+      (void)fh;
+      return 0;
+    }
+    
+    int _sys_seek(int fh, long pos)
+    {
+      (void)fh;
+      (void)pos;
+      return -1;
+    }
+    
+    long _sys_flen(int fh)
+    {
+      (void)fh;
+      return -1;
+    }
+  #endif
 #endif
 
 #if defined(__GNUC__) && !defined(__clang__)
