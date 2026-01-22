@@ -590,7 +590,6 @@ targets:
       libList: []
     excludeList:
       - <virtual_root>/Platform/Firmware/Device/startup_at32f403avgt7_ext_ram.s
-      - <virtual_root>/Middleware/SFUD
     toolchain: AC6
     toolchainConfigMap:
       AC5:
@@ -648,7 +647,7 @@ targets:
             language-c: c99
             language-cpp: c++11
             one-elf-section-per-function: true
-            optimization: level-balanced
+            optimization: level-1
             short-enums#wchar: true
             warnings: ac5-like-warnings
           global:

@@ -79,6 +79,7 @@
   #elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
     /* ARM Compiler 6 */
     __asm(".global __use_no_semihosting\n");
+    __asm(".global __ARM_use_no_argv\n\t");
     
     /* __FILE is already defined in stdio.h for AC6, do not redefine */
     
