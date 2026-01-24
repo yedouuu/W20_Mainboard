@@ -1,5 +1,8 @@
 
 #include "unit_test.h"
+#include "fault_test.h"
+#include "test_sfud.h"
+#include "test_bsp_sflash.h"
 
 void setUp(void) {
 
@@ -31,7 +34,10 @@ void test_divide_by_zero(void) {
 void TEST_main(void)
 {
   UNITY_BEGIN();
-  RUN_TEST(test_func);
-  RUN_TEST(test_divide_by_zero);
+  // RUN_TEST(TEST_SFUD_RunAllTests);
+  
+  // TEST_SFUD_RunAllTests();
+  TEST_SPIM_RunAllTests();
   UNITY_END();
+
 }

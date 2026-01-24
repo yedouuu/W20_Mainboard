@@ -1,26 +1,26 @@
 /**
-  **************************************************************************
-  * @file     main.c
-  * @brief    main program
-  **************************************************************************
-  *                       Copyright notice & Disclaimer
-  *
-  * The software Board Support Package (BSP) that is made available to
-  * download from Artery official website is the copyrighted work of Artery.
-  * Artery authorizes customers to use, copy, and distribute the BSP
-  * software and its related documentation for the purpose of design and
-  * development in conjunction with Artery microcontrollers. Use of the
-  * software is governed by this copyright notice and the following disclaimer.
-  *
-  * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
-  * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
-  * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
-  * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
-  * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
-  * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
-  *
-  **************************************************************************
-  */
+ **************************************************************************
+ * @file     main.c
+ * @brief    main program
+ **************************************************************************
+ *                       Copyright notice & Disclaimer
+ *
+ * The software Board Support Package (BSP) that is made available to
+ * download from Artery official website is the copyrighted work of Artery.
+ * Artery authorizes customers to use, copy, and distribute the BSP
+ * software and its related documentation for the purpose of design and
+ * development in conjunction with Artery microcontrollers. Use of the
+ * software is governed by this copyright notice and the following disclaimer.
+ *
+ * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+ * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+ * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+ * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+ * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+ *
+ **************************************************************************
+ */
 
 #include "unity.h"
 
@@ -29,12 +29,14 @@
 #include "bsp_led.h"
 #include "bsp_lcd.h"
 #include "bsp_key.h"
+#include "bsp_sflash.h"
 #include "drv_wrapper.h"
 #include "mcu_core.h"
 #include "Logger.h"
 #include "device_manager.h"
 #include "Services/pocket_detect.h"
 #include "cm_backtrace.h"
+
 
 #include "PageManager/PageManager.h"
 #include "PageManager/PageBase.h"
@@ -44,23 +46,22 @@
 #include "lv_port_indev.h"
 #include "lv_demos.h"
 
-
 #include "fault_test.h"
+#include "unit_test.h"
 
-#define DELAY                            500
-
+#define DELAY 500
 
 extern __IO uint8_t g_ns2009_irq_flag;
 
 #ifdef __cplusplus
-  extern "C" {
+extern "C" {
 #endif
 
 extern void NS2009_TickHandler(void);
 extern void DRV_TimerIntervalCore(void);
 
 #ifdef __cplusplus
-  }
+}
 #endif
 
 void tim8_irq_callback(void)
@@ -73,7 +74,7 @@ void tim8_irq_callback(void)
 void tim6_irq_callback(void)
 {
   // log_d("TIM6 interrupt triggered.");
-	BSP_LED_Toggle(LED_DEBUG);
+  BSP_LED_Toggle(LED_DEBUG);
   lv_tick_inc(1);
   DRV_TimerIntervalCore();
 }
@@ -81,21 +82,22 @@ void tim6_irq_callback(void)
 __IO uint16_t dma_trans_complete_flag = 0;
 
 /**
-  * @brief  main function.
-  * @param  none
-  * @retval none
-  */
+ * @brief  main function.
+ * @param  none
+ * @retval none
+ */
 int main(void)
 {
   Core_Init();
-	BSP_LED_Init();
+  BSP_LED_Init();
   BSP_KEY_Init();
+  BSP_SFlash_Init();
   DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
 
   cm_backtrace_init("W20_Mainboard_Firmware", "V1.0", "V1.0.0");
   DM_DeviceInitALL();
-  
+
   lv_init();
   lv_port_disp_init();
   lv_port_indev_init();
@@ -107,6 +109,7 @@ int main(void)
   // lv_demo_benchmark();
 
   log_i("System initialized.");
+  printf("System initialized.\r\n");
 
   Timer_SetInterrupt(TIM8, 500000, tim8_irq_callback); // 500ms
   Timer_SetInterrupt(TIM6, 1000, tim6_irq_callback);   // 1ms
@@ -117,7 +120,7 @@ int main(void)
   log_i("PWM Init Channel %d", PWM_Init(PD13, 1000, 10000));
   log_i("PWM Init Channel %d", PWM_Init(PD14, 1000, 10000));
   log_i("PWM Init Channel %d", PWM_Init(PD15, 1000, 10000));
-  
+
   PWM_Write(PD13, 500);
   PWM_Write(PD14, 500);
   PWM_Write(PD15, 500);
@@ -125,21 +128,24 @@ int main(void)
   // log_i("PWM Init Channel %d", PWM_Init(SCREEN_BLK_PIN, 1000, 10000));
   // PWM_Write(SCREEN_BLK_PIN, 500);
 
-  Device_t* touch_main = DM_DeviceFind("TOUCH_MAIN");
+  Device_t *touch_main = DM_DeviceFind("TOUCH_MAIN");
 
   // Pocket_Detect_Init();
   // ADCx_Start(ADC1);
 
   // DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
   // DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);
+  // TEST_main();
 
-  while(1)
-  {  
+
+  while (1)
+  {
     /* 5ms调用一次 */
     DRV_DelayMs(1);
     static uint32_t cnt = 0;
-    if ( cnt++ >= 5 ) {
-			cnt = 0;
+    if (cnt++ >= 5)
+    {
+      cnt = 0;
       lv_timer_handler(); /* let the GUI do its work */
     }
 
@@ -149,10 +155,12 @@ int main(void)
 
     //   DRV_Touch_Point_t point;
     //   DRV_Touch_Read(touch_main, &point);
-    //   log_d("Touch Read (IRQ): X=%d, Y=%d, Pressed=%d", point.x, point.y, point.pressed);
+    //   log_d("Touch Read (IRQ): X=%d, Y=%d, Pressed=%d", point.x, point.y,
+    //   point.pressed);
     // }
 
-    if ( dma_trans_complete_flag > 0 ) {
+    if (dma_trans_complete_flag > 0)
+    {
       // log_d("DMA TC Flag: %d", dma_trans_complete_flag);
 
       /* 12位ADC转换为3.3V电压 */
@@ -177,25 +185,6 @@ int main(void)
       dma_trans_complete_flag--;
     }
 
-    /* TEST #2 PWM */
-    // uint32_t duty = 0;
-    // for(duty = 0; duty <= 1000; duty += 50)
-    // {
-    //   PWM_Write(PD13, duty);
-    //   PWM_Write(PD14, duty);
-    //   PWM_Write(PD15, duty);
-    //   HAL_DelayMs(20);
-    // }
-
-    // for(duty = 1000; duty > 0; duty -= 50)
-    // {
-    //   PWM_Write(PD13, duty);
-    //   PWM_Write(PD14, duty);
-    //   PWM_Write(PD15, duty);
-    //   HAL_DelayMs(20);
-    // }
-
     // DRV_DelayMs(DELAY);
   }
 }
-

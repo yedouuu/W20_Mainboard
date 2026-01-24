@@ -29,11 +29,9 @@
 
 #include <sfud.h>
 #include <stdarg.h>
-#include "at32f403a_407.h"
-#include "at32f403a_407_gpio.h"
-#include "at32f403a_407_crm.h"
-#include "at32f403a_407_flash.h"
 #include "bsp_config.h"
+#include "bsp_sflash.h"
+#include "sw_spi.h"
 
 static char log_buf[256];
 
@@ -57,24 +55,29 @@ static void spim_hw_init(void)
   gpio_pin_remap_config(EXT_SPIM_GMUX_1001, TRUE);
 
   /* Configure GPIO pins */
-  gpio_default_para_init(&gpio_init_struct);
-  gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_STRONGER;
-  gpio_init_struct.gpio_out_type       = GPIO_OUTPUT_PUSH_PULL;
-  gpio_init_struct.gpio_mode           = GPIO_MODE_MUX;
-  gpio_init_struct.gpio_pull           = GPIO_PULL_NONE;
+  pinMode(SFLASH_CS_PIN, OUTPUT_AF_PP);
+  pinMode(SFLASH_CLK_PIN, OUTPUT_AF_PP);
+  pinMode(SFLASH_HOLD_PIN, OUTPUT_AF_PP);
+  pinMode(SFLASH_WP_PIN, OUTPUT_AF_PP);
+  pinMode(SFLASH_MISO_PIN, OUTPUT_AF_PP);
+  pinMode(SFLASH_MOSI_PIN, OUTPUT_AF_PP);
 
-  /* SPIM_CS - PA8 */
-  gpio_init_struct.gpio_pins = GPIO_PINS_8;
-  gpio_init(GPIOA, &gpio_init_struct);
+  /* Select SPIM model (MODEL2 for W25Q64) */
+  flash_spim_model_select(FLASH_SPIM_MODEL2);
 
-  /* SPIM_SCK - PB1, SPIM_IO2 - PB7, SPIM_IO3 - PB6,
-   * SPIM_IO0 - PB10, SPIM_IO1 - PB11 */
-  gpio_init_struct.gpio_pins =
-      GPIO_PINS_1 | GPIO_PINS_6 | GPIO_PINS_7 | GPIO_PINS_10 | GPIO_PINS_11;
-  gpio_init(GPIOB, &gpio_init_struct);
+  flash_flag_clear(FLASH_SPIM_PRGMERR_FLAG);
+}
 
-  /* Select SPIM model (MODEL1 for W25Q64) */
-  flash_spim_model_select(FLASH_SPIM_MODEL1);
+static sw_spi_config_t sw_spi = {.cs_pin   = SFLASH_CS_PIN,
+                                 .clk_pin  = SFLASH_CLK_PIN,
+                                 .mosi_pin = SFLASH_MOSI_PIN,
+                                 .miso_pin = SFLASH_MISO_PIN,
+                                 .wp_pin   = SFLASH_WP_PIN,
+                                 .hold_pin = SFLASH_HOLD_PIN};
+
+static void sw_spi_hw_init(void)
+{
+  sw_spi_init(&sw_spi);
 }
 
 /**
@@ -89,22 +92,25 @@ static sfud_err spi_write_read(const sfud_spi *spi,
                                size_t          read_size)
 {
   sfud_err result = SFUD_SUCCESS;
+  sw_spi_write_read(&sw_spi, write_buf, write_size, read_buf, read_size);
 
   /* For read operations, SPIM supports direct memory access */
-  if (read_size > 0 && read_buf != NULL)
-  {
-    /* Check if this is a simple read command (0x03) */
-    if (write_size >= 4 && write_buf[0] == 0x03)
-    {
-      /* Extract 24-bit address from command */
-      uint32_t addr = (write_buf[1] << 16) | (write_buf[2] << 8) | write_buf[3];
-      uint32_t spim_addr = FLASH_SPIM_START_ADDR + addr;
+  // if (read_size > 0 && read_buf != NULL)
+  // {
+  //   /* Check if this is a simple read command (0x03) */
+  //   if (write_size >= 4 && write_buf[0] == 0x03)
+  //   {
+  //     /* Extract 24-bit address from command */
+  //     uint32_t addr = (write_buf[1] << 16) | (write_buf[2] << 8) | write_buf[3];
+  //     uint32_t spim_addr = FLASH_SPIM_START_ADDR + addr;
 
-      /* Direct memory read */
-      uint8_t *src = (uint8_t *)spim_addr;
-      for (size_t i = 0; i < read_size; i++) { read_buf[i] = src[i]; }
-    }
-  }
+  //     // ext_flash_write(write_buf, addr, write_size); // Send command and
+  //     // address
+  //     /* Direct memory read */
+  //     uint8_t *src = (uint8_t *)spim_addr;
+  //     for (size_t i = 0; i < read_size; i++) { read_buf[i] = src[i]; }
+  //   }
+  // }
 
   return result;
 }
@@ -120,16 +126,7 @@ static sfud_err qspi_read(const struct __sfud_spi   *spi,
                           uint8_t                   *read_buf,
                           size_t                     read_size)
 {
-  sfud_err result = SFUD_SUCCESS;
-
-  /* Calculate SPIM memory-mapped address */
-  uint32_t spim_addr = FLASH_SPIM_START_ADDR + addr;
-
-  /* Direct memory read through SPIM */
-  uint8_t *src = (uint8_t *)spim_addr;
-  for (size_t i = 0; i < read_size; i++) { read_buf[i] = src[i]; }
-
-  return result;
+  return SFUD_SUCCESS;
 }
 #endif /* SFUD_USING_QSPI */
 
@@ -142,14 +139,17 @@ sfud_err sfud_spi_port_init(sfud_flash *flash)
 {
   sfud_err result = SFUD_SUCCESS;
 
-  /* 1. Initialize SPIM hardware (GPIO, clocks, pin remap) */
-  spim_hw_init();
+  // /* 1. Initialize SPIM hardware (GPIO, clocks, pin remap) */
+  // spim_hw_init();
 
-  /* 2. Unlock SPIM for operations */
-  flash_spim_unlock();
+  // /* 2. Unlock SPIM for operations */
+  // flash_spim_unlock();
+
+  sw_spi_hw_init();
 
   /* 3. Configure flash SPI interface */
   flash->spi.wr = spi_write_read;
+
 
 #ifdef SFUD_USING_QSPI
   /* Enable QSPI fast read through SPIM memory mapping */
@@ -172,49 +172,6 @@ sfud_err sfud_spi_port_init(sfud_flash *flash)
 }
 
 /**
- * @brief Erase flash sector (SPIM compatible)
- * @param addr: Sector address to erase
- * @return flash_status_type
- */
-flash_status_type sfud_port_erase_sector(uint32_t addr)
-{
-  uint32_t spim_addr = FLASH_SPIM_START_ADDR + addr;
-  return flash_sector_erase(spim_addr);
-}
-
-/**
- * @brief Program flash data (SPIM compatible)
- * @param addr: Start address to program
- * @param buf: Data buffer
- * @param size: Data size
- * @return flash_status_type
- */
-flash_status_type sfud_port_program(uint32_t       addr,
-                                    const uint8_t *buf,
-                                    uint32_t       size)
-{
-  uint32_t spim_addr = FLASH_SPIM_START_ADDR + addr;
-  return flash_spim_mass_program(spim_addr, (uint8_t *)buf, size);
-}
-
-/**
- * @brief Read flash data (SPIM memory-mapped read)
- * @param addr: Start address to read
- * @param buf: Data buffer
- * @param size: Data size
- * @return SFUD_SUCCESS or error code
- */
-sfud_err sfud_port_read(uint32_t addr, uint8_t *buf, size_t size)
-{
-  uint32_t spim_addr = FLASH_SPIM_START_ADDR + addr;
-  uint8_t *src       = (uint8_t *)spim_addr;
-
-  for (size_t i = 0; i < size; i++) { buf[i] = src[i]; }
-
-  return SFUD_SUCCESS;
-}
-
-/**
  * This function is print debug info.
  *
  * @param file the file which has call this function
@@ -231,7 +188,7 @@ void sfud_log_debug(const char *file, const long line, const char *format, ...)
   printf("[SFUD](%s:%ld) ", file, line);
   /* must use vprintf to print */
   vsnprintf(log_buf, sizeof(log_buf), format, args);
-  printf("%s\n", log_buf);
+  printf("%s\r\n", log_buf);
   va_end(args);
 }
 
@@ -250,6 +207,6 @@ void sfud_log_info(const char *format, ...)
   printf("[SFUD]");
   /* must use vprintf to print */
   vsnprintf(log_buf, sizeof(log_buf), format, args);
-  printf("%s\n", log_buf);
+  printf("%s\r\n", log_buf);
   va_end(args);
 }

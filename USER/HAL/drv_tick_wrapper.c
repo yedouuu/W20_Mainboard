@@ -19,11 +19,21 @@ void DRV_Tick_Init(DRV_Tick_Ops_t *ops)
   if (ops != NULL) { Tick_Ops = ops; }
 }
 
+/**
+ * @brief get ms time
+ * 
+ * @return uint32_t 
+ */
 uint32_t DRV_GetMillis(void)
 {
   return Tick_Ops->GetMillis();
 }
 
+/**
+ * @brief get us time
+ * 
+ * @return uint32_t 
+ */
 uint32_t DRV_GetMicros(void)
 {
   return Tick_Ops->GetMicros();

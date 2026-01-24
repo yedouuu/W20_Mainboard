@@ -79,6 +79,8 @@ virtualFolder:
       files:
         - path: ../../USER/Tests/unit_test.c
         - path: ../../USER/Tests/fault_test.c
+        - path: ../../USER/Tests/test_sfud.c
+        - path: ../../USER/Tests/test_bsp_sflash.c
       folders: []
     - name: Middleware
       files: []
@@ -464,6 +466,7 @@ virtualFolder:
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_ir.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_lcd.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_touch.c
+            - path: ../MDK-ARM_F403A/Platform/BSP/bsp_sflash.c
           folders: []
         - name: Core
           files:
@@ -481,6 +484,7 @@ virtualFolder:
             - path: ../MDK-ARM_F403A/Platform/Core/i2c.c
             - path: ../MDK-ARM_F403A/Platform/Core/i2c_application.c
             - path: ../MDK-ARM_F403A/Platform/Core/spi.c
+            - path: ../MDK-ARM_F403A/Platform/Core/sw_spi.c
           folders: []
         - name: Firmware
           files: []
