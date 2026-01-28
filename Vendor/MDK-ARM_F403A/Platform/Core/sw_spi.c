@@ -131,6 +131,17 @@ static void __sw_spi_transfer_byte(const sw_spi_config_t *sw_spi,
   if (rx_byte != NULL) { *rx_byte = received_byte; }
 }
 
+/**
+ * @brief  Software SPI Write and Read transaction
+ *
+ * @param  sw_spi: Pointer to SPI configuration structure
+ * @param  tx_buf: Pointer to data buffer to be transmitted (can be NULL if
+ * tx_len is 0)
+ * @param  tx_len: Number of bytes to transmit
+ * @param  rx_buf: Pointer to buffer for received data (can be NULL if rx_len is
+ * 0)
+ * @param  rx_len: Number of bytes to receive
+ */
 void sw_spi_write_read(sw_spi_config_t *sw_spi,
                        const uint8_t   *tx_buf,
                        uint32_t         tx_len,

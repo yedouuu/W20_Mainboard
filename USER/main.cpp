@@ -30,6 +30,7 @@
 #include "bsp_lcd.h"
 #include "bsp_key.h"
 #include "bsp_sflash.h"
+#include "bsp_tm1638.h"
 #include "drv_wrapper.h"
 #include "mcu_core.h"
 #include "Logger.h"
@@ -92,6 +93,7 @@ int main(void)
   BSP_LED_Init();
   BSP_KEY_Init();
   BSP_SFlash_Init();
+  BSP_TM1638_Init();
   DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
 
@@ -136,6 +138,7 @@ int main(void)
   // DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
   // DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);
   // TEST_main();
+  DRV_SetInterval(BSP_TM1638_ReadKey, 500, TIMER_INTERVAL_REPEAT);
 
 
   while (1)

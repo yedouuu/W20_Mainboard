@@ -747,6 +747,21 @@
               <FileType>1</FileType>
               <FilePath>../MDK-ARM_F403A/Platform/BSP/bsp_sflash.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MDK-ARM_F403A\Platform\BSP\bsp_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\MDK-ARM_F403A\Platform\BSP\bsp_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_tm1638.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MDK-ARM_F403A\Platform\BSP\bsp_tm1638.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

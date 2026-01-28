@@ -97,6 +97,11 @@
 #define KEY6_OUT_PIN                     PB12
 #define KEY7_OUT_PIN                     PB13
 
+#define TM1638_SPI_STB_PIN               PE11
+#define TM1638_SPI_CLK_PIN               PE12
+#define TM1638_SPI_DIO_PIN               PE13
+
+
 /* SPI Flash */
 #define SFLASH_CS_PIN                    PA8     /* SPIM_CS */
 #define SFLASH_CLK_PIN                   PB1     /* SPIM_SCK */
