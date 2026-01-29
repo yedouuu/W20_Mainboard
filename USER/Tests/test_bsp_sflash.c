@@ -97,9 +97,9 @@ void TEST_SPIM_Performance(void)
   printf("\r\n========== TEST: SPIM Performance ==========\r\n");
   /* Test 1: Erase performance */
   printf("Test 1: Erase performance test...\r\n");
-  start_time = DRV_GetMillis(); // Use your timer function here
+  start_time = DRV_GetTickMs(); // Use your timer function here
   result = BSP_SFlash_ErasePage(test_addr, TEST_SECTOR_SIZE);
-  end_time   = DRV_GetMillis(); // Use your timer function here
+  end_time   = DRV_GetTickMs(); // Use your timer function here
   elapsed    = end_time - start_time;
   TEST_ASSERT_EQUAL(SFLASH_SUCC, result);
   printf("[PASS] Erase %dB completed in %u ms\r\n", TEST_SECTOR_SIZE, elapsed);
@@ -107,18 +107,18 @@ void TEST_SPIM_Performance(void)
   /* Test 2: Write performance */
   printf("Test 2: Write performance test...\r\n");
   fill_buffer_incremental(write_buffer, TEST_BUFFER_SIZE);
-  start_time = DRV_GetMillis(); // Use your timer function here
+  start_time = DRV_GetTickMs(); // Use your timer function here
   result = BSP_SFlash_Write(write_buffer, test_addr, TEST_BUFFER_SIZE);
-  end_time = DRV_GetMillis(); // Use your timer function here
+  end_time = DRV_GetTickMs(); // Use your timer function here
   elapsed  = end_time - start_time;
   TEST_ASSERT_EQUAL(SFLASH_SUCC, result);
   printf("[PASS] Write %dB completed in %u ms\r\n", TEST_BUFFER_SIZE, elapsed);
 
   /* Test 3: Read performance */
   printf("Test 3: Read performance test...\r\n");
-  start_time = DRV_GetMillis(); // Use your timer function here
+  start_time = DRV_GetTickMs(); // Use your timer function here
   result = BSP_SFlash_Read(read_buffer, test_addr, TEST_BUFFER_SIZE);
-  end_time = DRV_GetMillis(); // Use your timer function here
+  end_time = DRV_GetTickMs(); // Use your timer function here
   elapsed  = end_time - start_time;
   TEST_ASSERT_EQUAL(SFLASH_SUCC, result);
   printf("[PASS] Read %dB completed in %u ms\r\n", TEST_BUFFER_SIZE, elapsed);

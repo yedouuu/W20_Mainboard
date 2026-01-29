@@ -94,7 +94,7 @@ const char *elog_port_get_time(void) {
     
     /* add your code here */
     static char cur_system_time[16] = "";
-    snprintf(cur_system_time, 16, "%u", DRV_GetMillis());
+    snprintf(cur_system_time, 16, "%u", DRV_GetTickMs());
     return cur_system_time;
 }
 

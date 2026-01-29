@@ -123,7 +123,7 @@ void BSP_TM1638_Init(void)
   // write_buf[0] = 0x42;
 }
 
-void BSP_TM1638_ReadKey(void)
+void BSP_TM1638_ReadKey(uint32_t* bitmap)
 {
   // TODO: 显示刷新和按键读取互斥处理
 
@@ -135,11 +135,11 @@ void BSP_TM1638_ReadKey(void)
   write_buf[0] = 0x42;
   __BSP_TM1638_Write_Read(write_buf, write_size, read_buf, read_size);
 
-  log_d("Read Key: [%d][%d][%d][%d]",
-        read_buf[0],
-        read_buf[1],
-        read_buf[2],
-        read_buf[3]);
+  // log_d("Read Key: [%d][%d][%d][%d]",
+  //       read_buf[0],
+  //       read_buf[1],
+  //       read_buf[2],
+  //       read_buf[3]);
 
-  return;
+  *bitmap = (read_buf[0] | (read_buf[1] << 8) | (read_buf[2] << 16) | (read_buf[3] << 24));
 }

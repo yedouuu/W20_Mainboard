@@ -8,12 +8,12 @@
 #endif
 
 
-uint32_t __DRV_GetMillis_Adapter(void)
+uint32_t __DRV_GetTickMs_Adapter(void)
 {
     return 0;
 }
 
-uint32_t __DRV_GetMicros_Adapter(void)
+uint32_t __DRV_GetTickUs_Adapter(void)
 {
     return lv_tick_get();
 }
@@ -29,8 +29,8 @@ void __DRV_DelayUs_Adapter(uint32_t us)
 }
 
 static DRV_Tick_Ops_t Tick_Ops = {
-  .GetMillis = __DRV_GetMillis_Adapter,
-  .GetMicros = __DRV_GetMicros_Adapter,
+  .GetMillis = __DRV_GetTickMs_Adapter,
+  .GetMicros = __DRV_GetTickUs_Adapter,
   .DelayMs = __DRV_DelayMs_Adapter,
   .DelayUs = __DRV_DelayUs_Adapter,
 };

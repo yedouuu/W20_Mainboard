@@ -457,7 +457,7 @@ void BSP_Touch_Read(const void *touch,
   uint16_t raw_x = (uint16_t)(p.x * touch_res->ratio_x);
   uint16_t raw_y = (uint16_t)(p.y * touch_res->ratio_y);
 
-  /* NS2009 Y轴镜像修正（如果硬件接线导致Y轴反向） */
+  /* TODO: NS2009 Y轴镜像修正（如果硬件接线导致Y轴反向） */
   raw_y = touch_res->ver_res - raw_y - 1;
 
   /* 旋转处理（使用临时变量避免覆盖） */

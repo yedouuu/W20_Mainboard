@@ -24,7 +24,7 @@ void DRV_Tick_Init(DRV_Tick_Ops_t *ops)
  * 
  * @return uint32_t 
  */
-uint32_t DRV_GetMillis(void)
+uint32_t DRV_GetTickMs(void)
 {
   return Tick_Ops->GetMillis();
 }
@@ -34,7 +34,7 @@ uint32_t DRV_GetMillis(void)
  * 
  * @return uint32_t 
  */
-uint32_t DRV_GetMicros(void)
+uint32_t DRV_GetTickUs(void)
 {
   return Tick_Ops->GetMicros();
 }
@@ -55,7 +55,7 @@ void DRV_TimerIntervalCore(void)
   {
     if (Interval_CBFunctions[i].callback != NULL)
     {
-      uint32_t current_tick = DRV_GetMillis();
+      uint32_t current_tick = DRV_GetTickMs();
       if ((current_tick - Interval_CBFunctions[i].last_tick) >=
           Interval_CBFunctions[i].interval_ms)
       {

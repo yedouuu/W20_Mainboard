@@ -4,28 +4,41 @@ BasedOnStyle: LLVM
 IndentWidth: 2
 UseTab: Never
 TabWidth: 2
-ColumnLimit: 50
+ColumnLimit: 80
 ---
 Language: Cpp
-AccessModifierOffset: -4
-NamespaceIndentation: All
+AccessModifierOffset: -2
+NamespaceIndentation: None
 FixNamespaceComments: false
-BreakBeforeBraces: Linux
-# BreakBeforeBraces: Custom
-# BraceWrapping:
-#   AfterFunction: true
-#   AfterControlStatement: true
-#   AfterStruct: true
-#   AfterEnum: true
-#   AfterUnion: true
-#   AfterClass: true
-#   BeforeElse: true
-#   BeforeCatch: true
-#   IndentBraces: false
+IndentPPDirectives: AfterHash
+AlignConsecutiveDeclarations: true
+AlignAfterOpenBracket: Align
+BinPackArguments: false
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
+# BreakBeforeBraces: Linux
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterControlStatement: true
+  AfterStruct: true
+  AfterEnum: true
+  AfterUnion: true
+  AfterClass: true
+  AfterNamespace: true
+  BeforeElse: true
+  BeforeCatch: true
+  IndentBraces: false
+AllowShortFunctionsOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
 AllowShortBlocksOnASingleLine: true
 IndentCaseLabels: true
 SortIncludes: false
 AlignConsecutiveMacros: AcrossEmptyLines
+# AlignConsecutiveAssignments: AcrossEmptyLines
 AlignConsecutiveAssignments: Consecutive
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+BreakConstructorInitializers: BeforeComma
+AlwaysBreakAfterReturnType: None
+PenaltyReturnTypeOnItsOwnLine: 1000000

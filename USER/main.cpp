@@ -36,6 +36,7 @@
 #include "Logger.h"
 #include "device_manager.h"
 #include "Services/pocket_detect.h"
+#include "Services/key_scan.h"
 #include "cm_backtrace.h"
 
 
@@ -77,7 +78,6 @@ void tim6_irq_callback(void)
   // log_d("TIM6 interrupt triggered.");
   BSP_LED_Toggle(LED_DEBUG);
   lv_tick_inc(1);
-  DRV_TimerIntervalCore();
 }
 
 __IO uint16_t dma_trans_complete_flag = 0;
@@ -138,7 +138,7 @@ int main(void)
   // DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
   // DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);
   // TEST_main();
-  DRV_SetInterval(BSP_TM1638_ReadKey, 500, TIMER_INTERVAL_REPEAT);
+  DRV_SetInterval(Key_ScanTask, 500, TIMER_INTERVAL_REPEAT);
 
 
   while (1)
@@ -151,6 +151,7 @@ int main(void)
       cnt = 0;
       lv_timer_handler(); /* let the GUI do its work */
     }
+    DRV_TimerIntervalCore();
 
     // extern __IO uint8_t g_ns2009_irq_flag;
     // if (g_ns2009_irq_flag) {

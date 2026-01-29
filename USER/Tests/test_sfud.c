@@ -439,26 +439,26 @@ void TEST_SFUD_Performance(void)
 
   /* Test 1: Erase performance */
   printf("Test 1: Erase performance test...\r\n");
-  start_time = DRV_GetMillis(); // Use your timer function here
+  start_time = DRV_GetTickMs(); // Use your timer function here
   result     = sfud_erase(flash, test_addr, TEST_SECTOR_SIZE);
-  end_time   = DRV_GetMillis(); // Use your timer function here
+  end_time   = DRV_GetTickMs(); // Use your timer function here
   TEST_ASSERT_EQUAL(SFUD_SUCCESS, result);
   printf("  [PASS] Erase %dB completed in %u ms\r\n", TEST_SECTOR_SIZE, end_time - start_time);
 
   /* Test 2: Write performance */
   printf("Test 2: Write performance test...\r\n");
   fill_buffer_incremental(write_buffer, TEST_BUFFER_SIZE);
-  start_time = DRV_GetMillis(); // Use your timer function here
+  start_time = DRV_GetTickMs(); // Use your timer function here
   result     = sfud_write(flash, test_addr, TEST_BUFFER_SIZE, write_buffer);
-  end_time   = DRV_GetMillis(); // Use your timer function here
+  end_time   = DRV_GetTickMs(); // Use your timer function here
   TEST_ASSERT_EQUAL(SFUD_SUCCESS, result);
   printf("  [PASS] Write %dB completed in %u ms\r\n", TEST_BUFFER_SIZE, end_time - start_time);
 
   /* Test 3: Read performance */
   printf("Test 3: Read performance test...\r\n");
-  start_time = DRV_GetMillis(); // Use your timer function here
+  start_time = DRV_GetTickMs(); // Use your timer function here
   result     = sfud_read(flash, test_addr, TEST_BUFFER_SIZE, read_buffer);
-  end_time   = DRV_GetMillis(); // Use your timer function here
+  end_time   = DRV_GetTickMs(); // Use your timer function here
   TEST_ASSERT_EQUAL(SFUD_SUCCESS, result);
   TEST_ASSERT_TRUE(compare_buffer(read_buffer, write_buffer, TEST_BUFFER_SIZE));
   printf("  [PASS] Read %dB completed in %u ms\r\n", TEST_BUFFER_SIZE, end_time - start_time);

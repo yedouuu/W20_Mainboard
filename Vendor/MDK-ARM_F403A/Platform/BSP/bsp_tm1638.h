@@ -10,7 +10,7 @@ extern "C" {
 
 
 void BSP_TM1638_Init(void);
-void BSP_TM1638_ReadKey(void);
+void BSP_TM1638_ReadKey(uint32_t* bitmap);
 
 
 #ifdef __cplusplus

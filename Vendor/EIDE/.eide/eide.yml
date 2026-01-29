@@ -20,10 +20,13 @@ virtualFolder:
           files:
             - path: ../../USER/Application/Common/common.h
             - path: ../../USER/Application/Common/comm_macro.h
+            - path: ../../USER/Application/Common/binary.h
+            - path: ../../USER/Application/Common/errno.h
           folders: []
         - name: Services
           files:
             - path: ../../USER/Application/Services/pocket_detect.c
+            - path: ../../USER/Application/Services/key_scan.c
           folders: []
         - name: Pages
           files:
@@ -448,6 +451,7 @@ virtualFolder:
         - path: ../../USER/HAL/drv_wrapper.h
         - path: ../../USER/HAL/drv_tick_wrapper.c
         - path: ../../USER/HAL/drv_wrapper.c
+        - path: ../../USER/HAL/drv_keypad_wrapper.c
       folders:
         - name: Adapter
           files:
@@ -455,6 +459,7 @@ virtualFolder:
             - path: ../../USER/HAL/Adapter/drv_touch_adapter.c
             - path: ../../USER/HAL/Adapter/drv_lcd_adapter.c
             - path: ../../USER/HAL/Adapter/drv_tick_adapter.c
+            - path: ../../USER/HAL/Adapter/drv_keypad_adapter.c
           folders: []
     - name: Platform
       files: []
