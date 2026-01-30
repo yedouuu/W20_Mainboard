@@ -91,10 +91,19 @@ Status_t DRV_Keypad_GetBitmap(Device_t *keypad_dev, uint32_t *bitmap)
   return kStatus_Success;
 }
 
-
+/**
+ * @brief 读取按键状态并更新私有数据结构
+ * @note  根据按键位图更新每个按键的状态（按下、释放、长按）
+ * @attention 需要定期调用以保持按键状态的准确性
+ *
+ * @param keypad_dev 按键设备指针
+ * @param key_idx 输出参数，返回当前检测到的按键索引
+ * @param key_cnt 输出参数，返回当前检测到的按键数量
+ * @return Status_t 操作状态
+ */
 Status_t DRV_Keypad_ReadKey(Device_t *keypad_dev,
-                            uint32_t  bitmap,
-                            uint8_t  *key_idx)
+                            uint8_t  *key_idx,
+                            uint8_t  *key_cnt)
 {
   DRV_Keypad_Priv_t *priv = (DRV_Keypad_Priv_t *)keypad_dev->priv;
   if (priv == NULL)
@@ -102,9 +111,30 @@ Status_t DRV_Keypad_ReadKey(Device_t *keypad_dev,
     log_e("Device %s has no private data!", keypad_dev->name);
     return kStatus_InvalidArgument;
   }
+  if ( key_idx == NULL ) {
+    log_e("key_idx is NULL!");
+    return kStatus_InvalidArgument;
+  }
 
+  uint8_t __key_cnt = 0;
+
+  /* 重新获取, 确保返回的状态为最新状态 */
+  uint32_t bitmap = 0;
+  Status_t ret    = DRV_Keypad_GetBitmap(keypad_dev, &bitmap);
+  if (ret != kStatus_Success)
+  {
+    log_e("fail to get bitmap with status: %d", ret);
+    return ret;
+  }
+
+  /* 扫描bitmap, 更新key_states中的状态 */
   for (uint8_t i = 0; i < KEYPAD_MAX_KEY_NUM; i++)
   {
+    /* TODO: 多按键触发, 当前版本只支持单按键 */
+    if ( __key_cnt > 0 ) {
+      break;
+    }
+
     uint32_t key_mask = (1U << i);
     if (bitmap & key_mask)
     {
@@ -115,6 +145,7 @@ Status_t DRV_Keypad_ReadKey(Device_t *keypad_dev,
         *key_idx                  = i;
         priv->key_states[i]       = DRV_KEYPAD_PRESSED;
         priv->press_start_time[i] = DRV_GetTickMs();
+        __key_cnt++;
       }
       else if (priv->key_states[i] == DRV_KEYPAD_PRESSED)
       {
@@ -122,7 +153,8 @@ Status_t DRV_Keypad_ReadKey(Device_t *keypad_dev,
         if ((DRV_GetTickMs() - priv->press_start_time[i]) >=
             priv->long_press_ms)
         {
-          *key_idx            = i;
+          *key_idx = i;
+          __key_cnt++;
           priv->key_states[i] = DRV_KEYPAD_LONG_PRESSED;
         }
       }
@@ -130,6 +162,7 @@ Status_t DRV_Keypad_ReadKey(Device_t *keypad_dev,
       {
         // Already in long press state, do nothing
         *key_idx = i;
+        __key_cnt++;
       }
     }
     else
@@ -142,6 +175,10 @@ Status_t DRV_Keypad_ReadKey(Device_t *keypad_dev,
       priv->key_states[i]       = DRV_KEYPAD_RELEASED;
       priv->press_start_time[i] = 0;
     }
+  }
+
+  if ( key_cnt != NULL ) {
+    *key_cnt = __key_cnt;
   }
 
   return kStatus_Success;

@@ -64,6 +64,7 @@ typedef enum
   KEY_PHY_ESC      = 12,
   KEY_PHY_SET      = 13,
   KEY_PHY_ADD      = 14,
+  KEY_PHY_MAX,
   KEY_PHY_INVALID  = 0xFF,
 } DRV_Keypad_keycode_e;
 
@@ -79,8 +80,8 @@ typedef struct __DRV_Keypad_Ops_t
 typedef struct __DRV_Keypad_Priv_t
 {
   const DRV_Keypad_Type_e type;
-  DRV_Keypad_State_e      key_states[KEYPAD_MAX_KEY_NUM];       // 按键状态
-  DRV_Keypad_keycode_e    key_code[KEYPAD_MAX_KEY_NUM];         // 按键码
+  DRV_Keypad_State_e      key_states[KEYPAD_MAX_KEY_NUM]; // 按键状态
+  DRV_Keypad_keycode_e   *key_phy_map;                    // 物理按键映射表
   uint32_t                press_start_time[KEYPAD_MAX_KEY_NUM]; // 长按计时
   uint8_t                 key_num;                              // 按键数量
   uint32_t                debounce_ms;
@@ -92,8 +93,8 @@ Status_t DRV_Keypad_Init(Device_t *keypad_dev);
 Status_t DRV_Keypad_DeInit(Device_t *keypad_dev);
 Status_t DRV_Keypad_GetBitmap(Device_t *keypad_dev, uint32_t *bitmap);
 Status_t DRV_Keypad_ReadKey(Device_t *keypad_dev,
-                              uint32_t  key_bitmap,
-                              uint8_t  *key_idx);
+                            uint8_t  *key_idx,
+                            uint8_t  *key_cnt);
 
 #ifdef __cplusplus
 }

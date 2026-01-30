@@ -138,7 +138,7 @@ int main(void)
   // DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
   // DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);
   // TEST_main();
-  DRV_SetInterval(Key_ScanTask, 500, TIMER_INTERVAL_REPEAT);
+  DRV_SetInterval(Key_ScanTask, 50, TIMER_INTERVAL_REPEAT);
 
 
   while (1)

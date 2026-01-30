@@ -3,10 +3,10 @@
 #include "device_manager.h"
 #include "drv_ir_wrapper.h"
 
-static Device_t* ir_hop = NULL;
-static Device_t* ir_sta = NULL;
-static Device_t* ir_irr = NULL;
-static Device_t* ir_irl = NULL;
+static Device_t *ir_hop = NULL;
+static Device_t *ir_sta = NULL;
+static Device_t *ir_irr = NULL;
+static Device_t *ir_irl = NULL;
 
 Status_t Pocket_Detect_Init(void)
 {
@@ -15,11 +15,13 @@ Status_t Pocket_Detect_Init(void)
   ir_irr = DM_DeviceFind("IRR");
   ir_irl = DM_DeviceFind("IRL");
 
-  if (ir_hop == NULL || ir_sta == NULL || \
-      ir_irr == NULL || ir_irl == NULL) 
+  if (ir_hop == NULL || ir_sta == NULL || ir_irr == NULL || ir_irl == NULL)
   {
-    log_e("IR devices not found! IRHOPPER:%p, IRSTACKER:%p, IRR:%p, IRL:%p", 
-          ir_hop, ir_sta, ir_irr, ir_irl);
+    log_e("IR devices not found! IRHOPPER:%p, IRSTACKER:%p, IRR:%p, IRL:%p",
+          ir_hop,
+          ir_sta,
+          ir_irr,
+          ir_irl);
     return kStatus_NotFound;
   }
 
@@ -31,14 +33,15 @@ Status_t Pocket_Detect_Init(void)
   return kStatus_Success;
 }
 
-
 Status_t Pocket_Detect_Update(void)
 {
-  if (ir_hop == NULL || ir_sta == NULL || \
-      ir_irr == NULL || ir_irl == NULL)
+  if (ir_hop == NULL || ir_sta == NULL || ir_irr == NULL || ir_irl == NULL)
   {
-    log_e("IR devices not found! IRHOPPER:%p, IRSTACKER:%p, IRR:%p, IRL:%p", 
-          ir_hop, ir_sta, ir_irr, ir_irl);
+    log_e("IR devices not found! IRHOPPER:%p, IRSTACKER:%p, IRR:%p, IRL:%p",
+          ir_hop,
+          ir_sta,
+          ir_irr,
+          ir_irl);
     return kStatus_NotFound;
   }
 
@@ -51,19 +54,21 @@ Status_t Pocket_Detect_Update(void)
   DRV_IR_GetRawData(ir_irr, &raw_irr);
   DRV_IR_GetRawData(ir_irl, &raw_irl);
 
-  if ( raw_hop < 1000 ) 
+  if (raw_hop < 1000)
   {
-    if ( raw_irl < 1000 || raw_irr < 1000 ) 
+    if (raw_irl < 1000 || raw_irr < 1000)
     {
-      log_w("IRL or IRR detected! Please Check Channel. Raw: %d, %d", raw_irl, raw_irr);
+      log_w("IRL or IRR detected! Please Check Channel. Raw: %d, %d",
+            raw_irl,
+            raw_irr);
     }
-    else 
+    else
     {
       log_d("Pocket Hopper Detected! Read to start. Raw: %d", raw_hop);
     }
   }
 
-  if ( raw_sta > 3000 ) 
+  if (raw_sta > 3000)
   {
     log_d("Pocket Stacker Hold! Clear Data. Raw: %d", raw_sta);
   }
