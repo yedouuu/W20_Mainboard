@@ -104,6 +104,8 @@ int main(void)
   lv_port_disp_init();
   lv_port_indev_init();
 
+  Key_Scan_Init();
+
   App_Init();
   ADC_DMA_Init();
 

@@ -83,6 +83,7 @@ typedef struct __DRV_Keypad_Priv_t
   DRV_Keypad_State_e      key_states[KEYPAD_MAX_KEY_NUM]; // 按键状态
   DRV_Keypad_keycode_e   *key_phy_map;                    // 物理按键映射表
   uint32_t                press_start_time[KEYPAD_MAX_KEY_NUM]; // 长按计时
+  uint32_t                last_key;                             // 上次按键 key_idx
   uint8_t                 key_num;                              // 按键数量
   uint32_t                debounce_ms;
   uint32_t                long_press_ms;

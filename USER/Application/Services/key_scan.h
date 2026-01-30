@@ -8,6 +8,7 @@
 extern "C" {
 #endif
 
+Status_t Key_Scan_Init(void);
 void Key_ScanTask(void);
 
 
