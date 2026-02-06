@@ -452,6 +452,7 @@ virtualFolder:
         - path: ../../USER/HAL/drv_tick_wrapper.c
         - path: ../../USER/HAL/drv_wrapper.c
         - path: ../../USER/HAL/drv_keypad_wrapper.c
+        - path: ../../USER/HAL/drv_motor_wrapper.c
       folders:
         - name: Adapter
           files:
@@ -460,6 +461,7 @@ virtualFolder:
             - path: ../../USER/HAL/Adapter/drv_lcd_adapter.c
             - path: ../../USER/HAL/Adapter/drv_tick_adapter.c
             - path: ../../USER/HAL/Adapter/drv_keypad_adapter.c
+            - path: ../../USER/HAL/Adapter/drv_motor_adapter.c
           folders: []
     - name: Platform
       files: []

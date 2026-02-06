@@ -27,7 +27,7 @@ typedef enum
   MOTOR_OPT_FORWARD,  // 正转
   MOTOR_OPT_BACKWARD, // 反转
   MOTOR_OPT_BRAKE,    // 刹车（快速停止）
-} Motor_Opt_e;
+} BSP_Motor_Opt_e;
 
 /**
  * @brief 电机驱动类型
@@ -48,8 +48,8 @@ extern const Motor_Resource_t motor_stacker_res;
  */
 typedef struct
 {
-  Motor_Opt_e current_opt;    // 当前操作状态
-  uint16_t    current_pwm;    // 当前PWM占空比（0-100）
+  BSP_Motor_Opt_e current_opt;    // 当前操作状态
+  uint8_t     current_pwm;    // 当前PWM占空比（0-100）
   uint8_t     is_initialized; // 初始化标志
 } Motor_State_t;
 
@@ -66,13 +66,14 @@ void BSP_Motor_Init(const void *motor);
  * @param motor 电机资源指针
  * @param operate 操作类型
  */
-void BSP_Motor_Operate(const void *motor, Motor_Opt_e operate);
+void BSP_Motor_Operate(const void *motor, BSP_Motor_Opt_e operate);
+
 /**
  * @brief 设置电机PWM占空比
  * @param motor 电机资源指针
  * @param duty_cycle PWM占空比 (0-100)
  */
-void BSP_Motor_SetPWM(const void *motor, uint16_t duty_cycle);
+void BSP_Motor_SetPWM(const void *motor, uint8_t duty_cycle);
 
 
 #ifdef __cplusplus

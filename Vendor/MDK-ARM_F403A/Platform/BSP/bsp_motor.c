@@ -92,13 +92,18 @@ void BSP_Motor_Disable(const void *motor)
   PWM_Enable(motor_res->pwm_pin, false);
 }
 
-void BSP_Motor_SetPWM(const void *motor, uint16_t duty_cycle)
+void BSP_Motor_SetPWM(const void *motor, uint8_t duty_cycle)
 {
+  if ( duty_cycle > 100 )
+  {
+    duty_cycle = 100;
+  }
+
   Motor_Resource_t *motor_res = (Motor_Resource_t *)motor;
-  PWM_Write(motor_res->pwm_pin, duty_cycle);
+  PWM_Write(motor_res->pwm_pin, motor_res->pwm_resolution / 100 * duty_cycle);
 }
 
-void BSP_Motor_Operate(const void *motor, Motor_Opt_e operate)
+void BSP_Motor_Operate(const void *motor, BSP_Motor_Opt_e operate)
 {
   Motor_Resource_t *motor_res = (Motor_Resource_t *)motor;
 
@@ -112,7 +117,7 @@ void BSP_Motor_Operate(const void *motor, Motor_Opt_e operate)
         break;
       case MOTOR_OPT_FORWARD:
         BSP_Motor_Enable(motor_res);
-        PWM_Write(motor_res->pwm_pin, 500);
+        // PWM_Write(motor_res->pwm_pin, 500);
         break;
       default:
         break;
@@ -129,11 +134,6 @@ void BSP_Motor_Operate(const void *motor, Motor_Opt_e operate)
         break;
       case MOTOR_OPT_FORWARD:
         log_d("MOTOR_OPT_FORWARD");
-
-        /* 唤醒芯片 */
-        digitalWrite_HIGH(motor_res->in2_pin);
-        delay_us(10);
-
         digitalWrite_LOW(motor_res->in2_pin);
         BSP_Motor_Enable(motor_res);
         break;

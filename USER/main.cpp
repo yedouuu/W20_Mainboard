@@ -135,6 +135,8 @@ int main(void)
   // PWM_Write(SCREEN_BLK_PIN, 500);
 
   Device_t *touch_main = DM_DeviceFind("TOUCH_MAIN");
+  Device_t *motor_main = DM_DeviceFind("MOTOR_MAIN");
+  Device_t *motor_sta  = DM_DeviceFind("MOTOR_STACKER");
 
   // Pocket_Detect_Init();
   // ADCx_Start(ADC1);
@@ -145,8 +147,8 @@ int main(void)
   DRV_SetInterval(Key_ScanTask, 50, TIMER_INTERVAL_REPEAT);
 
   uint16_t    motor_pwm = 500;
-  Motor_Opt_e motor_opt = MOTOR_OPT_STOP;
-
+  // BSP_Motor_Opt_e motor_opt = MOTOR_OPT_STOP;
+  DRV_Motor_State_e motor_state = DRV_MOTOR_STOP;
   while (1)
   {
     /* 5ms调用一次 */
@@ -162,20 +164,21 @@ int main(void)
     extern uint8_t g_key_pressed_flag;
     if (g_key_pressed_flag)
     {
-      if (motor_opt == MOTOR_OPT_FORWARD)
+      if (motor_state == DRV_MOTOR_FORWARD)
       {
-        motor_opt = MOTOR_OPT_STOP;
+        motor_state = DRV_MOTOR_STOP;
         log_d("Stopping motors.");
       }
       else
       {
-        motor_opt = MOTOR_OPT_FORWARD;
+        motor_state = DRV_MOTOR_FORWARD;
         log_d("Starting motors.");
-        BSP_Motor_SetPWM(&motor_main_res, 700);
+        DRV_Motor_SetPWM(motor_main, 70);
+        DRV_Motor_SetPWM(motor_sta, 30);
       }
 
-      BSP_Motor_Operate(&motor_main_res, motor_opt);
-      BSP_Motor_Operate(&motor_stacker_res, motor_opt);
+      DRV_Motor_Operate(motor_main, motor_state);
+      DRV_Motor_Operate(motor_sta, motor_state);
       g_key_pressed_flag = 0;
     }
 

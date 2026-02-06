@@ -8,6 +8,7 @@
 #include "HAL/drv_touch_wrapper.h"
 #include "HAL/drv_lcd_wrapper.h"
 #include "HAL/drv_keypad_wrapper.h"
+#include "HAL/drv_motor_wrapper.h"
 
 #ifdef __cplusplus
 extern "C" {
