@@ -2,7 +2,7 @@
 #include "systick.h"
 
 #ifndef SYSTICK_TICK_FREQ
-#define SYSTICK_TICK_FREQ 1000 // Hz
+#  define SYSTICK_TICK_FREQ 1000 // Hz
 #endif
 
 #define SYSTICK_TICK_INTERVAL (1000 / SYSTICK_TICK_FREQ)

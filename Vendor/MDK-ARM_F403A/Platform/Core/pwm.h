@@ -31,8 +31,9 @@ extern "C" {
 
 #define pwmWrite(pin, value) PWM_Write(pin, value)
 
-uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency);
+int8_t  PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency);
 void    PWM_Write(uint8_t Pin, uint32_t Value);
+void    PWM_Enable(uint8_t Pin, uint8_t Enable);
 
 #ifdef __cplusplus
 }

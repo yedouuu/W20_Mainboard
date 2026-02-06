@@ -475,6 +475,7 @@ virtualFolder:
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_tm1638.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_config.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_config.h
+            - path: ../MDK-ARM_F403A/Platform/BSP/bsp_motor.c
           folders: []
         - name: Core
           files:

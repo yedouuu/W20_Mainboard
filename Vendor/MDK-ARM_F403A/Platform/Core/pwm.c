@@ -25,6 +25,35 @@
 #include "gpio.h"
 #include "Logger.h"
 
+static uint8_t TIMx_GetChannel(tmr_type *TIMx, uint8_t TimerChannel)
+{
+  uint8_t channel = 0;
+  switch (TimerChannel)
+  {
+    case 1:
+      channel = TIM_SELECT_CHANNEL_1;
+      break;
+    case 2:
+      channel = TIM_SELECT_CHANNEL_2;
+      break;
+    case 3:
+      channel = TIM_SELECT_CHANNEL_3;
+      break;
+    case 4:
+      channel = TIM_SELECT_CHANNEL_4;
+      break;
+#ifdef TIM_SELECT_CHANNEL_5
+    case 5:
+      channel = TIM_SELECT_CHANNEL_5;
+      break;
+#endif
+    default:
+      channel = TIM_SELECT_CHANNEL_X;
+      break;
+  }
+
+  return channel;
+}
 /**
  * @brief  定时器输出捕获初始化
  * @param  TIMx: 定时器地址
@@ -33,8 +62,10 @@
  * @param  TimerChannel: 定时器通道
  * @retval 无
  */
-static void
-TIMx_OCxInit(tmr_type *TIMx, uint32_t arr, uint16_t psc, uint8_t TimerChannel)
+static void TIMx_OCxInit(tmr_type *TIMx,
+                         uint32_t  arr,
+                         uint16_t  psc,
+                         uint8_t   TimerChannel)
 {
   tmr_output_config_type tmr_output_struct;
 
@@ -42,7 +73,6 @@ TIMx_OCxInit(tmr_type *TIMx, uint32_t arr, uint16_t psc, uint8_t TimerChannel)
 
   tmr_base_init(TIMx, arr, psc);
   tmr_cnt_dir_set(TIMx, TMR_COUNT_UP);
-  tmr_div_value_set(TIMx, TMR_CLOCK_DIV1);
 
   tmr_output_default_para_init(&tmr_output_struct);
   tmr_output_struct.oc_mode          = TMR_OUTPUT_CONTROL_PWM_MODE_B;
@@ -53,29 +83,7 @@ TIMx_OCxInit(tmr_type *TIMx, uint32_t arr, uint16_t psc, uint8_t TimerChannel)
   tmr_output_struct.oc_output_state  = TRUE;
   tmr_output_struct.occ_output_state = TRUE;
 
-  switch (TimerChannel)
-  {
-    case 1:
-      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_1, &tmr_output_struct);
-      break;
-    case 2:
-      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_2, &tmr_output_struct);
-      break;
-    case 3:
-      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_3, &tmr_output_struct);
-      break;
-    case 4:
-      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_4, &tmr_output_struct);
-      break;
-#ifdef TIM_SELECT_CHANNEL_5
-    case 5:
-      tmr_output_channel_config(TIMx, TIM_SELECT_CHANNEL_5, &tmr_output_struct);
-      break;
-#endif
-    default:
-      return;
-  }
-
+  tmr_output_channel_config(TIMx, TimerChannel, &tmr_output_struct);
   tmr_output_enable(TIMx, TRUE);
   tmr_counter_enable(TIMx, TRUE);
 }
@@ -87,15 +95,19 @@ TIMx_OCxInit(tmr_type *TIMx, uint32_t arr, uint16_t psc, uint8_t TimerChannel)
  * @param  Frequency: PWM频率
  * @retval 引脚对应的定时器通道
  */
-uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
+int8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
 {
   uint32_t arr, psc;
+  uint8_t  channel;
 
   if (!IS_PWM_PIN(Pin)) { return 0; }
 
   if (Resolution == 0 || Frequency == 0 || (Resolution * Frequency) > F_CPU)
   {
-    return 0;
+    log_w("Resolution: %d or Frequency: %d is zero or (Resolution * Frequency) > F_CPU",
+          Resolution,
+          Frequency);
+    return -1;
   }
 
   tmr_type *TIMx = PIN_MAP[Pin].TIMx;
@@ -111,11 +123,31 @@ uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
     gpio_pin_remap_config(PIN_MAP[Pin].PinMux, TRUE);
   }
 
-  arr = Resolution;
-  psc = Timer_GetClockMax(TIMx) / Resolution / Frequency;
+  arr     = Resolution;
+  psc     = Timer_GetClockMax(TIMx) / Resolution / Frequency;
+  log_w("PWM_Init: Pin %d Timer Clock Max=%d, ARR=%d, PSC=%d",
+        Pin,
+        Timer_GetClockMax(TIMx),
+        arr - 1,
+        psc - 1);
+  
+  channel = TIMx_GetChannel(TIMx, PIN_MAP[Pin].TimerChannel);
+  if (channel == TIM_SELECT_CHANNEL_X)
+  {
+    log_w("PWM_Init: Pin %d Timer Channel %d is invalid!",
+          Pin,
+          PIN_MAP[Pin].TimerChannel);
+    return -1;
+  }
 
   Timer_SetEnable(TIMx, false);
-  TIMx_OCxInit(TIMx, arr - 1, psc - 1, PIN_MAP[Pin].TimerChannel);
+  log_d("PWM_Init: Pin %d Timer %p Channel %d ARR=%d PSC=%d",
+        Pin,
+        TIMx,
+        channel,
+        arr - 1,
+        psc - 1);
+  TIMx_OCxInit(TIMx, arr - 1, psc - 1, channel);
 
   return PIN_MAP[Pin].TimerChannel;
 }
@@ -134,4 +166,34 @@ void PWM_Write(uint8_t Pin, uint32_t Value)
     return;
   }
   Timer_SetCompare(PIN_MAP[Pin].TIMx, PIN_MAP[Pin].TimerChannel, Value);
+}
+
+void PWM_Enable(uint8_t Pin, uint8_t Enable)
+{
+  if (!IS_PWM_PIN(Pin))
+  {
+    log_w("PWM_Enable: Pin %d is not a PWM pin!", Pin);
+    return;
+  }
+  tmr_type *TIMx    = PIN_MAP[Pin].TIMx;
+  uint8_t   channel = TIMx_GetChannel(TIMx, PIN_MAP[Pin].TimerChannel);
+  if (channel == TIM_SELECT_CHANNEL_X)
+  {
+    log_w("PWM_Enable: Pin %d Timer Channel %d is invalid!",
+          Pin,
+          PIN_MAP[Pin].TimerChannel);
+    return;
+  }
+
+  if (Enable)
+  {
+    tmr_channel_enable(TIMx, channel, TRUE);
+    // tmr_output_channel_mode_select(
+    //     TIMx, channel, TMR_OUTPUT_CONTROL_PWM_MODE_B);
+  }
+  else
+  {
+    tmr_channel_enable(TIMx, channel, FALSE);
+    // tmr_output_channel_mode_select(TIMx, channel, TMR_OUTPUT_CONTROL_OFF);
+  }
 }

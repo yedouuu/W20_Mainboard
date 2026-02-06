@@ -748,19 +748,24 @@
               <FilePath>../MDK-ARM_F403A/Platform/BSP/bsp_sflash.c</FilePath>
             </File>
             <File>
+              <FileName>bsp_tm1638.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../MDK-ARM_F403A/Platform/BSP/bsp_tm1638.c</FilePath>
+            </File>
+            <File>
               <FileName>bsp_config.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\MDK-ARM_F403A\Platform\BSP\bsp_config.c</FilePath>
+              <FilePath>../MDK-ARM_F403A/Platform/BSP/bsp_config.c</FilePath>
             </File>
             <File>
               <FileName>bsp_config.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\MDK-ARM_F403A\Platform\BSP\bsp_config.h</FilePath>
+              <FilePath>../MDK-ARM_F403A/Platform/BSP/bsp_config.h</FilePath>
             </File>
             <File>
-              <FileName>bsp_tm1638.c</FileName>
+              <FileName>bsp_motor.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\MDK-ARM_F403A\Platform\BSP\bsp_tm1638.c</FilePath>
+              <FilePath>../MDK-ARM_F403A/Platform/BSP/bsp_motor.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -802,6 +807,11 @@
               <FileType>1</FileType>
               <FilePath>../../USER/HAL/drv_wrapper.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_keypad_wrapper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../USER/HAL/drv_keypad_wrapper.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -826,6 +836,11 @@
               <FileName>drv_tick_adapter.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../USER/HAL/Adapter/drv_tick_adapter.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_keypad_adapter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../USER/HAL/Adapter/drv_keypad_adapter.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2642,6 +2657,11 @@
               <FileType>1</FileType>
               <FilePath>../../USER/Application/Services/pocket_detect.c</FilePath>
             </File>
+            <File>
+              <FileName>key_scan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../../USER/Application/Services/key_scan.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2656,6 +2676,16 @@
               <FileName>comm_macro.h</FileName>
               <FileType>5</FileType>
               <FilePath>../../USER/Application/Common/comm_macro.h</FilePath>
+            </File>
+            <File>
+              <FileName>binary.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../../USER/Application/Common/binary.h</FilePath>
+            </File>
+            <File>
+              <FileName>errno.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../../USER/Application/Common/errno.h</FilePath>
             </File>
           </Files>
         </Group>

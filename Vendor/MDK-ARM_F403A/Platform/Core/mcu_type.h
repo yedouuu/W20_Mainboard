@@ -79,6 +79,7 @@ typedef i2c_type  I2C_TypeDef;
 #define TIM_SELECT_CHANNEL_3  TMR_SELECT_CHANNEL_3
 #define TIM_SELECT_CHANNEL_3C TMR_SELECT_CHANNEL_3C
 #define TIM_SELECT_CHANNEL_4  TMR_SELECT_CHANNEL_4
+#define TIM_SELECT_CHANNEL_X  ((uint8_t)0xFF)
 
 /*=========================
    MCU configuration

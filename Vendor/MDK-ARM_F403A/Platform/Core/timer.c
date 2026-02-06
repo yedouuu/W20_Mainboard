@@ -284,6 +284,10 @@ uint32_t Timer_GetClockMax(TIM_TypeDef *TIMx)
     crm_clocks_freq_get(&crm_clocks_freq_struct);
   }
 
+  /**
+   * crm_apb1_div_set(CRM_APB1_DIV_2);
+   * 分频系数不是1, 所以APB1定时器时钟是APB1时钟的2倍
+   */
   return crm_clocks_freq_struct.apb1_freq * 2;
 }
 

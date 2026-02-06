@@ -111,6 +111,13 @@
 #define SFLASH_MISO_PIN                  PB11    /* Remap: SPIM_IO1 */
 
 
+/* Motor */
+#define MOTOR_MAIN_DRV_IC               "AT8236"
+#define MOTOR_MAIN_IN1_PWM_PIN           PB14  /* TIM12 C1 */
+#define MOTOR_MAIN_IN2_PIN               PD3
+#define MOTOR_STACKER_EN_PWM_PIN         PB15  /* TIM12 C2 */
+
+
 /* Sensors */
 // #define CONFIG_SENSOR_ENABLE        1
 

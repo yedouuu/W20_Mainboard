@@ -31,6 +31,7 @@
 #include "bsp_key.h"
 #include "bsp_sflash.h"
 #include "bsp_tm1638.h"
+#include "bsp_motor.h"
 #include "drv_wrapper.h"
 #include "mcu_core.h"
 #include "Logger.h"
@@ -38,7 +39,6 @@
 #include "Services/pocket_detect.h"
 #include "Services/key_scan.h"
 #include "cm_backtrace.h"
-
 
 #include "PageManager/PageManager.h"
 #include "PageManager/PageBase.h"
@@ -96,6 +96,8 @@ int main(void)
   BSP_TM1638_Init();
   DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
+  BSP_Motor_Init(&motor_main_res);
+  BSP_Motor_Init(&motor_stacker_res);
 
   cm_backtrace_init("W20_Mainboard_Firmware", "V1.0", "V1.0.0");
   DM_DeviceInitALL();
@@ -121,13 +123,13 @@ int main(void)
   Timer_SetEnable(TIM8, TRUE);
   Timer_SetEnable(TIM6, TRUE);
 
-  log_i("PWM Init Channel %d", PWM_Init(PD13, 1000, 10000));
-  log_i("PWM Init Channel %d", PWM_Init(PD14, 1000, 10000));
-  log_i("PWM Init Channel %d", PWM_Init(PD15, 1000, 10000));
+  // log_i("PWM Init Channel %d", PWM_Init(PD13, 1000, 10000));
+  // log_i("PWM Init Channel %d", PWM_Init(PD14, 1000, 10000));
+  // log_i("PWM Init Channel %d", PWM_Init(PD15, 1000, 10000));
 
-  PWM_Write(PD13, 500);
-  PWM_Write(PD14, 500);
-  PWM_Write(PD15, 500);
+  // PWM_Write(PD13, 500);
+  // PWM_Write(PD14, 500);
+  // PWM_Write(PD15, 500);
 
   // log_i("PWM Init Channel %d", PWM_Init(SCREEN_BLK_PIN, 1000, 10000));
   // PWM_Write(SCREEN_BLK_PIN, 500);
@@ -142,6 +144,8 @@ int main(void)
   // TEST_main();
   DRV_SetInterval(Key_ScanTask, 50, TIMER_INTERVAL_REPEAT);
 
+  uint16_t    motor_pwm = 500;
+  Motor_Opt_e motor_opt = MOTOR_OPT_STOP;
 
   while (1)
   {
@@ -155,15 +159,36 @@ int main(void)
     }
     DRV_TimerIntervalCore();
 
-    // extern __IO uint8_t g_ns2009_irq_flag;
-    // if (g_ns2009_irq_flag) {
-    //   g_ns2009_irq_flag = 0;
+    extern uint8_t g_key_pressed_flag;
+    if (g_key_pressed_flag)
+    {
+      if (motor_opt == MOTOR_OPT_FORWARD)
+      {
+        motor_opt = MOTOR_OPT_STOP;
+        log_d("Stopping motors.");
+      }
+      else
+      {
+        motor_opt = MOTOR_OPT_FORWARD;
+        log_d("Starting motors.");
+        BSP_Motor_SetPWM(&motor_main_res, 700);
+      }
+
+      BSP_Motor_Operate(&motor_main_res, motor_opt);
+      BSP_Motor_Operate(&motor_stacker_res, motor_opt);
+      g_key_pressed_flag = 0;
+    }
+
+    extern __IO uint8_t g_ns2009_irq_flag;
+    if (g_ns2009_irq_flag)
+    {
+      g_ns2009_irq_flag = 0;
 
     //   DRV_Touch_Point_t point;
     //   DRV_Touch_Read(touch_main, &point);
     //   log_d("Touch Read (IRQ): X=%d, Y=%d, Pressed=%d", point.x, point.y,
     //   point.pressed);
-    // }
+    }
 
     if (dma_trans_complete_flag > 0)
     {

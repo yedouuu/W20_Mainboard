@@ -6,6 +6,8 @@
 
 static Device_t *keypad_dev   = NULL;
 
+uint8_t g_key_pressed_flag = 0;
+
 /* Private Prototype ------------------------------------------------------- */
 
 Status_t __Keypad_ReadKey(void);
@@ -81,6 +83,7 @@ Status_t __Keypad_ReadKey()
         priv->press_start_time[i] = DRV_GetTickMs();
         __key_cnt++;
         // TODO: 发送按键按下事件
+        g_key_pressed_flag = 1;
         log_d("Key %d is pressed", i);
       }
       else if (priv->key_states[i] == DRV_KEYPAD_PRESSED)
