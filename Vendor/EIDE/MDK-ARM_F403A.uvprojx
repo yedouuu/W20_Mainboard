@@ -731,6 +731,11 @@
               <FileType>1</FileType>
               <FilePath>../MDK-ARM_F403A/Platform/BSP/bsp_motor.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../MDK-ARM_F403A/Platform/BSP/bsp_encoder.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

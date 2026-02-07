@@ -32,6 +32,7 @@
 #include "bsp_sflash.h"
 #include "bsp_tm1638.h"
 #include "bsp_motor.h"
+#include "bsp_encoder.h"
 #include "drv_wrapper.h"
 #include "mcu_core.h"
 #include "Logger.h"
@@ -98,6 +99,7 @@ int main(void)
   loggerInit(LOG_LEVEL_DEBUG);
   BSP_Motor_Init(&motor_main_res);
   BSP_Motor_Init(&motor_stacker_res);
+  BSP_Encoder_Init();
 
   cm_backtrace_init("W20_Mainboard_Firmware", "V1.0", "V1.0.0");
   DM_DeviceInitALL();

@@ -51,8 +51,8 @@
 #define IR_STA_RX_PIN                    PA6
 #define IR_HOP_STA_CTRL_PIN              PD6
 
-#define IRL_PIN                          PC6
-#define IRR_PIN                          PC7
+#define IRL_PWM_PIN                      PC6  /* Remap: TIM3 C1 */
+#define IRR_PWM_PIN                      PC7  /* Remap: TIM3 C2 */
 #define IRL_RX_PIN                       PA7
 #define IRR_RX_PIN                       PB0
 #define IR_CHANNEL_CTRL_PIN              PD12
@@ -73,7 +73,7 @@
 #define SCREEN_CS_PIN                    PD7
 #define SCREEN_DC_PIN                    PD11
 #define SCREEN_RESET_PIN                 PE0
-#define SCREEN_BLK_PIN                   PA15  /* TIM2 */
+#define SCREEN_BLK_PIN                   PA15    /* Remap: TIM2 */
 
 #define SCREEN_XMC_BANK                  XMC_BANK1_NOR_SRAM1
 #define SCREEN_MAIN_HOR_RES              (480)
@@ -101,7 +101,6 @@
 #define TM1638_SPI_CLK_PIN               PE12
 #define TM1638_SPI_DIO_PIN               PE13
 
-
 /* SPI Flash */
 #define SFLASH_CS_PIN                    PA8     /* SPIM_CS */
 #define SFLASH_CLK_PIN                   PB1     /* SPIM_SCK */
@@ -110,13 +109,16 @@
 #define SFLASH_MOSI_PIN                  PB10    /* Remap: SPIM_IO0 */
 #define SFLASH_MISO_PIN                  PB11    /* Remap: SPIM_IO1 */
 
-
 /* Motor */
 #define MOTOR_MAIN_DRV_IC               "AT8236"
-#define MOTOR_MAIN_IN1_PWM_PIN           PB14  /* TIM12 C1 */
+#define MOTOR_MAIN_IN1_PWM_PIN           PB14    /* TIM12 C1 */
 #define MOTOR_MAIN_IN2_PIN               PD3
-#define MOTOR_STACKER_EN_PWM_PIN         PB15  /* TIM12 C2 */
+#define MOTOR_STACKER_EN_PWM_PIN         PB15    /* TIM12 C2 */
 
+/* Encoder */
+#define ENCODER_CTRL_PIN                 PD13     /* If use PWM then Remap: TIM4 C2 */
+#define ENCODER_READ_PIN                 PA0      /* 采样引脚 */
+#define ENCODER_TO_FPGA_PIN              PE2      /* 输出码盘信号给FPGA的引脚 */
 
 /* Sensors */
 // #define CONFIG_SENSOR_ENABLE        1
