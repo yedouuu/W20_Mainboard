@@ -93,7 +93,7 @@ static void TIMx_OCxInit(tmr_type *TIMx,
  * @param  Pin:引脚编号
  * @param  Resolution: PWM分辨率
  * @param  Frequency: PWM频率
- * @retval 引脚对应的定时器通道
+ * @retval 引脚对应的定时器通道, 失败返回-1
  */
 int8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency)
 {

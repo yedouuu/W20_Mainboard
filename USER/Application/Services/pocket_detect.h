@@ -4,6 +4,10 @@
 
 #include "Common/common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum
 {
   POCKET_HOPPER,
@@ -18,5 +22,10 @@ typedef enum
 
 Status_t Pocket_Detect_Init(void);
 Status_t Pocket_Detect_Update(void);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __POCKET_DETECT_H__ */

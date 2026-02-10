@@ -71,7 +71,7 @@ void tim8_irq_callback(void)
 {
   // log_d("TIM8 interrupt triggered.");
   BSP_LED_Toggle(LED1);
-  // Pocket_Detect_Update();
+  Pocket_Detect_Update();
 }
 
 void tim6_irq_callback(void)
@@ -94,12 +94,10 @@ int main(void)
   BSP_LED_Init();
   BSP_KEY_Init();
   BSP_SFlash_Init();
-  BSP_TM1638_Init();
   DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
   BSP_Motor_Init(&motor_main_res);
   BSP_Motor_Init(&motor_stacker_res);
-  BSP_Encoder_Init();
 
   cm_backtrace_init("W20_Mainboard_Firmware", "V1.0", "V1.0.0");
   DM_DeviceInitALL();
@@ -139,17 +137,17 @@ int main(void)
   Device_t *touch_main = DM_DeviceFind("TOUCH_MAIN");
   Device_t *motor_main = DM_DeviceFind("MOTOR_MAIN");
   Device_t *motor_sta  = DM_DeviceFind("MOTOR_STACKER");
+  Device_t *encoder    = DM_DeviceFind("ENCODER");
 
-  // Pocket_Detect_Init();
-  // ADCx_Start(ADC1);
+  Pocket_Detect_Init();
+  ADCx_Start(ADC1);
 
   // DRV_SetInterval(lv_task_handler_adapter, 5, TIMER_INTERVAL_REPEAT);
   // DRV_SetInterval(NS2009_TickHandler, 1, TIMER_INTERVAL_REPEAT);
   // TEST_main();
   DRV_SetInterval(Key_ScanTask, 50, TIMER_INTERVAL_REPEAT);
 
-  uint16_t    motor_pwm = 500;
-  // BSP_Motor_Opt_e motor_opt = MOTOR_OPT_STOP;
+  uint16_t motor_pwm = 500;
   DRV_Motor_State_e motor_state = DRV_MOTOR_STOP;
   while (1)
   {
@@ -170,11 +168,13 @@ int main(void)
       {
         motor_state = DRV_MOTOR_STOP;
         log_d("Stopping motors.");
+        DRV_Encoder_Disable(encoder);
       }
       else
       {
         motor_state = DRV_MOTOR_FORWARD;
         log_d("Starting motors.");
+        DRV_Encoder_Enable(encoder);
         DRV_Motor_SetPWM(motor_main, 70);
         DRV_Motor_SetPWM(motor_sta, 30);
       }
@@ -189,10 +189,10 @@ int main(void)
     {
       g_ns2009_irq_flag = 0;
 
-    //   DRV_Touch_Point_t point;
-    //   DRV_Touch_Read(touch_main, &point);
-    //   log_d("Touch Read (IRQ): X=%d, Y=%d, Pressed=%d", point.x, point.y,
-    //   point.pressed);
+      //   DRV_Touch_Point_t point;
+      //   DRV_Touch_Read(touch_main, &point);
+      //   log_d("Touch Read (IRQ): X=%d, Y=%d, Pressed=%d", point.x, point.y,
+      //   point.pressed);
     }
 
     if (dma_trans_complete_flag > 0)

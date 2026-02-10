@@ -119,6 +119,7 @@
 #define ENCODER_CTRL_PIN                 PD13     /* If use PWM then Remap: TIM4 C2 */
 #define ENCODER_READ_PIN                 PA0      /* 采样引脚 */
 #define ENCODER_TO_FPGA_PIN              PE2      /* 输出码盘信号给FPGA的引脚 */
+#define ENCODER_RESOLUTION               (0.5f)   /* 码盘间隔宽度mm */
 
 /* Sensors */
 // #define CONFIG_SENSOR_ENABLE        1

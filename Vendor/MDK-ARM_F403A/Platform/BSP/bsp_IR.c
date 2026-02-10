@@ -78,9 +78,9 @@ void BSP_IR_Init(const void *ir)
   pinMode((Pin_TypeDef)ir_res->read_pin, INPUT_ANALOG_DMA);
   pinMode((Pin_TypeDef)ir_res->en_pin, OUTPUT);
 
-  uint8_t ch =
+  int8_t ch =
       PWM_Init(ir_res->pwm_pin, ir_res->pwm_resolution, ir_res->pwm_frequency);
-  if (IS_PIN(ir_res->pwm_pin) && ch == 0)
+  if (IS_PIN(ir_res->pwm_pin) && ch == -1)
   {
     log_w("The Pin %d is not configured as PWM channel!", ir_res->pwm_pin);
   }

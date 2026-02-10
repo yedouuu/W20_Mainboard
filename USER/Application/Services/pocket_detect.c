@@ -64,7 +64,7 @@ Status_t Pocket_Detect_Update(void)
     }
     else
     {
-      log_d("Pocket Hopper Detected! Read to start. Raw: %d", raw_hop);
+      log_d("Pocket Hopper Detected! Ready to start. Raw: %d", raw_hop);
     }
   }
 
