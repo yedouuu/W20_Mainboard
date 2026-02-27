@@ -26,7 +26,7 @@ virtualFolder:
         - name: Services
           files:
             - path: ../../USER/Application/Services/pocket_detect.c
-            - path: ../../USER/Application/Services/key_scan.c
+            - path: ../../USER/Application/Services/machine_ctrl.c
           folders: []
         - name: Pages
           files:
@@ -61,6 +61,11 @@ virtualFolder:
           files:
             - path: ../../USER/Application/Resources/BankosaMainPage.c
             - path: ../../USER/Application/Resources/LightMode.c
+          folders: []
+        - name: System
+          files:
+            - path: ../../USER/Application/System/key_scan.c
+            - path: ../../USER/Application/System/sample.c
           folders: []
     - name: Utils
       files: []
@@ -437,6 +442,9 @@ virtualFolder:
                 - path: ../../USER/Middleware/SFUD/inc/sfud_flash_def.h
               folders: []
         - name: FAL
+          files: []
+          folders: []
+        - name: FreeRTOS
           files: []
           folders: []
     - name: OSAL

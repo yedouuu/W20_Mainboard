@@ -33,6 +33,59 @@ Status_t Pocket_Detect_Init(void)
   return kStatus_Success;
 }
 
+bool Pocket_Detect_IsHopperHold(void)
+{
+  if (ir_hop == NULL)
+  {
+    log_e("IR Hopper device not found!");
+    return false;
+  }
+
+  uint16_t raw_hop = 0;
+  DRV_IR_GetRawData(ir_hop, &raw_hop);
+  return raw_hop < 1000; // 根据实际情况调整阈值
+}
+
+bool Pocket_Detect_IsStackerHold(void)
+{
+  if (ir_sta == NULL)
+  {
+    log_e("IR Stacker device not found!");
+    return false;
+  }
+
+  uint16_t raw_sta = 0;
+  DRV_IR_GetRawData(ir_sta, &raw_sta);
+  return raw_sta > 3000; // 根据实际情况调整阈值
+}
+
+bool Pocket_Detect_IsIRRBlocked(void)
+{
+  if (ir_irr == NULL)
+  {
+    log_e("IRR device not found!");
+    return false;
+  }
+
+  uint16_t raw_irr = 0;
+  DRV_IR_GetRawData(ir_irr, &raw_irr);
+  return raw_irr < 1000; // 根据实际情况调整阈值
+}
+
+bool Pocket_Detect_IsIRLBlocked(void)
+{
+  if (ir_irl == NULL)
+  {
+    log_e("IRL device not found!");
+    return false;
+  }
+
+  uint16_t raw_irl = 0;
+  DRV_IR_GetRawData(ir_irl, &raw_irl);
+  return raw_irl < 1000; // 根据实际情况调整阈值
+}
+
+
 Status_t Pocket_Detect_Update(void)
 {
   if (ir_hop == NULL || ir_sta == NULL || ir_irr == NULL || ir_irl == NULL)

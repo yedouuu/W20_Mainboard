@@ -23,6 +23,11 @@ typedef enum
 Status_t Pocket_Detect_Init(void);
 Status_t Pocket_Detect_Update(void);
 
+bool Pocket_Detect_IsHopperHold(void);
+bool Pocket_Detect_IsStackerHold(void);
+bool Pocket_Detect_IsIRLBlocked(void);
+bool Pocket_Detect_IsIRRBlocked(void);
+
 
 #ifdef __cplusplus
 }

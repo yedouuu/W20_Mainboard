@@ -70,7 +70,7 @@ Status_t __Keypad_ReadKey()
   for (uint8_t i = 0; i < KEYPAD_MAX_KEY_NUM; i++)
   {
     /* TODO: 多按键触发, 当前版本只支持单按键 */
-    // if (__key_cnt > 0) { break; }
+    if (__key_cnt > 0) { break; }
 
     uint32_t key_mask = (1U << i);
     if (bitmap & key_mask)

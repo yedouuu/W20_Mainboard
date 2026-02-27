@@ -38,7 +38,8 @@
 #include "Logger.h"
 #include "device_manager.h"
 #include "Services/pocket_detect.h"
-#include "Services/key_scan.h"
+#include "Services/machine_ctrl.h"
+#include "System/key_scan.h"
 #include "cm_backtrace.h"
 
 #include "PageManager/PageManager.h"
@@ -71,7 +72,8 @@ void tim8_irq_callback(void)
 {
   // log_d("TIM8 interrupt triggered.");
   BSP_LED_Toggle(LED1);
-  Pocket_Detect_Update();
+  // Pocket_Detect_Update();
+  Machine_FSM_Run();
 }
 
 void tim6_irq_callback(void)
@@ -96,8 +98,7 @@ int main(void)
   BSP_SFlash_Init();
   DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
-  BSP_Motor_Init(&motor_main_res);
-  BSP_Motor_Init(&motor_stacker_res);
+  Machine_Ctrl_Init();
 
   cm_backtrace_init("W20_Mainboard_Firmware", "V1.0", "V1.0.0");
   DM_DeviceInitALL();
@@ -147,8 +148,6 @@ int main(void)
   // TEST_main();
   DRV_SetInterval(Key_ScanTask, 50, TIMER_INTERVAL_REPEAT);
 
-  uint16_t motor_pwm = 500;
-  DRV_Motor_State_e motor_state = DRV_MOTOR_STOP;
   while (1)
   {
     /* 5ms调用一次 */
@@ -162,27 +161,28 @@ int main(void)
     DRV_TimerIntervalCore();
 
     extern uint8_t g_key_pressed_flag;
-    if (g_key_pressed_flag)
-    {
-      if (motor_state == DRV_MOTOR_FORWARD)
-      {
-        motor_state = DRV_MOTOR_STOP;
-        log_d("Stopping motors.");
-        DRV_Encoder_Disable(encoder);
-      }
-      else
-      {
-        motor_state = DRV_MOTOR_FORWARD;
-        log_d("Starting motors.");
-        DRV_Encoder_Enable(encoder);
-        DRV_Motor_SetPWM(motor_main, 70);
-        DRV_Motor_SetPWM(motor_sta, 30);
-      }
 
-      DRV_Motor_Operate(motor_main, motor_state);
-      DRV_Motor_Operate(motor_sta, motor_state);
-      g_key_pressed_flag = 0;
-    }
+    // if (g_key_pressed_flag)
+    // if (Pocket_Detect_IsHopperHold())
+    // {
+    //   motor_state = DRV_MOTOR_FORWARD;
+    //   log_d("Starting motors.");
+    //   DRV_Encoder_Enable(encoder);
+    //   DRV_Motor_SetPWM(motor_main, 70);
+    //   DRV_Motor_SetPWM(motor_sta, 30);
+      
+    //   DRV_Motor_Operate(motor_main, motor_state);
+    //   DRV_Motor_Operate(motor_sta, motor_state);
+    //   g_key_pressed_flag = 0;
+    // }
+    // else
+    // {
+    //   motor_state = DRV_MOTOR_STOP;
+    //   log_d("STOP motors.");
+    //   DRV_Encoder_Disable(encoder);
+    //   DRV_Motor_Operate(motor_main, motor_state);
+    //   DRV_Motor_Operate(motor_sta, motor_state);
+    // }
 
     extern __IO uint8_t g_ns2009_irq_flag;
     if (g_ns2009_irq_flag)

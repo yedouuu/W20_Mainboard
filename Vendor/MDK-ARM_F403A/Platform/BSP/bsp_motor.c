@@ -139,7 +139,7 @@ void BSP_Motor_Operate(const void *motor, BSP_Motor_Opt_e operate)
         break;
       case MOTOR_OPT_BACKWARD:
         digitalWrite_HIGH(motor_res->in2_pin);
-        PWM_Write(motor_res->pwm_pin, motor_res->brake_pwm);
+        // PWM_Write(motor_res->pwm_pin, motor_res->brake_pwm);
         break;
       case MOTOR_OPT_BRAKE:
         digitalWrite_HIGH(motor_res->in2_pin);

@@ -20,7 +20,8 @@ The system also drives a stepper motor for bill feeding, controls a TFT LCD disp
     - `Application/`: High-level application tasks and state management.
       - `Common/`: Common definitions and shared components.
       - `Config/`: Configuration files and settings.
-      - `Services/`: Background services like communication with the image board.
+      - `Services/`: High-level services like bill counting, validation, and motor control logic.
+      - `System/`: Get Devices using HAL APIs to provides system-level funciton like key_scan, sampling.
       - `Pages/`: LVGL UI page implementations.
       - `Resources/`: Fonts, images, and other UI resources.
     
