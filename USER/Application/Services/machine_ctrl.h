@@ -12,6 +12,11 @@ typedef enum
   MACHINE_STARTUP,
   MACHINE_RUNNING,
   MACHINE_STANDBY,
+  MACHINE_RESUME,
+  MACHINE_PAUSE,
+  MACHINE_BREAK,
+  MACHINE_BLOCK,
+  MACHINE_STOP,
 } machine_status_e;
 
 void Machine_Ctrl_Init(void);

@@ -22,6 +22,7 @@ virtualFolder:
             - path: ../../USER/Application/Common/comm_macro.h
             - path: ../../USER/Application/Common/binary.h
             - path: ../../USER/Application/Common/errno.h
+            - path: ../../USER/Application/Common/context.c
           folders: []
         - name: Services
           files:
@@ -445,8 +446,22 @@ virtualFolder:
           files: []
           folders: []
         - name: FreeRTOS
-          files: []
-          folders: []
+          files:
+            - path: ../../USER/Middleware/FreeRTOS/croutine.c
+            - path: ../../USER/Middleware/FreeRTOS/event_groups.c
+            - path: ../../USER/Middleware/FreeRTOS/list.c
+            - path: ../../USER/Middleware/FreeRTOS/queue.c
+            - path: ../../USER/Middleware/FreeRTOS/stream_buffer.c
+            - path: ../../USER/Middleware/FreeRTOS/tasks.c
+            - path: ../../USER/Middleware/FreeRTOS/timers.c
+            - path: ../../USER/Middleware/FreeRTOS/FreeRTOSConfig.h
+          folders:
+            - name: portable
+              files:
+                - path: ../../USER/Middleware/FreeRTOS/portable/port.c
+                - path: ../../USER/Middleware/FreeRTOS/portable/portmacro.h
+                - path: ../../USER/Middleware/FreeRTOS/portable/MemMang/heap_4.c
+              folders: []
     - name: OSAL
       files: []
       folders: []
@@ -613,9 +628,14 @@ targets:
         - ../../USER/Utils/lv_ext
         - ../../USER/Utils/Logger
         - ../../USER/Middleware/SFUD/inc
+        - ../../USER/Middleware/FreeRTOS/include
+        - ../../USER/Middleware/FreeRTOS
+        - ../../USER/Middleware/FreeRTOS/portable
       libList: []
     excludeList:
       - <virtual_root>/Platform/Firmware/Device/startup_at32f403avgt7_ext_ram.s
+    settings:
+      debugger: cortex-debug
     toolchain: AC6
     toolchainConfigMap:
       AC5:

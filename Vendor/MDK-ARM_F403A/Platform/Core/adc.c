@@ -230,7 +230,7 @@ void ADC_DMA_Init(void)
         ADC1,
         (adc_channel_select_type)ADC_DMA_RegChannelList[index],
         index + 1,
-        ADC_SAMPLETIME_239_5);
+        ADC_SAMPLETIME_13_5);
   }
 
   adc_ordinary_conversion_trigger_set(ADC1, ADC12_ORDINARY_TRIG_SOFTWARE, TRUE);

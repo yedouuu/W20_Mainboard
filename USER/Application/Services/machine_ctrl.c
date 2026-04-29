@@ -2,6 +2,7 @@
 #include "DeviceManager/device_manager.h"
 #include "Common/common.h"
 #include "HAL/drv_motor_wrapper.h"
+#include "HAL/drv_tick_wrapper.h"
 
 #include "Services/pocket_detect.h"
 #include "machine_ctrl.h"
@@ -45,6 +46,12 @@ void Conveyer_Reverse(void)
   DRV_Motor_Operate(g_motor_main, DRV_MOTOR_BACKWARD);
 }
 
+void Machine_Stop(void)
+{
+  g_machine_status = MACHINE_STOP;
+  Conveyer_Stop();
+}
+
 void Machine_FSM_Run(void)
 {
 
@@ -80,25 +87,43 @@ void Machine_FSM_Run(void)
       // log_d("Machine is running. Monitoring hopper and stacker...");
       if (!Pocket_Detect_IsHopperHold())
       {
-        if (Pocket_Detect_IsStackerHold())
-        {
-          g_machine_status = MACHINE_STANDBY;
-        }
-        else
-        {
-          g_machine_status = MACHINE_IDLE;
-        }
+        DRV_SetInterval((TimerInterval_CB_t)Machine_Stop, 5000, TIMER_INTERVAL_ONCE);
         return;
       }
       Conveyer_Start();
-
+      break;
     case MACHINE_STANDBY:
-      if (!Pocket_Detect_IsStackerHold())
+      if (Pocket_Detect_IsStackerHold())
       {
         // log_d("stacker released, stopping machine.");
+        Conveyer_Stop();
+      }
+      else
+      {
         g_machine_status = MACHINE_IDLE;
       }
       break;
+    case MACHINE_PAUSE: {
+    }
+    break;
+    case MACHINE_RESUME: {
+    }
+    break;
+    case MACHINE_BREAK: {
+    }
+    break;
+    case MACHINE_BLOCK: {
+    }
+    break;
+    case MACHINE_STOP: {
+      if (Pocket_Detect_IsStackerHold()) { g_machine_status = MACHINE_STANDBY; }
+      else
+      {
+        g_machine_status = MACHINE_IDLE;
+      }
+    }
+    break;
+
     default:
       break;
   }

@@ -50,6 +50,9 @@
 #include "lv_port_indev.h"
 #include "lv_demos.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
 #include "fault_test.h"
 #include "unit_test.h"
 
@@ -64,16 +67,21 @@ extern "C" {
 extern void NS2009_TickHandler(void);
 extern void DRV_TimerIntervalCore(void);
 
+void vApplicationStackOverflowHook( TaskHandle_t xTask, char * pcTaskName )
+{
+  printf( "STACK OVERFLOW DETECTED: %s\n", pcTaskName );
+}
+
 #ifdef __cplusplus
 }
 #endif
+
 
 void tim8_irq_callback(void)
 {
   // log_d("TIM8 interrupt triggered.");
   BSP_LED_Toggle(LED1);
   // Pocket_Detect_Update();
-  Machine_FSM_Run();
 }
 
 void tim6_irq_callback(void)
@@ -81,6 +89,7 @@ void tim6_irq_callback(void)
   // log_d("TIM6 interrupt triggered.");
   BSP_LED_Toggle(LED_DEBUG);
   lv_tick_inc(1);
+  Machine_FSM_Run();
 }
 
 __IO uint16_t dma_trans_complete_flag = 0;

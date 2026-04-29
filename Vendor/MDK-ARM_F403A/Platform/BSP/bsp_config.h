@@ -57,6 +57,19 @@
 #define IRR_RX_PIN                       PB0
 #define IR_CHANNEL_CTRL_PIN              PD12
 
+/* UV */
+#define UV_LEFT_PIN                      PC4  /* ADC1_IN14 */
+#define UV_RIGHT_PIN                     PC5  /* ADC1_IN15 */
+
+/* MG */
+#define MGS_LEFT_1_PIN                   PA4  /* ADC1_IN4 */
+#define MGS_LEFT_2_PIN                   PC0  /* ADC1_IN10 */
+#define MGS_LEFT_3_PIN                   PC2  /* ADC1_IN12 */
+#define MGS_RIGHT_1_PIN                  PA3  /* ADC1_IN3 */
+#define MGS_RIGHT_2_PIN                  PC1  /* ADC1_IN11 */
+#define MGS_RIGHT_3_PIN                  PC3  /* ADC1_IN13 */
+#define MGB_BM_PIN                       PA1  /* ADC1_IN1 */
+#define MGB_HD_PIN                       PA2  /* ADC1_IN2 */
 
 /* Screen */
 #define SCREEN_XMC_D0_PIN                PD14
@@ -117,7 +130,7 @@
 
 /* Encoder */
 #define ENCODER_CTRL_PIN                 PD13     /* If use PWM then Remap: TIM4 C2 */
-#define ENCODER_READ_PIN                 PA0      /* 采样引脚 */
+#define ENCODER_READ_PIN                 PA0      /* 采样引脚 ADC1_IN0 */
 #define ENCODER_TO_FPGA_PIN              PE2      /* 输出码盘信号给FPGA的引脚 */
 #define ENCODER_RESOLUTION               (0.5f)   /* 码盘间隔宽度mm */
 

@@ -103,6 +103,9 @@ public:
   virtual void onViewDidUnload()
   {
   }
+  // virtual void onKeypadRead()
+  // {
+  // }
 
   /* Set whether to manually manage the cache */
   void SetCustomCacheEnable(bool en);
@@ -111,10 +114,10 @@ public:
   void SetCustomAutoCacheEnable(bool en);
 
   /* Set custom animation type for page switching */
-  void
-  SetCustomLoadAnimType(uint8_t           anim_type,
-                        uint16_t          time    = PAGE_ANIM_TIME_DEFAULT,
-                        lv_anim_path_cb_t path_cb = PAGE_ANIM_PATH_DEFAULT);
+  void SetCustomLoadAnimType(
+      uint8_t           anim_type,
+      uint16_t          time    = PAGE_ANIM_TIME_DEFAULT,
+      lv_anim_path_cb_t path_cb = PAGE_ANIM_PATH_DEFAULT);
 
   /* Pop data from stash */
   bool StashPop(void *ptr, uint32_t size);
