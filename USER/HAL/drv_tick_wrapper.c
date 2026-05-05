@@ -21,8 +21,8 @@ void DRV_Tick_Init(DRV_Tick_Ops_t *ops)
 
 /**
  * @brief get ms time
- * 
- * @return uint32_t 
+ *
+ * @return uint32_t
  */
 uint32_t DRV_GetTickMs(void)
 {
@@ -31,8 +31,8 @@ uint32_t DRV_GetTickMs(void)
 
 /**
  * @brief get us time
- * 
- * @return uint32_t 
+ *
+ * @return uint32_t
  */
 uint32_t DRV_GetTickUs(void)
 {
@@ -44,11 +44,29 @@ void DRV_DelayMs(uint32_t ms)
   Tick_Ops->DelayMs(ms);
 }
 
+void DRV_DelayMsUntil(uint32_t target_ms)
+{
+  Tick_Ops->DelayMsUntil(target_ms);
+}
+
 void DRV_DelayUs(uint32_t us)
 {
   Tick_Ops->DelayUs(us);
 }
 
+/**
+ * @brief 定时器回调核心函数，在主循环中调用
+ *       通过DRV_SetInterval设置的回调会在此函数中被定时调用
+ *
+ * @note 1. 该函数需要在主循环中被频繁调用以保证定时器的准确性。
+ *       定时器回调函数的执行时间不宜过长，以免影响其他定时器的调用
+ * @note 2. 若使用了RTOS, 则建议使用RTOS的定时器功能,
+ * 以获得更准确的定时和更好的系统性能,
+ * 避免在主循环中频繁调用该函数可能带来的性能问题
+ *
+ * @param none
+ *
+ */
 void DRV_TimerIntervalCore(void)
 {
   for (int i = 0; i < TIMER_INTERVAL_MAX; i++)

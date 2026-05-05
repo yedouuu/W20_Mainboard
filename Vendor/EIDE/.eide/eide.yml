@@ -15,6 +15,7 @@ virtualFolder:
     - name: Application
       files:
         - path: ../../USER/Application/App.cpp
+        - path: ../../USER/Application/AppTasks.cpp
       folders:
         - name: Common
           files:

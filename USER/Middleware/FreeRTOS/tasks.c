@@ -367,6 +367,10 @@ typedef struct tskTaskControlBlock       /* The old naming convention is used to
         UBaseType_t uxCoreAffinityMask; /**< Used to link the task to certain cores.  UBaseType_t must have greater than or equal to the number of bits as configNUMBER_OF_CORES. */
     #endif
 
+    #if ( portSTACK_GROWTH <= 0 )
+        UBaseType_t uxSizeOfStack; /**< The size of the stack allocated to the task. [Support for CmBacktrace] */
+    #endif
+
     ListItem_t xStateListItem;                  /**< The list that the state list item of a task is reference from denotes the state of that task (Ready, Blocked, Suspended ). */
     ListItem_t xEventListItem;                  /**< Used to reference a task from an event list. */
     UBaseType_t uxPriority;                     /**< The priority of the task.  0 is the lowest priority. */
@@ -451,6 +455,25 @@ typedef tskTCB TCB_t;
     portDONT_DISCARD PRIVILEGED_DATA TCB_t * volatile pxCurrentTCBs[ configNUMBER_OF_CORES ];
     #define pxCurrentTCB    xTaskGetCurrentTaskHandle()
 #endif
+
+uint32_t * vTaskStackAddr( void )
+{
+    return ( pxCurrentTCB != NULL ) ? ( uint32_t * ) pxCurrentTCB->pxStack : NULL;
+}
+
+uint32_t vTaskStackSize( void )
+{
+    #if ( portSTACK_GROWTH > 0 )
+        return ( pxCurrentTCB != NULL ) ? ( uint32_t ) ( pxCurrentTCB->pxEndOfStack - pxCurrentTCB->pxStack + 1 ) : 0UL;
+    #else
+        return ( pxCurrentTCB != NULL ) ? ( uint32_t ) pxCurrentTCB->uxSizeOfStack : 0UL;
+    #endif
+}
+
+char * vTaskName( void )
+{
+    return ( pxCurrentTCB != NULL ) ? ( char * ) pxCurrentTCB->pcTaskName : NULL;
+}
 
 /* Lists for ready and blocked tasks. --------------------
  * xDelayedTaskList1 and xDelayedTaskList2 could be moved to function scope but
@@ -1833,7 +1856,7 @@ static void prvInitialiseNewTask( TaskFunction_t pxTaskCode,
     {
         pxTopOfStack = &( pxNewTCB->pxStack[ uxStackDepth - ( configSTACK_DEPTH_TYPE ) 1 ] );
         pxTopOfStack = ( StackType_t * ) ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack ) & ( ~( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK ) ) );
-
+        pxNewTCB->uxSizeOfStack = uxStackDepth;  /* [Support for CmBacktrace] */
         /* Check the alignment of the calculated top of stack is correct. */
         configASSERT( ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack & ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK ) == 0U ) );
 

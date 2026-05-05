@@ -1,3 +1,13 @@
+/**
+ * @file bsp_key.c
+ * @author your name (you@domain.com)
+ * @brief 开发板测试例程：按键扫描
+ * @version 0.1
+ * @date 2026-05-05
+ * 
+ * @copyright Copyright (c) 2026
+ * 
+ */
 
 #include <stdio.h>
 
@@ -18,9 +28,6 @@ uint8_t g_speed = 1;
  */
 void button_isr(void)
 {
-  /* delay 5ms */
-  delay_ms(5);
-
   /* clear interrupt pending bit */
   // exint_flag_clear(EXINT_LINE_0);
 

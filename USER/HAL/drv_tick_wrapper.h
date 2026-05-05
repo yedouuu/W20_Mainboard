@@ -20,6 +20,7 @@ typedef struct _DRV_Tick_Ops_t
   uint32_t (*GetMillis)(void);
   uint32_t (*GetMicros)(void);
   void     (*DelayMs)(uint32_t ms);
+  void     (*DelayMsUntil)(uint32_t target_ms);
   void     (*DelayUs)(uint32_t us);
 } DRV_Tick_Ops_t;
 
@@ -27,6 +28,7 @@ void     DRV_Tick_Init(DRV_Tick_Ops_t *ops);
 uint32_t DRV_GetTickMs(void);
 uint32_t DRV_GetTickUs(void);
 void     DRV_DelayMs(uint32_t ms);
+void     DRV_DelayMsUntil(uint32_t target_ms);
 void     DRV_DelayUs(uint32_t us);
 Status_t DRV_SetInterval(TimerInterval_CB_t   callback,
                          uint32_t             interval_ms,

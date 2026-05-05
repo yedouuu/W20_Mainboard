@@ -12,6 +12,7 @@
 #define F_CPU                  SystemCoreClock
 #define CYCLES_PER_MICROSECOND (F_CPU / 1000000U)
 #define MUX_XX                 ((uint8_t)0xFF)
+#define USE_OS                 1
 
 typedef gpio_type GPIO_TypeDef;
 typedef spi_type  SPI_TypeDef;
@@ -86,8 +87,13 @@ typedef i2c_type  I2C_TypeDef;
  *=========================*/
 
 /* System tick */
-#define SYSTICK_TICK_FREQ 1000 // Hz
-#define SYSTICK_PRIORITY  0
+#if USE_OS
+#  define SYSTICK_TICK_FREQ 1000 // Hz
+#  define SYSTICK_PRIORITY  15   // FreeRTOS内部自己会调整为合适的优先级
+#else
+#  define SYSTICK_TICK_FREQ 1000 // Hz
+#  define SYSTICK_PRIORITY  0
+#endif
 
 /* GPIO */
 #define GPIO_DRIVE_DEFAULT GPIO_DRIVE_STRENGTH_STRONGER

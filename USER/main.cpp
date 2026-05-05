@@ -26,6 +26,7 @@
 
 #include "Common/common.h"
 #include "App.h"
+#include "AppTasks.h"
 #include "bsp_led.h"
 #include "bsp_lcd.h"
 #include "bsp_key.h"
@@ -40,7 +41,7 @@
 #include "Services/pocket_detect.h"
 #include "Services/machine_ctrl.h"
 #include "System/key_scan.h"
-#include "cm_backtrace.h"
+// #include "cm_backtrace.h"
 
 #include "PageManager/PageManager.h"
 #include "PageManager/PageBase.h"
@@ -58,18 +59,20 @@
 
 #define DELAY 500
 
-extern __IO uint8_t g_ns2009_irq_flag;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 extern void NS2009_TickHandler(void);
-extern void DRV_TimerIntervalCore(void);
 
 void vApplicationStackOverflowHook( TaskHandle_t xTask, char * pcTaskName )
 {
   printf( "STACK OVERFLOW DETECTED: %s\n", pcTaskName );
+}
+
+void vApplicationTickHook()
+{
+  lv_tick_inc(1);
 }
 
 #ifdef __cplusplus
@@ -87,12 +90,8 @@ void tim8_irq_callback(void)
 void tim6_irq_callback(void)
 {
   // log_d("TIM6 interrupt triggered.");
-  BSP_LED_Toggle(LED_DEBUG);
-  lv_tick_inc(1);
-  Machine_FSM_Run();
+  // BSP_LED_Toggle(LED_DEBUG);
 }
-
-__IO uint16_t dma_trans_complete_flag = 0;
 
 /**
  * @brief  main function.
@@ -103,18 +102,19 @@ int main(void)
 {
   Core_Init();
   BSP_LED_Init();
-  BSP_KEY_Init();
   BSP_SFlash_Init();
   DRV_Init();
   loggerInit(LOG_LEVEL_DEBUG);
   Machine_Ctrl_Init();
 
-  cm_backtrace_init("W20_Mainboard_Firmware", "V1.0", "V1.0.0");
+  // cm_backtrace_init("W20_Mainboard_Firmware", "V1.0", "V1.0.0");
   DM_DeviceInitALL();
 
+#if APP_TASK_ENABLE_LVGL
   lv_init();
   lv_port_disp_init();
   lv_port_indev_init();
+#endif
 
   Key_Scan_Init();
 
@@ -128,26 +128,7 @@ int main(void)
   printf("System initialized.\r\n");
 
   Timer_SetInterrupt(TIM8, 500000, tim8_irq_callback); // 500ms
-  Timer_SetInterrupt(TIM6, 1000, tim6_irq_callback);   // 1ms
-
   Timer_SetEnable(TIM8, TRUE);
-  Timer_SetEnable(TIM6, TRUE);
-
-  // log_i("PWM Init Channel %d", PWM_Init(PD13, 1000, 10000));
-  // log_i("PWM Init Channel %d", PWM_Init(PD14, 1000, 10000));
-  // log_i("PWM Init Channel %d", PWM_Init(PD15, 1000, 10000));
-
-  // PWM_Write(PD13, 500);
-  // PWM_Write(PD14, 500);
-  // PWM_Write(PD15, 500);
-
-  // log_i("PWM Init Channel %d", PWM_Init(SCREEN_BLK_PIN, 1000, 10000));
-  // PWM_Write(SCREEN_BLK_PIN, 500);
-
-  Device_t *touch_main = DM_DeviceFind("TOUCH_MAIN");
-  Device_t *motor_main = DM_DeviceFind("MOTOR_MAIN");
-  Device_t *motor_sta  = DM_DeviceFind("MOTOR_STACKER");
-  Device_t *encoder    = DM_DeviceFind("ENCODER");
 
   Pocket_Detect_Init();
   ADCx_Start(ADC1);
@@ -157,79 +138,11 @@ int main(void)
   // TEST_main();
   DRV_SetInterval(Key_ScanTask, 50, TIMER_INTERVAL_REPEAT);
 
+  AppTasks_Init();
+
+  vTaskStartScheduler();
+
   while (1)
   {
-    /* 5ms调用一次 */
-    DRV_DelayMs(1);
-    static uint32_t cnt = 0;
-    if (cnt++ >= 5)
-    {
-      cnt = 0;
-      lv_timer_handler(); /* let the GUI do its work */
-    }
-    DRV_TimerIntervalCore();
-
-    extern uint8_t g_key_pressed_flag;
-
-    // if (g_key_pressed_flag)
-    // if (Pocket_Detect_IsHopperHold())
-    // {
-    //   motor_state = DRV_MOTOR_FORWARD;
-    //   log_d("Starting motors.");
-    //   DRV_Encoder_Enable(encoder);
-    //   DRV_Motor_SetPWM(motor_main, 70);
-    //   DRV_Motor_SetPWM(motor_sta, 30);
-      
-    //   DRV_Motor_Operate(motor_main, motor_state);
-    //   DRV_Motor_Operate(motor_sta, motor_state);
-    //   g_key_pressed_flag = 0;
-    // }
-    // else
-    // {
-    //   motor_state = DRV_MOTOR_STOP;
-    //   log_d("STOP motors.");
-    //   DRV_Encoder_Disable(encoder);
-    //   DRV_Motor_Operate(motor_main, motor_state);
-    //   DRV_Motor_Operate(motor_sta, motor_state);
-    // }
-
-    extern __IO uint8_t g_ns2009_irq_flag;
-    if (g_ns2009_irq_flag)
-    {
-      g_ns2009_irq_flag = 0;
-
-      //   DRV_Touch_Point_t point;
-      //   DRV_Touch_Read(touch_main, &point);
-      //   log_d("Touch Read (IRQ): X=%d, Y=%d, Pressed=%d", point.x, point.y,
-      //   point.pressed);
-    }
-
-    if (dma_trans_complete_flag > 0)
-    {
-      // log_d("DMA TC Flag: %d", dma_trans_complete_flag);
-
-      /* 12位ADC转换为3.3V电压 */
-      // uint16_t raw_hop = 0;
-      // uint16_t raw_sta = 0;
-      // uint16_t raw_irr = 0;
-      // uint16_t raw_irl = 0;
-      // DRV_IR_GetRawData(ir_hop, &raw_hop);
-      // DRV_IR_GetRawData(ir_sta, &raw_sta);
-      // DRV_IR_GetRawData(irr, &raw_irr);
-      // DRV_IR_GetRawData(irl, &raw_irl);
-
-      // float voltage_hop = (float)raw_hop * 3.3f / 4095.0f;
-      // float voltage_sta = (float)raw_sta * 3.3f / 4095.0f;
-      // float voltage_irr = (float)raw_irr * 3.3f / 4095.0f;
-      // float voltage_irl = (float)raw_irl * 3.3f / 4095.0f;
-      // log_d("IR Hopper Voltage: %fV", voltage_hop);
-      // log_d("IR Stacker Voltage: %fV", voltage_sta);
-      // log_d("IR IRR Voltage: %fV", voltage_irr);
-      // log_d("IR IRL Voltage: %fV", voltage_irl);
-
-      dma_trans_complete_flag--;
-    }
-
-    // DRV_DelayMs(DELAY);
   }
 }

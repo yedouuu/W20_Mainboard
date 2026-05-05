@@ -1,3 +1,18 @@
+/**
+ * @file timer.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2026-05-05
+ * 
+ * @copyright Copyright (c) 2026
+ * 
+ * Example usage:
+ * 
+ * Timer_SetInterrupt(TIM8, 500000, tim8_irq_callback); // 500ms
+ * Timer_SetEnable(TIM8, TRUE);
+ * 
+ */
 
 #include "timer.h"
 #include "gpio.h"

@@ -93,9 +93,10 @@ void UsageFault_Handler(void)
  * @param  none
  * @retval none
  */
-void SVC_Handler(void)
-{
-}
+// void SVC_Handler(void)
+// {
+//   vPortSVCHandler();
+// }
 
 /**
  * @brief  this function handles debug monitor exception.
@@ -111,9 +112,10 @@ void DebugMon_Handler(void)
  * @param  none
  * @retval none
  */
-void PendSV_Handler(void)
-{
-}
+// void PendSV_Handler(void)
+// {
+//   xPortPendSVHandler();
+// }
 
 /**
  * @brief  this function handles systick handler.
@@ -122,6 +124,7 @@ void PendSV_Handler(void)
  */
 // void SysTick_Handler(void)
 // {
+//   xPortSysTickHandler();
 // }
 
 extern __IO uint16_t dma_trans_complete_flag;
