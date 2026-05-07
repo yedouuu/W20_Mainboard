@@ -1,12 +1,12 @@
 /**
  * @file AppTasks.cpp
  * @author yedouuu (l1530396447@gmail.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2026-05-05
- * 
+ *
  * @copyright Copyright (c) 2026
- * 
+ *
  */
 
 #include "AppTasks.h"
@@ -61,18 +61,7 @@ static void TEST_Task(void *pvParameters)
   {
     BSP_LED_Toggle(LED1);
     log_i("Running test task 1...");
-    DRV_DelayMs(200);
-  }
-}
-
-static void TEST_Task2(void *pvParameters)
-{
-  (void)pvParameters;
-
-  while (1)
-  {
-    log_i("Running test task 2...");
-    DRV_DelayMs(100);
+    DRV_DelayMs(500);
   }
 }
 
@@ -135,13 +124,12 @@ static void Monitor_Task(void *pvParameters)
   // char *task_list_buffer;
   // char *runtime_stats_buffer;
   TaskStatus_t *task_status_array;
-  UBaseType_t task_count;
-  uint32_t total_runtime;
+  UBaseType_t   task_count;
+  uint32_t      total_runtime;
 
   // 分配缓冲区
   // task_list_buffer = (char *)pvPortMalloc(1024);
   // runtime_stats_buffer = (char *)pvPortMalloc(1024);
-
 
   log_i("Task Monitor started.");
 
@@ -151,12 +139,15 @@ static void Monitor_Task(void *pvParameters)
     task_count = uxTaskGetNumberOfTasks();
 
     // 分配任务状态数组
-    task_status_array = (TaskStatus_t *)pvPortMalloc(task_count * sizeof(TaskStatus_t));
+    task_status_array = (TaskStatus_t *)pvPortMalloc(task_count *
+                                                     sizeof(TaskStatus_t));
 
     if (task_status_array != NULL)
     {
       // 获取任务状态信息
-      task_count = uxTaskGetSystemState(task_status_array, task_count, &total_runtime);
+      task_count = uxTaskGetSystemState(task_status_array,
+                                        task_count,
+                                        &total_runtime);
 
       log_i("============== Task Monitor Report =============");
       log_i("Total Tasks: %lu", task_count);
@@ -168,22 +159,36 @@ static void Monitor_Task(void *pvParameters)
         const char *task_state;
         switch (task_status_array[i].eCurrentState)
         {
-          case eRunning:   task_state = "Running"; break;
-          case eReady:     task_state = "Ready"; break;
-          case eBlocked:   task_state = "Blocked"; break;
-          case eSuspended: task_state = "Suspended"; break;
-          case eDeleted:   task_state = "Deleted"; break;
-          default:         task_state = "Unknown"; break;
+          case eRunning:
+            task_state = "Running";
+            break;
+          case eReady:
+            task_state = "Ready";
+            break;
+          case eBlocked:
+            task_state = "Blocked";
+            break;
+          case eSuspended:
+            task_state = "Suspended";
+            break;
+          case eDeleted:
+            task_state = "Deleted";
+            break;
+          default:
+            task_state = "Unknown";
+            break;
         }
 
         // 计算CPU使用率
         uint32_t cpu_percent = 0;
         if (total_runtime > 0)
         {
-          cpu_percent = (task_status_array[i].ulRunTimeCounter * 100) / total_runtime;
+          cpu_percent = (task_status_array[i].ulRunTimeCounter * 100) /
+                        total_runtime;
         }
 
-        log_i("Task[%lu]: %s \t| State: %s \t| Priority: %lu \t| Stack HWM: %u \t| CPU: %lu%%",
+        log_i("Task[%lu]: %s \t| State: %s \t| Priority: %lu \t| Stack HWM: %u "
+              "\t| CPU: %lu%%",
               i,
               task_status_array[i].pcTaskName,
               task_state,
@@ -201,9 +206,11 @@ static void Monitor_Task(void *pvParameters)
       }
 
       // 打印堆内存使用情况
-      size_t free_heap = xPortGetFreeHeapSize();
+      size_t free_heap     = xPortGetFreeHeapSize();
       size_t min_free_heap = xPortGetMinimumEverFreeHeapSize();
-      log_i("Free Heap: %u bytes, Min Ever Free: %u bytes", free_heap, min_free_heap);
+      log_i("Free Heap: %u bytes, Min Ever Free: %u bytes",
+            free_heap,
+            min_free_heap);
 
       if (free_heap < 1024)
       {
@@ -218,36 +225,41 @@ static void Monitor_Task(void *pvParameters)
     }
 
     log_i("================= END ================");
-    // 每5秒监控一次
-    DRV_DelayMs(1000);
+    // 每10秒监控一次
+    DRV_DelayMs(10000);
   }
 }
 
 void AppTasks_Init(void)
 {
-  xTaskCreate(
-      TEST_Task, "TEST_Task", TASK_STACK_TEST, NULL, TASK_PRIORITY_TEST, NULL);
-  xTaskCreate(TEST_Task2,
-              "TEST_Task2",
+  xTaskCreate(TEST_Task,
+              "TEST_Task",
               TASK_STACK_TEST,
               NULL,
               TASK_PRIORITY_TEST,
               NULL);
+
   // xTaskCreate(System_Service_Task,
   //             "SysService",
   //             TASK_STACK_SYSTEM_SERVICE,
   //             NULL,
   //             TASK_PRIORITY_SYSTEM_SERVICE,
   //             NULL);
+
   // xTaskCreate(Machine_Task,
   //             "Machine",
   //             TASK_STACK_MACHINE,
   //             NULL,
   //             TASK_PRIORITY_MACHINE,
   //             NULL);
+
 #if APP_TASK_ENABLE_LVGL
-  xTaskCreate(
-      LVGL_Task, "LVGL", TASK_STACK_LVGL, NULL, TASK_PRIORITY_LVGL, NULL);
+  xTaskCreate(LVGL_Task,
+              "LVGL",
+              TASK_STACK_LVGL,
+              NULL,
+              TASK_PRIORITY_LVGL,
+              NULL);
 #endif
 
   // 创建任务监控器

@@ -16,6 +16,7 @@ AlignAfterOpenBracket: Align
 BinPackArguments: false
 BinPackParameters: false
 AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
 # BreakBeforeBraces: Linux
 BreakBeforeBraces: Custom
 BraceWrapping:
@@ -42,3 +43,5 @@ ConstructorInitializerAllOnOneLineOrOnePerLine: false
 BreakConstructorInitializers: BeforeComma
 AlwaysBreakAfterReturnType: None
 PenaltyReturnTypeOnItsOwnLine: 1000000
+PenaltyBreakAssignment: 1000
+PenaltyBreakBeforeFirstCallParameter: 1000
