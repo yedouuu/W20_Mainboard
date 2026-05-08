@@ -63,9 +63,11 @@ static Device_t* touch_main_dev;
 
 lv_timer_t * volatile indev_touchpad_timer;
 extern volatile uint8_t g_ns2009_irq_flag;
+static uint32_t touchpad_last_activity_tick;
 /**********************
  *      MACROS
  **********************/
+#define TOUCHPAD_IDLE_PAUSE_MS 100
 
 /**********************
  *   GLOBAL FUNCTIONS
@@ -98,6 +100,7 @@ void lv_port_indev_init(void)
     lv_indev_set_read_cb(indev_touchpad, touchpad_read);
     indev_touchpad_timer = lv_indev_get_read_timer(indev_touchpad);
     lv_timer_pause(indev_touchpad_timer);
+    touchpad_last_activity_tick = lv_tick_get();
 
     /*------------------
      * Mouse
@@ -188,32 +191,27 @@ static void touchpad_init(void)
     }
 }
 
-uint32_t last_interrupt_tick;
+void lv_port_touchpad_irq_process(void)
+{
+    if(!g_ns2009_irq_flag) 
+    {
+        return;
+    }
+
+    g_ns2009_irq_flag = 0;
+    touchpad_last_activity_tick = lv_tick_get();
+
+    if(indev_touchpad_timer) 
+    {
+        lv_timer_resume(indev_touchpad_timer);
+    }
+}
 
 /*Will be called by the library to read the touchpad*/
 static void touchpad_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
 {
     uint32_t tick_now = lv_tick_get();
-
-    /* If no interrupt has happened in the past 100 ms, pause the indev timer */
-    if(lv_tick_diff(tick_now, last_interrupt_tick) > 100) {
-        lv_timer_pause(indev_touchpad_timer);
-        log_d("Touchpad timer paused due to inactivity.");
-    }
-
-    if(g_ns2009_irq_flag) {
-        g_ns2009_irq_flag = 0;
-        last_interrupt_tick = tick_now;
-
-        /*
-         * Ensure the timer is running in case an interrupt occurred
-         * just after the timer was paused. Without this, a race condition
-         * could leave the timer paused and input events would not be processed.
-         */
-        lv_timer_resume(indev_touchpad_timer);
-
-        log_d("Touch IRQ handled in indev read.");
-    }
+    lv_port_touchpad_irq_process();
     
     /* Perform the reading */
     static int32_t last_x = 0;
@@ -223,13 +221,23 @@ static void touchpad_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
     DRV_Touch_Point_t point;
     DRV_Touch_Read(touch_main_dev, &point);
     
-    if ( point.pressed ) {
+    if ( point.pressed ) 
+    {
         last_x = point.x;
         last_y = point.y;
         data->state = LV_INDEV_STATE_PRESSED;
+        touchpad_last_activity_tick = tick_now;
     }
-    else {
+    else 
+    {
         data->state = LV_INDEV_STATE_RELEASED;
+
+        if(lv_tick_diff(tick_now, touchpad_last_activity_tick) >
+           TOUCHPAD_IDLE_PAUSE_MS) 
+        {
+            lv_timer_pause(indev_touchpad_timer);
+            log_d("Touchpad timer paused due to inactivity.");
+        }
     }
 
     /*Set the last pressed coordinates*/

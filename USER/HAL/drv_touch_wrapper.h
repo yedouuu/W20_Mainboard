@@ -54,6 +54,7 @@ typedef struct __DRV_Touch_Priv_t
   uint16_t               last_x;       /* 上次触摸的 X 坐标 */
   uint16_t               last_y;       /* 上次触摸的 Y 坐标 */
   uint16_t               press_count;  /* 连续按下计数 */
+  uint16_t               release_count; /* 连续释放计数 */
   uint16_t               press_tick;   /* 按下时间戳 */
   uint16_t               release_tick; /* 按下和释放时间戳 */
 } DRV_Touch_Priv_t;

@@ -5,8 +5,9 @@
 #include "drv_touch_wrapper.h"
 #include "bsp_touch.h"
 
-static Status_t
-__DRV_Touch_Read_Adapter(Device_t *dev, uint8_t *buf, uint32_t len)
+static Status_t __DRV_Touch_Read_Adapter(Device_t *dev,
+                                         uint8_t  *buf,
+                                         uint32_t  len)
 {
   if (len < sizeof(DRV_Touch_Point_t))
   {
@@ -46,13 +47,14 @@ static DRV_Touch_Ops_t touch_ops = {
 };
 
 static DRV_Touch_Priv_t touch_main_priv = {
-    .type         = DRV_TOUCH_MAIN,
-    .state        = DRV_TOUCH_STATE_IDLE,
-    .last_x       = 0,
-    .last_y       = 0,
-    .press_count  = 0,
-    .press_tick   = 0,
-    .release_tick = 0,
+    .type          = DRV_TOUCH_MAIN,
+    .state         = DRV_TOUCH_STATE_IDLE,
+    .last_x        = 0,
+    .last_y        = 0,
+    .press_count   = 0,
+    .release_count = 0,
+    .press_tick    = 0,
+    .release_tick  = 0,
 };
 
 Device_t touch_main = {

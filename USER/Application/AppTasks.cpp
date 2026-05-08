@@ -19,6 +19,7 @@
 
 #if APP_TASK_ENABLE_LVGL
 #  include "lvgl.h"
+#  include "lv_port_indev.h"
 #endif
 
 #include "FreeRTOS.h"
@@ -49,8 +50,6 @@ uint32_t GetRunTimeCounterValue(void)
 #define TASK_STACK_LVGL              2048
 #define TASK_STACK_MONITOR           256
 
-extern __IO uint8_t g_ns2009_irq_flag;
-
 __IO uint16_t dma_trans_complete_flag = 0;
 
 static void TEST_Task(void *pvParameters)
@@ -71,8 +70,6 @@ static void System_Service_Task(void *pvParameters)
 
   while (1)
   {
-    if (g_ns2009_irq_flag) { g_ns2009_irq_flag = 0; }
-
     if (dma_trans_complete_flag > 0) { dma_trans_complete_flag--; }
 
     DRV_DelayMs(1);
@@ -98,6 +95,7 @@ static void LVGL_Task(void *pvParameters)
   while (1)
   {
     // log_i("Running LVGL task...");
+    lv_port_touchpad_irq_process();
     lv_timer_handler();
     DRV_DelayMs(5);
   }
@@ -144,6 +142,7 @@ static void Monitor_Task(void *pvParameters)
 
     if (task_status_array != NULL)
     {
+      
       // 获取任务状态信息
       task_count = uxTaskGetSystemState(task_status_array,
                                         task_count,

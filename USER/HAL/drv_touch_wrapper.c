@@ -1,6 +1,21 @@
 
 #include "drv_touch_wrapper.h"
 
+#define TOUCH_PRESS_CONFIRM_CNT   3
+#define TOUCH_RELEASE_CONFIRM_CNT 3
+#define TOUCH_COORD_FILTER_SHIFT  2
+
+static uint16_t __DRV_Touch_FilterCoord(uint16_t last, uint16_t current)
+{
+  uint32_t filtered;
+
+  filtered = (((uint32_t)last * 3U) + current +
+              (1U << (TOUCH_COORD_FILTER_SHIFT - 1U))) >>
+             TOUCH_COORD_FILTER_SHIFT;
+
+  return (uint16_t)filtered;
+}
+
 /**
  * @brief  内部辅助函数：安全获取并校验 Ops 指针
  * @note   集中处理类型检查，防止非法强转
@@ -106,7 +121,55 @@ Status_t DRV_Touch_Read(Device_t *touch_dev, DRV_Touch_Point_t *point)
     return kStatus_InvalidArgument;
   }
 
-  ops->Read(touch_dev->res, &point->x, &point->y, &point->pressed);
+  DRV_Touch_Priv_t *priv = (DRV_Touch_Priv_t *)touch_dev->priv;
+  DRV_Touch_Point_t raw_point;
+
+  ops->Read(touch_dev->res, &raw_point.x, &raw_point.y, &raw_point.pressed);
+
+  if (raw_point.pressed)
+  {
+    if (priv->press_count < TOUCH_PRESS_CONFIRM_CNT) { priv->press_count++; }
+
+    priv->release_count = 0;
+
+    if (priv->state != DRV_TOUCH_STATE_PRESSED &&
+        priv->press_count >= TOUCH_PRESS_CONFIRM_CNT)
+    {
+      log_d("Touch Press Confirmed at (%d, %d)", raw_point.x, raw_point.y);
+      priv->state  = DRV_TOUCH_STATE_PRESSED;
+      priv->last_x = raw_point.x;
+      priv->last_y = raw_point.y;
+    }
+    else if (priv->state == DRV_TOUCH_STATE_PRESSED)
+    {
+      log_d("Touch From (%d, %d) Move to (%d, %d)",
+            priv->last_x,
+            priv->last_y,
+            raw_point.x,
+            raw_point.y);
+      priv->last_x = __DRV_Touch_FilterCoord(priv->last_x, raw_point.x);
+      priv->last_y = __DRV_Touch_FilterCoord(priv->last_y, raw_point.y);
+    }
+  }
+  else
+  {
+    if (priv->release_count < TOUCH_RELEASE_CONFIRM_CNT)
+    {
+      priv->release_count++;
+    }
+
+    priv->press_count = 0;
+
+    if (priv->release_count >= TOUCH_RELEASE_CONFIRM_CNT)
+    {
+      log_d("Touch Release Confirmed at (%d, %d)", priv->last_x, priv->last_y);
+      priv->state = DRV_TOUCH_STATE_RELEASED;
+    }
+  }
+
+  point->x       = priv->last_x;
+  point->y       = priv->last_y;
+  point->pressed = (priv->state == DRV_TOUCH_STATE_PRESSED) ? 1U : 0U;
 
   return kStatus_Success;
 }

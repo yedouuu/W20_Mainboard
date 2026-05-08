@@ -211,82 +211,15 @@ const Touch_Resource_t touch_main_res = {
 };
 
 /* Private function ---------------------------------------------------------*/
-#include "lvgl.h"
-extern lv_timer_t *volatile indev_touchpad_timer;
 static void __NS2009_PENIRQ_Handler(void)
 {
-  uint32_t cur_state =
-      digitalRead_FAST(touch_main_res.irq_pin) ? TOUCH_RELEASED : TOUCH_PRESSED;
+  uint32_t cur_state = digitalRead_FAST(touch_main_res.irq_pin) ? TOUCH_RELEASED
+                                                                : TOUCH_PRESSED;
 
-  log_d("NS2009 PENIRQ Handler: State=%d", cur_state);
-
-  // if ( cur_state != touch_main_handler.state )
-  // {
-  //   touch_main_handler.debounce_active = true;
-  //   touch_main_handler.state = (Touch_State_e)cur_state;
-  //   touch_main_handler.debounce_tick = 20; // 20ms 消抖时间
-  //   touch_main_handler.noise_cnt = 0;
-  // }
+  // log_d("NS2009 PENIRQ Handler: State=%d", cur_state);
 
   /* TODO: 使用事件驱动 */
   g_ns2009_irq_flag = 1;
-  lv_timer_resume(indev_touchpad_timer);
-}
-
-void NS2009_TickHandler(void)
-{
-
-  if (touch_main_handler.debounce_tick > 0)
-  {
-    uint32_t cur_state = digitalRead_FAST(touch_main_res.irq_pin)
-                             ? TOUCH_RELEASED
-                             : TOUCH_PRESSED;
-
-    if (cur_state == touch_main_handler.state)
-    {
-      // 状态与预期一致，继续计时
-      touch_main_handler.debounce_tick--;
-
-      if (touch_main_handler.debounce_tick == 0)
-      {
-        touch_main_state = touch_main_handler.state;
-        log_i("NS2009 Touch State Changed: %d", touch_main_state);
-
-        if (touch_main_state == TOUCH_PRESSED)
-        {
-          g_ns2009_irq_flag        = 1;
-          touch_main_handler.state = TOUCH_IDLE;
-          if (indev_touchpad_timer) lv_timer_resume(indev_touchpad_timer);
-          // touch_main_handler.debounce_active = false;
-        }
-        // else if (touch_main_state == TOUCH_RELEASED) {
-        //   g_ns2009_irq_flag = 1;
-        //   /* 释放事件 */
-        // }
-      }
-    }
-    else //(cur_state != touch_main_handler.state)
-    {
-      // 状态变化，记作噪声, 若干扰过多则放弃本次状态变化
-      touch_main_handler.noise_cnt++;
-
-      if (touch_main_handler.noise_cnt > 2)
-      {
-
-        touch_main_handler.debounce_tick = 0;
-        touch_main_handler.state         = TOUCH_IDLE;
-        // touch_main_handler.debounce_active = false;
-        log_w("NS2009 Touch State Change Aborted Due to Excessive Noise");
-      }
-      else
-      {
-        // log_d("NS2009 Touch State Noise Detected: %d (Count=%d)", cur_state,
-        // touch_main_handler.noise_cnt);
-      }
-
-      return;
-    }
-  }
 }
 
 static void __NS2009_Init(const Touch_Resource_t *touch_res)
@@ -299,8 +232,9 @@ static void __NS2009_Init(const Touch_Resource_t *touch_res)
 
   I2Cx_Init(touch_res->bus.i2c.i2c_instance, touch_res->bus.i2c.speed);
 
-  attachInterrupt(
-      touch_res->irq_pin, __NS2009_PENIRQ_Handler, touch_res->irq_polarity);
+  attachInterrupt(touch_res->irq_pin,
+                  __NS2009_PENIRQ_Handler,
+                  touch_res->irq_polarity);
 
   uint8_t  test_cmd = NS2009_ONLY_OPEN_IRQ;
   Status_t status   = I2Cx_Master_Write(touch_res->bus.i2c.i2c_instance,
@@ -321,16 +255,20 @@ static uint16_t __NS2009_Read(const Touch_Resource_t *touch_res,
   uint8_t  buf[2];
   uint16_t value = 0;
 
-  status = I2Cx_Master_Write(
-      touch_res->bus.i2c.i2c_instance, touch_res->bus.i2c.dev_addr_wr, &cmd, 1);
+  status = I2Cx_Master_Write(touch_res->bus.i2c.i2c_instance,
+                             touch_res->bus.i2c.dev_addr_wr,
+                             &cmd,
+                             1);
   if (status != kStatus_Success)
   {
     log_e("NS2009 I2C write command failed: %d", status);
     return 0;
   }
 
-  status = I2Cx_Master_Read(
-      touch_res->bus.i2c.i2c_instance, touch_res->bus.i2c.dev_addr_rd, buf, 2);
+  status = I2Cx_Master_Read(touch_res->bus.i2c.i2c_instance,
+                            touch_res->bus.i2c.dev_addr_rd,
+                            buf,
+                            2);
   if (status != kStatus_Success)
   {
     log_e("NS2009 I2C read command failed: %d", status);
@@ -345,8 +283,10 @@ static uint16_t __NS2009_Read(const Touch_Resource_t *touch_res,
 static void __NS2009_OpenPENIRQ(const Touch_Resource_t *touch_res)
 {
   uint8_t cmd = NS2009_ONLY_OPEN_IRQ;
-  I2Cx_Master_Write(
-      touch_res->bus.i2c.i2c_instance, touch_res->bus.i2c.dev_addr_wr, &cmd, 1);
+  I2Cx_Master_Write(touch_res->bus.i2c.i2c_instance,
+                    touch_res->bus.i2c.dev_addr_wr,
+                    &cmd,
+                    1);
 }
 
 /**
@@ -370,8 +310,8 @@ static uint8_t __NS2009_Calculate_Pressure(TouchPoint_t *p)
     return 0; // 避免除零错误
   }
 
-  pressure =
-      ((float)x / TOUCH_NS2009_ADC_RESO) * (((float)z2 / (float)z1) - 1.0f);
+  pressure = ((float)x / TOUCH_NS2009_ADC_RESO) *
+             (((float)z2 / (float)z1) - 1.0f);
   // log_d("NS2009 Calculated Pressure: %.2f", pressure);
 
   if (pressure < touch_main_res.pres_min || pressure > touch_main_res.pres_max)
@@ -397,8 +337,8 @@ static void __NS2009_ReadCoordinate(const Touch_Resource_t *touch_res,
   z2 = __NS2009_Read(touch_res, NS2009_LOW_POWER_READ_Z2);
   __NS2009_OpenPENIRQ(touch_res);
 
-  /* 关键：等待 NS2009 完成 IRQ 引脚配置（约 100us） */
-  // delay_us(100);
+  /* 等待 NS2009 完成 IRQ 引脚配置（约 100us） */
+  delay_us(100);
 
   p->x       = x;
   p->y       = y;
@@ -406,15 +346,16 @@ static void __NS2009_ReadCoordinate(const Touch_Resource_t *touch_res,
   p->z2      = z2;
   p->pressed = __NS2009_Calculate_Pressure(p);
 
-  log_d("NS2009 Read X=%d, Y=%d, Z1=%d, Z2=%d Press=%d",
-        x,
-        y,
-        z1,
-        z2,
-        p->pressed);
+  // log_d("NS2009 Read X=%d, Y=%d, Z1=%d, Z2=%d Press=%d",
+  //       x,
+  //       y,
+  //       z1,
+  //       z2,
+  //       p->pressed);
 
-  attachInterrupt(
-      touch_res->irq_pin, touch_res->irq_handler, touch_res->irq_polarity);
+  attachInterrupt(touch_res->irq_pin,
+                  touch_res->irq_handler,
+                  touch_res->irq_polarity);
 }
 
 /* Public function
@@ -434,8 +375,9 @@ void BSP_Touch_DeInit(const void *touch)
 void BSP_Touch_Open(const void *touch)
 {
   const Touch_Resource_t *touch_res = (const Touch_Resource_t *)touch;
-  attachInterrupt(
-      touch_res->irq_pin, touch_res->irq_handler, touch_res->irq_polarity);
+  attachInterrupt(touch_res->irq_pin,
+                  touch_res->irq_handler,
+                  touch_res->irq_polarity);
 }
 
 void BSP_Touch_Close(const void *touch)

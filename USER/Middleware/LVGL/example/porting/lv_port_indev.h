@@ -35,6 +35,7 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 void lv_port_indev_init(void);
+void lv_port_touchpad_irq_process(void);
 
 /**********************
  *      MACROS
