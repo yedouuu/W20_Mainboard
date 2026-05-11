@@ -2651,6 +2651,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\USER\Tests\test_bsp_sflash.c</FilePath>
             </File>
+            <File>
+              <FileName>test_bsp_mg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Tests\test_bsp_mg.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_bsp_uv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\USER\Tests\test_bsp_uv.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

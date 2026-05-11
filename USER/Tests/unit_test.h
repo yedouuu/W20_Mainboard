@@ -9,6 +9,8 @@
 extern "C" {
 #endif
 
+#define TEST_LOG        log_i
+
 void TEST_main(void);
 
 

@@ -91,6 +91,8 @@ virtualFolder:
         - path: ../../USER/Tests/fault_test.c
         - path: ../../USER/Tests/test_sfud.c
         - path: ../../USER/Tests/test_bsp_sflash.c
+        - path: ../../USER/Tests/test_bsp_mg.c
+        - path: ../../USER/Tests/test_bsp_uv.c
       folders: []
     - name: Middleware
       files: []
@@ -505,6 +507,8 @@ virtualFolder:
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_config.h
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_motor.c
             - path: ../MDK-ARM_F403A/Platform/BSP/bsp_encoder.c
+            - path: ../MDK-ARM_F403A/Platform/BSP/bsp_mg.c
+            - path: ../MDK-ARM_F403A/Platform/BSP/bsp_uv.c
           folders: []
         - name: Core
           files:

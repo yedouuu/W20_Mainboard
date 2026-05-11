@@ -1,8 +1,28 @@
 
+/* Unit test switches: 1 = enable, 0 = disable */
+#define UNIT_TEST_MG_ENABLE    1
+#define UNIT_TEST_UV_ENABLE    1
+#define UNIT_TEST_SPIM_ENABLE  0
+#define UNIT_TEST_SFUD_ENABLE  0
+
 #include "unit_test.h"
 #include "fault_test.h"
-#include "test_sfud.h"
-#include "test_bsp_sflash.h"
+
+#if UNIT_TEST_SFUD_ENABLE
+#  include "test_sfud.h"
+#endif
+
+#if UNIT_TEST_SPIM_ENABLE
+#  include "test_bsp_sflash.h"
+#endif
+
+#if UNIT_TEST_MG_ENABLE
+#  include "test_bsp_mg.h"
+#endif
+
+#if UNIT_TEST_UV_ENABLE
+#  include "test_bsp_uv.h"
+#endif
 
 void setUp(void) {
 
@@ -34,10 +54,23 @@ void test_divide_by_zero(void) {
 void TEST_main(void)
 {
   UNITY_BEGIN();
-  // RUN_TEST(TEST_SFUD_RunAllTests);
-  
-  // TEST_SFUD_RunAllTests();
+
+#if UNIT_TEST_SFUD_ENABLE
+  TEST_SFUD_RunAllTests();
+#endif
+
+#if UNIT_TEST_SPIM_ENABLE
   TEST_SPIM_RunAllTests();
+#endif
+
+#if UNIT_TEST_MG_ENABLE
+  TEST_MG_RunAllTests();
+#endif
+
+#if UNIT_TEST_UV_ENABLE
+  TEST_UV_RunAllTests();
+#endif
+
   UNITY_END();
 
 }
